@@ -1,0 +1,68 @@
+<div class="pagination">
+
+    {# Previous Button #}
+    <div class="pagination-left">
+        {% if p > 1 %}
+            <a class="button is-inset pagination-left" href="{{ paginator.computeUrl(p-1) }}">{% t "Previous" %}</a>
+        {% else %}
+            <span class="button is-inset">{% t "Previous" %}</span>
+        {% endif %}
+    </div>
+
+
+    <div class="pagination-items">
+
+        {# Paging Left of Current Active Page (if applicable) #}
+        {% if p > 1 %}
+
+            {# Left Edge Paging (Ex: 1/2/3...) #}
+            {% for i in range(1, edge_count) if ( i < p - near_count ) %}
+                <span class="pagination-item"><a class="button is-inset" href="{{ paginator.computeUrl(i) }}">{{ i }}</a></span>
+            {% endfor %}
+
+            {# "..." separator between left edge and rest #}
+            {% if edge_count + 1 < p - near_count %}
+                <span class="sep-dots">...</span>
+            {% endif %}
+
+            {# Nearby Paging Left of Current Page (Ex: 4/5/6/7/8) #}
+            {% for i in range(p-near_count, p-1) if ( i > 0 ) %}
+                <span class="pagination-item"><a class="button is-inset" href="{{ paginator.computeUrl(i) }}"> {{ i }}</a></span>
+            {% endfor %}
+
+        {% endif %}
+
+        {# Currently Active Page (Ex: 9) #}
+        <span class="pagination-item is-active"><span class="button">{{ p }}</span></span>
+
+        {# Paging Right of Current Active Page (if applicable) #}
+        {% if p < total_pages %}
+
+            {# Nearby Paging Right of Current Page (Ex: 10/11/12/13/14) #}
+            {% for i in range(p+1, p + near_count) if ( i <= total_pages ) %}
+                <span class="pagination-item"><a class="button is-inset" href="{{ paginator.computeUrl(i) }}"> {{ i }}</a></span>
+            {% endfor %}
+
+            {# "..." separator between right edge and rest #}
+            {% if  (total_pages - edge_count) > (p + near_count) %}
+                <span class="sep-dots">...</span>
+            {% endif %}
+
+            {# Right Edge Paging (Ex: ...17/18/19) #}
+            {% for i in range(total_pages - edge_count+1, total_pages) if ( i > p + near_count ) %}
+                <span class="pagination-item"><a class="button is-inset" href="{{ paginator.computeUrl(i) }}"> {{ i }}</a></span>
+            {% endfor %}
+
+        {% endif %}
+
+
+    </div>
+    <div class="pagination-right">
+        {% if p < total_pages %}
+            <a class="button is-inset" href="{{ paginator.computeUrl(p+1) }}">{% t "Next" %}</a>
+        {% else %}
+            <span class="button is-inset">{% t "Next" %}</span>
+        {% endif %}
+    </div>
+
+</div>

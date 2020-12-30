@@ -1,0 +1,7 @@
+<span class="select is-lang is-small">
+  <select name="lang" id="id_lang">
+    {% for language in langFilters %}
+        {% include "blocks/forms/option-language.twig" %}
+    {% endfor %}
+</select>
+</span>

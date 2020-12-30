@@ -1,0 +1,86 @@
+
+<div class="container pt-m">
+
+    {% include "account/games/manage-game/breadcrumbs.twig" %}
+
+    <div class="flex is-wrapping pt-l">
+
+        <div class="column is-3 is-fullwidth-mobile is-hidden">
+
+            {% include "account/games/manage-game/side-nav.twig" %}
+
+        </div>
+
+        <div class="column is-12 is-fullwidth-mobile">
+
+            {% include 'account/games/manage-game/blocks/game-build-notice.twig' %}
+
+            <div class="sheet">
+                <div class="sheet-title">
+                    <h3 class="title is-2 is-bold">{% t "Game Data" %}:<strong>{{ game_data.key }}</strong></h3>
+                    <p class="admin-desc">
+                        {% if singleSheet %}Single Spreadsheet (No Sheet Title Index Keys){% else %}Multiple Spreadsheets (Sheet Titles are Index Keys){% endif %}
+                    </p>
+                </div>
+
+                    <div class="sheet-content p-l">
+                        {% if update_channel != 'live' and not game_build.is_published() %}
+                            <a href="{{ game.edit_url }}/{{ update_channel }}/upload-custom-data/{{ game_data.key }}?game_build_id={{ game_build.getPk() }}" class="button is-primary" data-esc-fancybox="default">Upload Spreadsheet</a>
+                        {% endif %}
+                        <form action="{{ game.edit_url }}/{{ update_channel }}/download-custom-data-xls/{{ game_data.getPk() }}?game_build_id={{ game_build.getPk() }}" method="post" target="_blank" data-esc-ajax-form="file" style="display: inline;">
+                            <button class="button is-grey ml-m" data-esc-tracking-service="mixpanel" data-esc-tracking="clicked" data-esc-tracking-content-type="cta-button" data-esc-tracking-context="custom-data" data-esc-tracking-element="download-sheets-xls">Export Sheet{{ count(game_data.getGameDataSheets) > 1 ? 's' : '' }} (.xlsx)</button>
+                        </form>
+
+                    </div>
+            </div>
+
+            <nav class="tabs__navigation group">
+                {% for sheet_title in game_data.getGameDataSheetNames() %}
+                    <a class="tabs__link {% if loop.first %}tabs__link--active{% endif %}" href="#{{ sheet_title }}">{{ sheet_title }}</a>
+                {% endfor %}
+            </nav>
+
+            {% for sheet in game_data.getGameDataSheets() %}
+
+                <div class="tabs__section" id="{{ sheet.name }}">
+                    <div class="column is-12">
+                        <div class="sheet">
+                            <div class="sheet-title">
+                                <form method="post" action="{{ game.edit_url }}/{{ update_channel }}/update-custom-data-sheet/{{ game_data.getPk() }}/{{ sheet.getPk() }}?game_build_id={{ game_build.getPk() }}" data-esc-ajax-form="json">
+                                    {{ forms[sheet.name]|raw }}
+                                </form>
+                            </div>
+                            <div class="sheet-content p-l">
+                                {% if sheet.game_data_sheet_rows %}
+                                    <table class="table">
+                                        <thead>
+                                        <tr>
+                                            {% for column in sheet.getGameDataSheetColumns() %}
+                                                <th style="{% if not loop.last %}width: 25%;{% endif %}"><strong style="white-space: nowrap;">{% if column.getPk() == sheet.getGameDataSheetColumnId() %}&ast; {% endif %}{{ column.name }}</strong></th>
+                                            {% endfor %}
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for row in sheet.game_data_sheet_rows %}
+                                            <tr>
+                                                {% for column in sheet.getGameDataSheetColumns %}
+                                                    <td>
+                                                        {{ row.getProcessedValueByKey(column.name) }}
+                                                    </td>
+                                                {% endfor %}
+                                            </tr>
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+
+    </div>
+</div>
+
+

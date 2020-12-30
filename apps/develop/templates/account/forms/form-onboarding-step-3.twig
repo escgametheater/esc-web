@@ -1,0 +1,113 @@
+<div class="container pt-xl">
+    <div class="flex pt-l is-wrapping">
+        <div class="column is-6 is-fullwidth-mobile p-l is-valigned">
+
+            <h1 class="title is-jumbo is-valigned is-blackish">
+                Last step: Review program pricing and details.
+            </h1>
+
+        </div>
+        <div class="column is-6 is-fullwidth-mobile">
+
+            <div class="sheet mt-xl">
+                <div class="align-center image is-user is-large is-bordered">
+                    <img class="is-bordered align-center" style="box-shadow: #999 0px 3px 7px; position: relative; top: -55px; margin-left: auto; margin-right: auto;" src="{{ organization.avatar.medium_url }}"  />
+                </div>
+                <div class="sheet-content pl-l pr-l" style="margin-top: -50px;">
+
+                    <div class="flex is-wrapping pt-m">
+                        <label class="is-bold">
+                            Program
+                        </label>
+
+
+                        <div class="column is-12 p-xs pl-s" style="border: 2px solid #dcdcdc; border-radius: 5px;">
+                            {% if order %}
+                                <strong>GameDay Pilot 2019</strong>
+                            {% else %}
+                                <strong>ESC Pilot</strong>
+                            {% endif %}
+                        </div>
+
+                        <div class="column is-12 mt-m p-0" style="border: 2px solid #dcdcdc; border-radius: 5px;">
+                            <table class="table m-0 width-100 is-fullwidth" >
+
+                                <tbody>
+                                {% if order %}
+                                    {% for order_item in order.order_items %}
+                                        {% set service_access_token = order_item.context %}
+
+                                        {% include "account/forms/blocks/onboarding-order-items.twig" %}
+
+                                    {% endfor %}
+                                {% elseif service_access_tokens %}
+                                    {% for service_access_token in service_access_tokens %}
+                                        {% include "account/forms/blocks/onboarding-order-items.twig" %}
+                                    {% endfor %}
+                                {% endif %}
+                                {% if order.getTaxAmountAsFloat() > 0 %}
+                                    {% if count(order.order_items) > 1 %}
+                                        <tr>
+                                            <td colspan="1" >{% t "Sub-Total" %}</td>
+                                            <td style="text-align: right;">{{ i18n.displayCurrency(order.getSubTotalAmountAsFloat()) }}</td>
+                                        </tr>
+                                    {% endif %}
+                                    <tr>
+                                        <td colspan="1">{% t "Sales Tax" %}</td>
+                                        <td style="text-align: right;">{{ i18n.displayCurrency(order.getTaxAmountAsFloat()) }}</td>
+                                    </tr>
+                                {% endif %}
+                                {% if order.getDiscountAmountAsFloat() %}
+                                    <tr>
+                                        <td colspan="1">{% t "Discount" %} ({{ order.getDiscountIncentiveInstance().getIncentive().discount_percentage }}%)</td>
+                                        <td style="text-align: right;">-{{ i18n.displayCurrency(order.getDiscountAmountAsFloat()) }}</td>
+                                    </tr>
+                                {% endif %}
+                                {#<tr>#}
+                                {#<td colspan="2" style="border: none;"></td>#}
+                                {#<td><strong>{% t "Total" %}</strong></td>#}
+                                {#<td style="text-align: right;">{{ i18n.displayCurrency(order.getTotalAmountAsFloat()) }}</td>#}
+                                {#</tr>#}
+                                {% if order.payment %}
+                                    <tr>
+                                        <td colspan="1">{% t "Payment" %} ({% t order.payment.payment_service.display_name %}) - {% t order.payment.payment_status.display_name %}</td>
+                                        <td style="text-align: right;">
+                                            {% if order.payment.is_paid() %}
+                                                -{{ i18n.displayCurrency(order.payment.getTotalPaymentAmount()) }}
+                                            {% elseif order.payment.is_accepted() %}
+                                                (-{{ i18n.displayCurrency(order.payment.getTotalPaymentAmount()) }})
+                                            {% elseif order.payment.is_nullified() %}
+                                                {{ i18n.displayCurrency(0.00) }}
+                                            {% else %}
+                                                N/A
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                {% endif %}
+                                <tr>
+                                    <td colspan="1"><strong>{% t "Amount Due" %}</strong></td>
+                                    <td style="text-align: right;">{{ i18n.displayCurrency(order.getTotalAmountDueAsFloat()) }}</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="pt-l" style="font-size: 12px;">
+                            By clicking ‘Join Pilot Program’ you are agreeing to the ESC Games <a target="_blank" href="{{ www_url }}/privacy-policy" class="esc-link">Privacy Policy</a>, <a target="_blank" href="{{ www_url }}/service-level-agreement" class="esc-link">SLA</a>, and <a href="{{ www_url }}/terms-of-service" target="_blank" class="esc-link">Terms of Use</a>.
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div class="form-bottom is-fixed is-fullwidth bg-white p-l">
+    <a href="{{ develop_url }}/teams/{{ organization.slug }}/onboarding/members" class="button is-white is-inset float-left" data-esc-tracking-service="mixpanel" data-esc-tracking="clicked" data-esc-tracking-content-type="cta-button" data-esc-tracking-context="organization-onboarding" data-esc-tracking-element="back-team-members">
+        Back: Members
+    </a>
+    <button class="button is-primary float-right" type="submit" data-esc-tracking-service="mixpanel" data-esc-tracking="clicked" data-esc-tracking-content-type="cta-button" data-esc-tracking-context="organization-onboarding" data-esc-tracking-element="submit">
+        Join Pilot Program
+    </button>
+</div>

@@ -1,0 +1,37 @@
+<table class="table">
+    <thead>
+    <tr>
+        <th>Date</th>
+        <th>Start</th>
+        <th>End</th>
+        <th>Title</th>
+        <th>Activations</th>
+        {#<th>Host Slug</th>#}
+    </tr>
+    </thead>
+    <tbody>
+
+    {% for activation_group in activation_groups %}
+        <tr>
+            <td>
+                {{ activation_group.local_start_time|date }}
+            </td>
+            <td>
+                {{ activation_group.local_start_time|time(0, '%l:%M %P') }}
+            </td>
+            <td>
+                {{ activation_group.local_end_time|time(0, '%l:%M %P') }}
+            </td>
+            <td>
+                <a href="{{ develop_url }}/teams/{{ active_organization.slug }}/activations/edit/{{ activation_group.getPk() }}" data-esc-tracking-service="mixpanel" data-esc-tracking="clicked" data-esc-tracking-content-type="text-link" data-esc-tracking-context="edit-activation-group" data-esc-tracking-element="{{ activation_group.display_name }}">{{ activation_group.display_name }}</a>
+            </td>
+            <td>
+                {% for activation in activation_group.activations %}
+                    {{ activation.game.display_name }} - {{ activation.game_mod.display_name }}<br/>
+                {% endfor %}
+            </td>
+        </tr>
+    {% endfor %}
+
+    </tbody>
+</table>

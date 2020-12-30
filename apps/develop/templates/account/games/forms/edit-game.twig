@@ -1,0 +1,82 @@
+<div class="sheet">
+    <div class="sheet-title">
+        <div class="float-left pr-m pt-xs">
+            <a href="{{ game.edit_url }}/upload-profile-image" data-esc-fancybox="crop-image" class="image is-square" data-esc-tracking-service="mixpanel" data-esc-tracking="clicked" data-esc-tracking-content-type="cta-button" data-esc-tracking-context="edit-game-profile" data-esc-tracking-element="upload-avatar">
+                <img src="{{ game.avatar.medium_url }}" alt="{{ game.display_name }}" style="max-width: 54px;"/>
+                {#Upload Image#}
+            </a>
+        </div>
+
+        <h3 class="title is-2 is-bold">{% t "Profile" %}</h3>
+        <p class="admin-desc">
+            Manage general game profile settings, options, and visibility.
+        </p>
+    </div>
+    <div class="admin-inputs">
+
+        <div class="flex is-wrapping">
+            <div class="column is-12 pb-0">
+                {{ form.display_name()|raw }}
+            </div>
+            <div class="column is-12 pb-0">
+                {{ form.description()|raw }}
+            </div>
+            <div class="column is-12 pt-0 pb-0">
+                {{ form.slug()|raw }}
+            </div>
+            <div class="column is-12 pt-0 pb-0 is-hidden">
+                {{ form.game_type_id()|raw }}
+            </div>
+            <div class="column is-12 pt-0 pb-0">
+                {{ form.game_category_id()|raw }}
+            </div>
+            <div class="column is-12 pt-0 pb-0">
+                {{ form.is_downloadable()|raw }}
+            </div>
+        </div>
+        <button type="submit" class="button is-primary" data-esc-tracking-service="mixpanel" data-esc-tracking="clicked" data-esc-tracking-content-type="cta-button" data-esc-tracking-context="edit-game-profile" data-esc-tracking-element="submit">{% t "Save" %}</button>
+    </div>
+</div>
+
+<div class="sheet {% if game.is_type_offline_game() %}is-hidden{% endif %}">
+    <div class="sheet-title">
+        <h3 class="title is-2 is-bold">{% t "Engine & Networking" %}</h3>
+        <p class="admin-desc">
+            Manage and control how the game behaves and interacts with networking interfaces.
+        </p>
+    </div>
+    <div class="admin-inputs">
+        <div class="flex is-wrapping">
+            <div class="column is-12 pt-0 pb-0">
+                {{ form.game_engine_id()|raw }}
+            </div>
+
+            <div class="column is-12 pt-0 pb-0">
+                {{ form.is_wan_enabled()|raw }}
+            </div>
+            {#<div class="column is-12 pt-0 pb-0">#}
+                {#{{ form.is_aggregate_game()|raw }}#}
+            {#</div>#}
+        </div>
+        <button type="submit" class="button is-primary" data-esc-tracking-service="mixpanel" data-esc-tracking="clicked" data-esc-tracking-content-type="cta-button" data-esc-tracking-context="edit-game-network-settings" data-esc-tracking-element="submit">{% t "Save" %}</button>
+    </div>
+</div>
+
+{% if user.permissions.has('games', 'm') %}
+    <div class="sheet">
+        <div class="sheet-title">
+            <h3 class="title is-2 is-bold">{% t "ESC Admin Settings" %}</h3>
+            <p class="admin-desc">
+                Settings only available to ESC Admins.
+            </p>
+        </div>
+        <div class="admin-inputs">
+            <div class="flex is-wrapping">
+                <div class="column is-12 pb-0">
+                    {{ form.can_mod()|raw }}
+                </div>
+            </div>
+            <button type="submit" class="button is-primary" data-esc-tracking-service="mixpanel" data-esc-tracking="clicked" data-esc-tracking-content-type="cta-button" data-esc-tracking-context="edit-game-admin-settinbgs" data-esc-tracking-element="submit">{% t "Save" %}</button>
+        </div>
+    </div>
+{% endif %}

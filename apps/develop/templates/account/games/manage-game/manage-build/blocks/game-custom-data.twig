@@ -1,0 +1,55 @@
+
+<div class="column is-12">
+    <div class="sheet">
+        <div class="sheet-title">
+            <h3 class="title is-2 is-bold">{% t "Data" %}</h3>
+            <p class="admin-desc">
+                Manage, delete, update, and set active game data records.
+            </p>
+        </div>
+        {% if update_channel != 'live' and not game_build.is_published() %}
+            <div class="admin-inputs">
+                <span class="">
+                   <a href="{{ game.edit_url }}/{{ update_channel }}/upload-custom-data?game_build_id={{ game_build.getPk() }}" data-esc-fancybox="default" class="button is-primary" data-esc-tracking-service="mixpanel" data-esc-tracking="clicked" data-esc-tracking-content-type="cta-button" data-esc-tracking-context="edit-game-build" data-esc-tracking-element="upload-custom-data-xls">Upload Game Data Spreadsheet</a>
+                </span>
+            </div>
+        {% endif %}
+
+        <div class="sheet-content p-l">
+            <table class="table">
+                <thead>
+                <tr>
+                    {#<th>ID</th>#}
+                    <th>Last Update</th>
+                    <th>Key</th>
+                    <th>Sheets</th>
+                    {#<th>Active From</th>#}
+                    {#<th>Data Size</th>#}
+                    {#<th class="align-right" style="text-align: right;">Actions</th>#}
+                </tr>
+                </thead>
+                <tbody>
+                {% for data in game_data %}
+                    <tr>
+                        <td>{{ data.update_time }}</td>
+                        <td><a href="{{ game.edit_url }}/{{ update_channel }}/view-custom-data/{{ data.key }}?game_build_id={{ game_build.getPk() }}" data-esc-tracking-service="mixpanel" data-esc-tracking="clicked" data-esc-tracking-content-type="text-link" data-esc-tracking-context="edit-game-build" data-esc-tracking-element="edit-custom-data">{{ data.key }}</a></td>
+                        <td>
+                            {% for sheet_name in data.getGameDataSheetNames() %}
+                                {{ sheet_name }}{% if not loop.last %}, {% endif %}
+                            {% endfor %}
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+
+        </div>
+{#        <form method="post" enctype="multipart/form-data" action="{{ path }}" data-esc-ajax-form="json" >
+            {{ form|raw }}
+        </form>
+        <p class="admin-desc is-fullwidth">
+            {{ game_data_definition|dump|raw }}
+        </p>#}
+    </div>
+
+</div>

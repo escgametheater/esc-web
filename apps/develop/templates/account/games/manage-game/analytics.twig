@@ -1,0 +1,67 @@
+<div class="container pt-m">
+
+    {% include "account/games/manage-game/breadcrumbs.twig" %}
+
+    <div class="flex pt-l">
+        <div class="column is-3 is-fullwidth-mobile">
+
+            {% include "account/games/manage-game/side-nav.twig" %}
+
+        </div>
+        <div class="column is-9 is-fullwidth-mobile">
+
+            {% include "account/games/manage-game/blocks/update-channel-selector.twig" %}
+
+            <div class="sheet">
+                <div class="sheet-title">
+                    <h3 class="title is-2 is-bold">{% t "Game Play Stats" %}</h3>
+                    <p class="admin-desc">
+                        Player stats.
+                    </p>
+                </div>
+                <div class="sheet-content p-l">
+                    <div class="column is-fullwidth is-fullwidth-mobile">
+                        <canvas width="100%" height="50%"
+                                data-esc-graph="default"
+                                data-esc-graph-id="usage_stats"
+                                data-esc-graph-type="bar"
+                                data-esc-graph-url="{{ game.edit_url }}/{{ update_channel }}/stats"
+                                data-esc-graph-labelfield="instance_date"
+
+                                data-esc-graph-set-field-1="unique_hosts"
+                                data-esc-graph-set-type-1="line"
+                                data-esc-graph-set-label-1="# hosts"
+                                data-esc-graph-set-bg-1="rgba(255, 99, 132, 0.2)"
+
+                                data-esc-graph-set-field-2="host_instances"
+                                data-esc-graph-set-type-2="bar"
+                                data-esc-graph-set-label-2="# host instances"
+                                data-esc-graph-set-bg-2="rgba(54, 162, 235, 0.2)"
+
+                                data-esc-graph-set-field-3="game_instances"
+                                data-esc-graph-set-type-3="line"
+                                data-esc-graph-set-label-3="# game instances"
+                                data-esc-graph-set-bg-3="rgba(0, 164, 19, 0.2)"
+
+                                data-esc-graph-set-field-4="game_rounds"
+                                data-esc-graph-set-type-4="line"
+                                data-esc-graph-set-label-4="# unique game rounds"
+                                data-esc-graph-set-bg-4="rgba(241, 123, 10, 0.2)"
+
+                                data-esc-graph-set-field-5="unique_game_players"
+                                data-esc-graph-set-type-5="line"
+                                data-esc-graph-set-label-5="# unique game players"
+                                data-esc-graph-set-bg-5="rgba(241, 244, 10, 0.2)"
+
+                                data-esc-graph-set-field-6="game_player_sessions"
+                                data-esc-graph-set-type-6="line"
+                                data-esc-graph-set-label-6="# player sessions"
+                                data-esc-graph-set-bg-6="rgba(76, 76, 10, 0.2)">
+                        </canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

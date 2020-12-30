@@ -1,0 +1,14 @@
+<label {% if class_names %}class="{{ class_names }}"{% endif %} style="width: 100%;">{% if field.verbose_name %}{{ field.verbose_name }}<br/>{% endif %}
+<div class="ui fluid multiple search special selection dropdown select-multiple-{{ field.name }}">
+    <input type="hidden" name="{{ field.name }}" value="{{ defaults_string }}">
+    <i class="dropdown icon"></i>
+    <div class="default text">{{ field.placeholder }}</div>
+    <div class="menu">
+        {% for option in field.options %}
+        <div class="item {% if option.id in defaults %}active{% endif %}" data-value="{{ option.id }}" data-text="{{ option.display_name }}">
+            {{ option.display_name }}
+        </div>
+        {% endfor %}
+    </div>
+</div>
+</label>

@@ -1,0 +1,11 @@
+<div class="column is-12 p-0 pb-s">
+    {{ form.display_name()|raw }}
+</div>
+<div class="column is-12 p-0 pb-s">
+    {{ form.description()|raw }}
+</div>
+<div class="colunn is-12 p-0">
+    <button class="button is-primary" data-esc-tracking-service="mixpanel" data-esc-tracking="clicked" data-esc-tracking-content-type="cta-button" data-esc-tracking-context="form-submit" data-esc-tracking-element="save-mod-profile">{% t "Save" %}</button>
+    <a href="{{ game_mod.delete_url }}" data-esc-fancybox="default" class="button is-danger" data-esc-tracking-service="mixpanel" data-esc-tracking="clicked" data-esc-tracking-content-type="cta-button" data-esc-tracking-context="form-alternate" data-esc-tracking-element="delete-game-mod">Delete Game Mod</a>
+    <a href="{{ game_mod.clone_url }}" data-esc-fancybox="default" class="button is-white is-inset {% if not game_mod.game_mod_builds.live is defined %}is-disabled{% endif %}" {% if not game_mod.game_mod_builds.live is defined %}data-esc-tooltip="You can only clone from live published builds into a new mod."{% endif %} data-esc-tracking-service="mixpanel" data-esc-tracking="clicked" data-esc-tracking-content-type="cta-button" data-esc-tracking-context="form-alternate" data-esc-tracking-element="clone-game-mod">Clone</a>
+</div>

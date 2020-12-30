@@ -1,0 +1,108 @@
+<div class="container pt-xl">
+    <div class="flex pt-l is-wrapping">
+        <div class="column is-6 is-fullwidth-mobile p-l is-valigned">
+
+            <h1 class="title is-jumbo is-valigned is-blackish">
+                Review your team information and invite other members.
+            </h1>
+
+        </div>
+        <div class="column is-6 is-fullwidth-mobile">
+
+            <div class="sheet mt-xl">
+                <div class="align-center image is-user is-large is-bordered">
+                    <img class="is-bordered align-center" style="box-shadow: #999 0px 3px 7px; position: relative; top: -55px; margin-left: auto; margin-right: auto;" src="{{ organization.avatar.medium_url }}"  />
+                </div>
+                <div class="sheet-content pl-l pr-l" style="margin-top: -50px;">
+
+                    <div class="pb-m mb-m bb-2-grey-8">
+                        <h2 class="title is-3 is-bold align-center">
+                            {{ organization.display_name }}
+                        </h2>
+                    </div>
+
+                    <div class="flex is-wrapping">
+
+                        {% if max_uses %}
+                            <div class="column is-7">
+                                <label class="is-bold">Invite Team Members</label><br/>
+                                {% for i in 0..max_uses %}
+                                    {% set fieldName = 'email_' ~ i %}
+                                    {% if form.has_field(fieldName) %}
+                                        {{ form.render_field(fieldName)|raw }}
+                                    {% endif %}
+                                {% endfor %}
+                                <span class="helptext">You can invite and manage team members later.</span>
+                            </div>
+                            <div class="column is-5">
+                                <label class="is-bold">Role</label><br/>
+                                {% for i in 0..max_uses %}
+                                    {% set fieldName = 'role_' ~ i %}
+                                    {% if form.has_field(fieldName) %}
+                                        {{ form.render_field(fieldName)|raw }}
+                                    {% endif %}
+                                {% endfor %}
+                                {#<span class="helptext"><a href="#" class="esc-link">Learn more about roles.</a></span>#}
+                            </div>
+                            <div class="column is-12">
+                                <input type="hidden" name="send_invites" id="send_invites" value="0" />
+                                <button class="button is-primary" onclick="$('#send_invites').val(1);">Send Invites</button>
+                            </div>
+
+                            {#<div class="column is-12 bb-2-grey-8 mb-l ml-s mr-l"></div>#}
+                        {% endif %}
+
+                        {% if organization_users_invites %}
+                            <div class="column is-12">
+                                <table class="table">
+                                    <thead>
+                                    <th class="pl-0">
+                                        <label class="title is-bold">Pending Invites</label>
+                                    </th>
+                                    <th><label class="title is-bold">Role</label></th>
+                                    <th><label class="title is-bold">Status</label></th>
+                                    <th></th>
+                                    </thead>
+                                    <tbody>
+                                    {% for organization_user_invite in organization_users_invites %}
+                                        <tr>
+                                            <td class="pl-0">
+                                                {{ organization_user_invite.invite_email_address }}
+                                            </td>
+                                            <td>
+                                                {{ organization_user_invite.organization_role.display_name }}
+                                            </td>
+                                            <td>
+                                                {{ organization_user_invite.organization_user_status.display_name }}
+                                            </td>
+                                            <td>
+
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                                <p class="helptext">
+                                    Pending invites are team member invitations that you have already sent but have not yet accepted the invite.
+                                </p>
+
+                            </div>
+
+                        {% endif %}
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div class="form-bottom is-fixed is-fullwidth bg-white p-l">
+    <a href="{{ develop_url }}/teams/{{ organization.slug }}/onboarding" class="button is-white is-inset float-left" data-esc-tracking-service="mixpanel" data-esc-tracking="clicked" data-esc-tracking-content-type="cta-button" data-esc-tracking-context="organization-onboarding" data-esc-tracking-element="back-team-profile">
+        Back: Profile
+    </a>
+    <button class="button is-primary float-right" type="submit" data-esc-tracking-service="mixpanel" data-esc-tracking="clicked" data-esc-tracking-content-type="cta-button" data-esc-tracking-context="organization-onboarding" data-esc-tracking-element="submit">
+        Next: Review Pricing
+    </button>
+</div>

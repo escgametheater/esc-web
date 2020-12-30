@@ -1,0 +1,170 @@
+<div class="container pt-m">
+
+    {% include "account/blocks/breadcrumbs.twig" %}
+
+    <div class="flex pt-m is-wrapping">
+
+        <div class="column is-3 is-fullwidth-mobile">
+
+            {% include "account/blocks/side-nav.twig" %}
+
+        </div>
+        <div class="column is-9 is-fullwidth-mobile">
+            <div class="sheet">
+                <div class="sheet-title">
+                    <h3 class="title is-2 is-bold">{% t "Analytics" %}</h3>
+                    <p class="admin-desc">
+                        Metrics and reporting on your GameDays and Host Domains.
+                    </p>
+                </div>
+                <div class="sheet-content pr-l pl-l pt-s pb-s is-border-bottom">
+                    <form method="get" action="{{ path }}" data-esc-form-get-select="auto">
+                        <div class="flex is-wrapping">
+                            <div class="column float-left">
+                                <label for="metric-select">Host Url</label><br/>
+                                <span class="select">
+                                <select class="select" name="slug" id="metric-select">
+                                    {% for host in hosts %}
+                                        <option value="{{ host.slug }}" {% if active_host.slug == host.slug %}selected="selected"{% endif %}>{{ host.url }}</option>
+                                    {% endfor %}
+                                </select>
+                            </span>
+
+                            </div>
+                            <div class="column is-2 float-left ml-s">
+
+                                <label for="metric-select">Timeframe</label><br/>
+                                <span class="select">
+                                <select class="select" name="tf" id="metric-select">
+                                    <option value="1w" {% if tf == '1w' %}selected{% endif %}>1 Week</option>
+                                    <option value="1m" {% if tf == '1m' %}selected{% endif %}>1 Month</option>
+                                    <option value="3m" {% if tf == '3m' %}selected{% endif %}>3 Months</option>
+                                    <option value="6m" {% if tf == '6m' %}selected{% endif %}>6 Months</option>
+                                    <option value="1y" {% if tf == '1y' %}selected{% endif %}>1 Year</option>
+                                    <option value="a" {% if tf == 'a' %}selected{% endif %}>All Time</option>
+                                </select>
+                            </span>
+
+                            </div>
+                            <div class="column float-left ml-s">
+
+                                <label for="metric-select">Interval</label><br/>
+                                <span class="select">
+                                <select class="select" name="interval" id="metric-select">
+                                    <option value="1" {% if interval == '1' %}selected{% endif %}>Daily</option>
+                                    <option value="2" {% if interval == '2' %}selected{% endif %}>Weekly</option>
+                                    <option value="3" {% if interval == '3' %}selected{% endif %}>Monthly</option>
+                                    <option value="4" {% if interval == '4' %}selected{% endif %}>All Time</option>
+                                </select>
+                            </span>
+
+                            </div>
+                            <div class="column is-2 pt-l" style="margin-top: 6px;">
+                                <button class="button is-primary float-right">Update</button>
+                            </div>
+                            <div style="clear: both;"></div>
+
+
+                        </div>
+                    </form>
+                </div>
+                <div class="sheet-content pt-l pb-0 pl-l pr-0">
+                    <div class="flex is-wrapping">
+                        <div class="column is-2">
+                            Days<br/>
+                            <span style="font-size: 200%; font-weight: bold;">{{ summary.count_days }}</span>
+                        </div>
+
+                        <div class="column is-2">
+                            GameDays<br/>
+                            <span style="font-size: 200%; font-weight: bold;">{{ summary.count_gamedays }}</span>
+                        </div>
+                        <div class="column is-2">
+                            Total Uniques<br/>
+                            <span style="font-size: 200%; font-weight: bold;">{{ summary.count_unique_players }}</span>
+                        </div>
+                        <div class="column is-2">
+                            Total Visits<br/>
+                            <span style="font-size: 200%; font-weight: bold;">{{ summary.count_player_sessions }}</span>
+                        </div>
+                        {#<div class="column is-3">#}
+                            {#Avg. players/activation<br/>#}
+                            {#<span style="font-size: 200%; font-weight: bold;">{{ summary.count_avg_players }}</span>#}
+                        {#</div>#}
+                        <div class="column is-2">
+                            Avg. time played<br/>
+                            <span style="font-size: 200%; font-weight: bold;">{{ summary.avg_time_played }}</span>
+                        </div>
+
+                    </div>
+                    <div class="flex is-wrapping pt-m">
+                        <div class="column is-fullwidth is-fullwidth-mobile">
+
+
+                            <canvas width="100%" height="60%"
+                                    data-esc-graph="default"
+                                    data-esc-graph-id="usage_stats"
+                                    data-esc-graph-type="bar"
+                                    data-esc-graph-url="/teams/{{ active_organization.slug }}/activations/analytics-stats.json?slug={{ active_host.slug }}&tf={{ tf }}&interval={{ interval }}"
+                                    data-esc-graph-labelfield="instance_date"
+
+                                    {#data-esc-graph-set-field-1="unique_hosts"#}
+                                    {#data-esc-graph-set-type-1="line"#}
+                                    {#data-esc-graph-set-label-1="# hosts"#}
+                                    {#data-esc-graph-set-bg-1="rgba(255, 99, 132, 0.2)"#}
+
+                                    {#data-esc-graph-set-field-2="host_instances"#}
+                                    {#data-esc-graph-set-type-2="bar"#}
+                                    {#data-esc-graph-set-label-2="# host instances"#}
+                                    {#data-esc-graph-set-bg-2="rgba(54, 162, 235, 0.2)"#}
+
+
+                                    data-esc-graph-set-field-3="game_instances"
+                                    data-esc-graph-set-type-3="bar"
+                                    data-esc-graph-set-label-3="Game Instances"
+                                    data-esc-graph-set-bg-3="rgba(0, 164, 19, 0.2)"
+
+                                    {#data-esc-graph-set-field-4="total_views"#}
+                                    {#data-esc-graph-set-type-4="line"#}
+                                    {#data-esc-graph-set-label-4="Total Visits"#}
+                                    {#data-esc-graph-set-bg-4="rgba(255, 187, 1, 0.2)"#}
+
+
+                                    data-esc-graph-set-field-5="unique_game_players"
+                                    data-esc-graph-set-type-5="line"
+                                    data-esc-graph-set-label-5="Total Plays"
+                                    data-esc-graph-set-bg-5="rgba(0, 0, 0, 0.2)"
+
+                                    data-esc-graph-set-field-6="unique_cloud_game_players"
+                                    data-esc-graph-set-type-6="line"
+                                    data-esc-graph-set-label-6="Cloud Plays"
+                                    data-esc-graph-set-bg-6="rgba(54, 162, 235, 0.2)"
+
+                                    data-esc-graph-set-field-7="unique_local_game_players"
+                                    data-esc-graph-set-type-7="line"
+                                    data-esc-graph-set-label-7="Local Plays"
+                                    data-esc-graph-set-bg-7="rgba(255, 99, 132, 0.2)"
+
+                            >
+                            </canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sheet">
+                <div class="sheet-title">
+                    <h3 class="title is-2 is-bold">{% t "Google Analytics" %}</h3>
+                    <p class="admin-desc">
+                        Paste your own Google Analytics code below to get standardized data for your Host Domains.
+                    </p>
+                </div>
+                <div class="sheet-content p-l">
+                    <form method="post" action="{{ path }}" data-esc-ajax-form="json" data-esc-form-success-method="remain">
+                        {{ form|raw }}
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

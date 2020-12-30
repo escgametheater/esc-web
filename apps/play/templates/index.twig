@@ -1,0 +1,12 @@
+<div class="container pt-0">
+    <div class="flex is-wrapping align-center">
+        <div class="column is-fullwidth is-fullwidth-mobile">
+            <div class="">
+                <svg class="esc-header-logo" style="max-width: 80px; fill: black; height: auto;"><use xlink:href="#esc-logo"></use></svg>
+            </div>
+        </div>
+        <form action="{{ path }}" data-esc-ajax-form="json" method="post" class="align-center is-fullwidth">
+            {{ form|raw }}
+        </form>
+    </div>
+</div>

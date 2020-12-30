@@ -1,0 +1,107 @@
+<div class="container pt-m">
+
+    {% include "account/blocks/breadcrumbs.twig" %}
+
+    <div class="flex pt-l is-wrapping">
+        <div class="column is-3 is-fullwidth-mobile">
+
+            {% include "account/blocks/side-nav.twig" %}
+
+        </div>
+        <div class="column is-9 is-fullwidth-mobile">
+            <div class="column is-12">
+                {% if organization_user.organization_user_status_id == 1 %}
+                    <div class="sheet is-info p-m ">
+                        Note: This user has not yet accepted their invitation.
+                    </div>
+                {% endif %}
+
+                <div class="sheet">
+                    <div class="sheet-title">
+                        <h2 class="title is-2">Edit Member: {{ organization_user.display_name }}</h2>
+                        <p class="admin-desc">
+                            Edit member settings.
+                        </p>
+                    </div>
+                    <div class="sheet-content p-l">
+                        <form action="{{ path }}" method="post" data-esc-ajax-form="json">
+                            {{ form|raw }}
+                        </form>
+                    </div>
+                </div>
+
+                {% if active_organization.permissions.has('organization.permissions', 'u') %}
+                    <div class="sheet">
+                        <div class="sheet-title">
+                            <h2 class="title is-2">Permissions</h2>
+                            <p class="admin-desc">
+                                These are the permissions this member has.
+                            </p>
+                        </div>
+                        <div class="sheet-content p-l">
+                            <table class="table pl-0">
+                                <thead>
+                                <tr>
+                                    <th class="pl-0" style="width: 30%;">Permission</th>
+                                    <th>None</th>
+                                    <th>View</th>
+                                    <th>Edit</th>
+                                    <th>Administer</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for right in active_organization.organization_rights %}
+                                    {% set base_right = right.organization_base_right %}
+                                    {% set canUse = active_organization.permissions.roleHas(base_right.name, 'u', organization_user.organization_role_id) %}
+                                    {% set canModerate = active_organization.permissions.roleHas(base_right.name, 'm', organization_user.organization_role_id) %}
+                                    {% set canAdminister = active_organization.permissions.roleHas(base_right.name, 'a', organization_user.organization_role_id) %}
+
+                                    <tr>
+                                        <td class="pl-0">
+                                            <a href="{{ right.edit_url }}" data-esc-tooltip="{{ base_right.description }}" data-esc-tracking-service="mixpanel" data-esc-tracking="clicked" data-esc-tracking-content-type="text-link" data-esc-tracking-context="edit-member-rights" data-esc-tracking-element="{{ right.name }}">
+                                                {{ right.display_name }}
+                                            </a>
+                                        </td>
+                                        <td>
+                                            {%  if not canUse and not canModerate and not canAdminister %}
+                                                {{ 1|bool|raw }}
+                                            {%  else  %}
+                                                {{ 0|bool|raw }}
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            {%  if canUse and not canModerate and not canAdminister %}
+                                                {{ 1|bool|raw }}
+                                            {% else  %}
+                                                {{ 0|bool|raw }}
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            {% if canUse and canModerate and not canAdminister %}
+                                                {{ 1|bool|raw }}
+                                            {% else  %}
+                                                {{ 0|bool|raw }}
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            {% if canUse and canModerate and canAdminister %}
+                                                {{ 1|bool|raw }}
+                                            {% else  %}
+                                                {{ 0|bool|raw }}
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                {% endif %}
+
+
+            </div>
+        </div>
+    </div>
+</div>
+

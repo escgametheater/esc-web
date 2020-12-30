@@ -1,0 +1,8 @@
+.idea
+node_modules/
+webroot/static/build
+webroot/static/.sass-cache/
+vendor
+core/domain/conf/prod-settings.php
+.DS_Store
+apps/www/webroot/static/.sass-cache/

@@ -1,0 +1,29 @@
+<div class="flex is-wrapping">
+    <div class="column is-12 p-0">
+        {{ form.display_name()|raw }}
+    </div>
+
+    <div class="column is-3 p-0 mr-xs">
+        {{ form.start_date()|raw }}
+    </div>
+    <div class="column is-2 p-0 mr-xs">
+        {{ form.start_time()|raw }}
+    </div>
+    <div class="column is-1 is-valigned align-center p-0">
+        <span style="color: #232323;">to</span>
+    </div>
+    <div class="column is-2 p-0 mr-xs">
+        {{ form.end_time()|raw }}
+    </div>
+    <div class="column is-3 p-0">
+        {{ form.time_zone()|raw }}
+    </div>
+
+
+    <div class="column is-12 p-0">
+        {{ form.host_id()|raw }}
+    </div>
+    <div class="column is-12 p-0">
+        <button type="submit" class="button is-primary" data-esc-tracking-service="mixpanel" data-esc-tracking="clicked" data-esc-tracking-content-type="cta-button" data-esc-tracking-context="modal-create-activation-group" data-esc-tracking-element="submit">Create</button>
+    </div>
+</div>

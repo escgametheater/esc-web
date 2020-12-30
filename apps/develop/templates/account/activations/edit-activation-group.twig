@@ -1,0 +1,20 @@
+<div class="container pt-m">
+
+    {% include "account/blocks/breadcrumbs.twig" %}
+
+    <div class="flex pt-l is-wrapping">
+        <div class="column is-3 is-fullwidth-mobile">
+
+            {% include "account/blocks/side-nav.twig" %}
+
+        </div>
+        <div class="column is-9 is-fullwidth-mobile">
+
+            <form method="post" action="{{ path }}" data-esc-ajax-form="json" data-esc-form-autosave data-esc-form-success-method="remain">
+                {{ form|raw }}
+            </form>
+
+        </div>
+    </div>
+</div>
+

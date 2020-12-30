@@ -1,0 +1,11 @@
+{% if field.verbose_name %}
+  <label for="id_{{ field.name }}"
+    {% if field.label_style %}style="{{ field.label_style }}"{% endif %}>
+      {{ field.verbose_name }}
+  </label>
+{% endif %}
+<textarea id="id_{{ field.name }}" name="{{ field.name }}" placeholder="Write something..." class="textarea {% if class_names %}{{ class_names }}{% endif %}"
+{% if field.style %} style="{{ style }}" {% endif %} >{{ data[field.name] }}</textarea>
+{% if field.help_text %}
+    <p class="helptext">{{ field.help_text }}</p>
+{% endif %}

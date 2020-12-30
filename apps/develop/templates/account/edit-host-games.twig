@@ -1,0 +1,12 @@
+<div class="sheet mb-0 p-l">
+    <form action="{{ path }}?modal=change-game" method="post" data-esc-ajax-form="json">
+        <div class="flex is-wrapping">
+            <div class="column is-12">
+                {{ form.game_id()|raw }}
+            </div>
+            <div class="column is-12">
+                <button class="button is-primary">Save Settings</button>
+            </div>
+        </div>
+    </form>
+</div>

@@ -1,0 +1,61 @@
+<div class="column is-12">
+    <div class="sheet">
+        <div class="sheet-title">
+            <h3 class="title is-2 is-bold">{% t "VTT Interface" %}</h3>
+            <p class="admin-desc">
+                View all VTT Interface hooks available in this build.
+            </p>
+        </div>
+        <div class="sheet-content p-l">
+            <p class="admin-desc is-fullwidth">
+                {#{{ vtt_interface|dump|raw }}#}
+            </p>
+            <table class="table">
+                <thead>
+                <tr>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                {% set vttMethods = [] %}
+                {% for vtt_method in vtt_interface %}
+                    {% if vtt_method.MethodInfo.Name not in vttMethods %}
+                        {% set vttMethods = vttMethods|merge([ vtt_method.MethodInfo.Name]) %}
+                        <tr>
+                            <td class="pt-l pb-l">
+                                <div class="">
+                                    Method: <strong>{{ vtt_method.MethodInfo.Name }}</strong>
+                                    (
+                                        {% for vtt_param in vtt_method.ParametersInfo %}
+                                            {{ vtt_param.ParameterType|explode|explode('.', 1)|csharp_types }}
+                                            <strong>{{ vtt_param.Name }}</strong>
+                                            {% if not loop.last %},{% endif %}
+                                        {% endfor %}
+                                    )
+                                </div>
+                                <div>
+                                    <br/>
+                                </div>
+                                <div>
+                                    {% set jsonValue = vtt_method|vtt_example|json_decode(true) %}
+                                    {% if jsonValue.parameters %}
+                                        <strong>Param Example</strong>
+                                        <pre>
+                                            {{ jsonValue.parameters|dump }}
+                                        </pre>
+                                    {% else %}
+                                        No Params: {}
+                                    {% endif %}
+
+
+                                    {#{{ vtt_method|vtt_example|raw }}#}
+                                </div>
+                            </td>
+                        </tr>
+                    {% endif %}
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,67 @@
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="{% if thisLang %}{{ thisLang }}{% else %}en{% endif %}" lang="{% if thisLang %}{{ thisLang }}{% else %}en{% endif %}">
+
+{# Global Header Content - Meta + SEO + CSS + JS #}
+<head>
+    {# Page Meta Content - Title, Description, OpenGraph, #}
+    {# Page Content Meta #}
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <meta http-equiv="content-style-type" content="text/css; charset=UTF-8" />
+    <meta http-equiv="content-script-type" content="text/javascript; charset=UTF-8" />
+
+    <meta http-equiv="content-language" content="{{ thisLang }}"/>
+    <meta name="language" content="{% if thisLang %}{{ thisLang }}{% else %}en{% endif %}"/>
+
+    {# Mobile specific stuff #}
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <link rel="apple-touch-icon" href="{{ static_url }}images/beta/homescreen.png">
+
+    <link rel="canonical" href="{{ page_canonical }}"/>
+    {% if page_description %}
+        <meta name="description" content="{{ page_description|raw }}" />
+        <meta property="og:description" content="{{ page_description|raw }}"/>
+        <meta name="twitter:description" content="{{ page_description|raw }}" />
+    {% endif %}
+
+
+    {# OpenGraph - Image, FbAppId, Type, Site, Twitter, Language #}
+    {% if config.mixpanel.client_id %}
+        <script type="text/javascript" src="{{ www_url }}{{ static_url }}js/domain/handlers/mixpanel.js?{{ jsVersion }}" defer></script>
+    {% endif %}
+
+    <script src="{{ www_url }}{{ static_url }}js/domain/handlers/tracking.js?version={{ jsVersion }}" defer></script>
+
+    {# Fav Icon #}
+    <link rel="shortcut icon" href="{{ www_url }}{{ static_url }}images/favicon.ico" />
+
+
+    <link rel="manifest" href="{{ www_url }}/static/pwa/customizer/static/asset-manifest.json?version={{ md5_js }}">
+
+    <link href="{{ www_url }}/static/pwa/customizer/static/css/vendors~main.chunk.css?version={{ md5_css }}" rel="stylesheet">
+    <link href="{{ www_url }}/static/pwa/customizer/static/css/main.chunk.css?version={{ md5_css }}" rel="stylesheet">
+    <title>Customize Mod</title>
+</head>
+
+<body class="sct-{{ section }}">
+
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+
+    <div id="root"></div>
+
+    {#{% for field in form.getFields() %}#}
+        {#{{ field.render(form)|raw }}#}
+    {#{% endfor %}#}
+
+    {# Global Footer Javascript (Tracking, Model Data, User + Session Notifications #}
+{% include "bone/js-footer.twig" %}
+
+    <script src="{{ www_url }}/static/pwa/customizer/static/js/runtime~main.js?version={{ md5_js }}"></script>
+    <script src="{{ www_url }}/static/pwa/customizer/static/js/vendors~main.chunk.js?version={{ md5_js }}"></script>
+    <script src="{{ www_url }}/static/pwa/customizer/static/js/main.chunk.js?version={{ md5_js }}"></script>
+
+</body>
+
+</html>

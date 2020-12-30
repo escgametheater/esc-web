@@ -1,0 +1,9 @@
+<form action="/teams/{{ active_organization.slug }}/manage-games" method="get" style="display: inline;" data-esc-form-get-select="auto">
+    <span class="select">
+        <select name="organization_id">
+            {% for organization in organizations %}
+                <option value="{{ organization.getPk() }}" {% if active_organization.organization_id == organization.organization_id %}selected{% endif %}>{{ organization.display_name }}</option>
+            {% endfor %}
+        </select>
+    </span>
+</form>

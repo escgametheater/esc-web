@@ -1,0 +1,44 @@
+<p><strong>Total get queries: {{ cache_get_queries|count }}</strong></p>
+<p><strong>Total set queries: {{ cache_set_queries|count }}</strong></p>
+<table id="get_queries" width="880" cellspacing="0" cellpadding="0">
+	<tr>
+		<th style="width: 25px;">Time</th>
+		<th style="padding-left: 10px;">Key</th>
+		<th style="padding-left: 10px;">Timeout</th>
+		<th style="padding-left: 10px;">Time Left</th>
+		<th style="padding-left: 10px;">Is Set</th>
+		<th style="padding-left: 10px;">Needs Set</th>
+		<th style="padding-left: 10px;">Has Lock</th>
+		<th style="padding-left: 10px;">Should Set</th>
+	</tr>
+	{% for query in cache_get_queries %}
+		<tr class="qrow">
+			<td style="{% if query[0] >= 20 %}color: red; {% endif %}{% if query[0] >= 7 and query[0] <= 20 %}color: orange; {% endif %}{% if query[0] <= 7 %}color: green; {% endif %}font-weight: bold;">{{ query[0] }}</td>
+			<td style="padding-left: 10px; padding-top: 3px; padding-bottom: 3px;">{{ query[1] }}</td>
+			<td style="padding-left: 10px; padding-top: 3px; padding-bottom: 3px;">{{ query[2]|short_duration }}</td>
+			<td style="padding-left: 10px; padding-top: 3px; padding-bottom: 3px;">{{ query[3]|short_duration }}</td>
+			<td style="padding-left: 10px; padding-top: 3px; padding-bottom: 3px;">{{ query[4]|bool|raw }}</td>
+			<td style="padding-left: 10px; padding-top: 3px; padding-bottom: 3px;">{{ query[5]|bool|raw }}</td>
+			<td style="padding-left: 10px; padding-top: 3px; padding-bottom: 3px;">{{ query[6]|bool|raw }}</td>
+			<td style="padding-left: 10px; padding-top: 3px; padding-bottom: 3px;">{{ query[7]|bool|raw }}</td>
+		</tr>
+	{% endfor %}
+</table>
+{% if count(cache_set_queries) > 0 %}
+<hr />
+<h4>Cache SET</h4>
+<table id="set_queries" width="880" cellspacing="0" cellpadding="0">
+	<tr>
+		<th style="width: 25px;">Time</th>
+		<th style="padding-left: 10px;">Key</th>
+		<th style="padding-left: 10px;">Timeout</th>
+	</tr>
+    {% for query in cache_set_queries %}
+		<tr class="qrow">
+			<td style="{% if query[0] >= 20 %}color: red; {% endif %}{% if query[0] >= 7 and query[0] <= 20 %}color: orange; {% endif %}{% if query[0] <= 7 %}color: green; {% endif %}font-weight: bold;">{{ query[0] }}</td>
+			<td style="padding-left: 10px; padding-top: 3px; padding-bottom: 3px;">{{ query[1] }}</td>
+			<td style="padding-left: 10px; padding-top: 3px; padding-bottom: 3px;">{{ query[2]|short_duration }}</td>
+		</tr>
+	{% endfor %}
+</table>
+{% endif %}

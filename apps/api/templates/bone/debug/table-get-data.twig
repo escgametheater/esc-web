@@ -1,0 +1,8 @@
+<table class="listing">
+    {% include "bone/debug/shared-table-row-array-header.twig" %}
+    <tbody>
+        {% for value in getdata %}
+            {% include "bone/debug/shared-table-row-array-content.twig" %}
+        {% endfor %}
+    </tbody>
+</table>

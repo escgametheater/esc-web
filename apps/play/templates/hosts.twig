@@ -1,0 +1,83 @@
+<div class="section">
+    <div class="container-fluid pt-m">
+        <div class="flex">
+            <div class="column is-12">
+                <h1 class="title is-1">
+                    Recent Host Instances
+                </h1>
+                {% for host_instance in host_instances %}
+                    <div style="padding: 25px; display: block; border: 1px dashed #111; margin: 5px;">
+                        <table class="table" style="width: 100%; text-align: left;" cellpadding="0" cellspacing="0">
+                            <thead style="background-color: #ececec;">
+                                <th>Host Instance ID</th>
+                                <th>Host</th>
+                                <th>Network</th>
+                                <th>Started</th>
+                                <th>Stopped</th>
+                                <th>Last Ping Time</th>
+                                <th>Game Instances</th>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td style="vertical-align: top;">
+                                    {{ host_instance.host_instance_id }}
+                                </td>
+                                <td style="vertical-align: top;">
+                                    {% if not host_instance.local_end_time %}
+                                        <a href="/i/{{ host_instance.host_instance_id }}/">{{ host_instance.host.display_name }}</a>
+                                    {% else %}
+                                        {{ host_instance.host.display_name }}
+                                    {% endif %}
+                                </td>
+                                <td style="vertical-align: top;">
+                                    SSID: {{ host_instance.network.ssid }}
+                                    {% if host_instance.network.password %}
+                                        <br/>Password: {{ host_instance.network.password }}
+                                    {% endif %}
+                                </td>
+                                <td style="vertical-align: top;">{{ host_instance.local_start_time }}</td>
+                                <td style="vertical-align: top;">{{ host_instance.local_end_time }}</td>
+                                <td style="vertical-align: top;">{{ host_instance.local_last_ping_time }}</td>
+                                <td style="vertical-align: top;">
+                                    <table style="width: 100%; text-align: left; background-color: lightyellow;">
+                                        <thead>
+                                        <th>Game</th>
+                                        <th>Started</th>
+                                        <th>Ended</th>
+                                        </thead>
+                                        <tbody>
+                                        {% for game_instance in host_instance.game_instances %}
+                                            <tr>
+                                                <td style="vertical-align: top;">
+                                                    {% if not game_instance.local_end_time %}
+                                                        <a href="{{ game_instance.url }}">{{ game_instance.game.display_name }} v{{ game_instance.game_build.game_build_version }}</a>
+                                                    {% else %}
+                                                        {{ game_instance.game.display_name }} v{{ game_instance.game_build.game_build_version }}
+                                                    {% endif %}
+                                                </td>
+                                                <td style="vertical-align: top;">
+                                                    {{ game_instance.local_start_time }}
+                                                </td>
+                                                <td style="vertical-align: top;">
+                                                    {{ game_instance.local_end_time }}
+                                                </td>
+
+                                            </tr>
+
+                                        {% endfor %}
+
+                                        </tbody>
+                                    </table>
+
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+
+                            {#{{ host_instance.getJsonData()|dump }}#}
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>

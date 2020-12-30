@@ -1,0 +1,38 @@
+<div class="flex is-wrapping">
+
+    <div class="column is-12 pb-0">
+        {{ form.game_build_version()|raw }}
+    </div>
+    {% if form.has_field('is_aggregate_game') %}
+        <div class="column is-12">
+            {{ form.is_aggregate_game()|raw }}
+        </div>
+    {% endif %}
+
+    {% if form.has_field('game_build_id') %}
+        <div class="column is-12 pb-0 pt-0">
+            {{ form.game_build_id()|raw }}
+        </div>
+        <div class="column is-12 pt-s">
+            {{ form.inherit()|raw }}
+        </div>
+
+    {% endif %}
+
+    {% if form.has_field('use_old_controllers') %}
+        <div class="column is-12">
+            {{ form.use_old_controller()|raw }}
+        </div>
+    {% endif %}
+    {% if form.has_field('game_build_archive') %}
+        <div class="column is-12 pt-m">
+            {{ form.game_build_archive()|raw }}
+        </div>
+    {% endif %}
+
+    <div class="column is-12">
+        {% include "blocks/forms/ajax-form-progressbar.twig" %}
+    </div>
+    <button type="submit" class="button is-primary" data-esc-tracking-service="mixpanel" data-esc-tracking="clicked" data-esc-tracking-content-type="cta-button" data-esc-tracking-context="modal-upload-game-build" data-esc-tracking-element="submit">{% t "Upload" %}</button>
+    <a href="javascript:parent.$.fancybox.close();" class="button is-white ml-s mr-s" data-esc-tracking-service="mixpanel" data-esc-tracking="clicked" data-esc-tracking-content-type="cta-button" data-esc-tracking-context="modal-upload-game-build" data-esc-tracking-element="cancel">{% t "Cancel" %}</a>
+</div>

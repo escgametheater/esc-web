@@ -1,0 +1,148 @@
+
+<div class="container pt-m">
+
+    {% include "account/games/manage-game/breadcrumbs.twig" %}
+
+    <div class="flex is-wrapping pt-l">
+
+        <div class="column is-3 is-fullwidth-mobile">
+            {% include "account/games/manage-game/side-nav.twig" %}
+        </div>
+
+        <div class="column is-9 is-fullwidth-mobile">
+
+            {% include 'account/games/manage-game/blocks/game-build-notice.twig' %}
+
+            {% set controller_count = count(game_build.game_controllers) %}
+            {% set custom_asset_count = count(custom_game_assets) %}
+            {% set custom_data_count = count(game_data) %}
+            {% set files_count = count(game_build.game_assets) %}
+
+            {% set active_build_tab = get.active_build_tab %}
+
+            {# Details #}
+            <div class="column is-12 pl-0 pr-0">
+
+                <div class="sheet">
+                    <div class="sheet-title">
+                        <h3 class="title is-2 is-bold">{% t "Build" %} v{{ game_build.game_build_version }}-{{ game_build.update_channel }}</h3>
+                        <p class="admin-desc">
+                            Manage and view build specific settings and details.
+                        </p>
+                    </div>
+
+                    <div class="sheet-content p-l">
+                        <form method="post" action="{{ path }}" data-esc-ajax-form="json" data-esc-form-success-method="remain">
+                            {{ form|raw }}
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <nav class="tabs__navigation group">
+                <a class="tabs__link {% if active_build_tab == 'controllers' or active_build_tab == '' %}tabs__link--active{% endif %}" href="#controllers">{% t "Controllers" %} ({{ controller_count }})</a>
+                {% if not game.is_type_offline_game() %}
+                    <a class="tabs__link {% if active_build_tab == 'build-files' %}tabs__link--active{% endif %}" href="#build-files">{% t "Build Files" %} ({{ files_count }})</a>
+                {% endif %}
+                <a class="tabs__link {% if active_build_tab == 'custom-assets' %}tabs__link--active{% endif %}" href="#custom-assets">{% t "Custom Assets" %} ({{ custom_asset_count }})</a>
+                <a class="tabs__link {% if active_build_tab == 'custom-data' %}tabs__link--active{% endif %}" href="#custom-data">{% t "Custom Data" %} ({{ custom_data_count }})</a>
+                {% if not game.is_type_offline_game() %}
+                    <a class="tabs__link {% if active_build_tab == 'vtt-interface' %}tabs__link--active{% endif %}" href="#vtt-interface">{% t "VTT Interface" %} ({{ count(vtt_interface) }})</a>
+                {% endif %}
+
+                {% if game_data_definition.has_data() %}
+                    <a class="tabs__link {% if active_build_tab == 'gamedata-json' %}tabs__link--active{% endif %}" href="#gamedata-json">{% t "Definitions" %}</a>
+                {% endif %}
+            </nav>
+
+            {# Controllers #}
+            <div class="tabs__section" id="controllers">
+                {% include "account/games/manage-game/manage-build/blocks/game-controllers.twig" %}
+            </div>
+
+            {% if not game.is_type_offline_game() %}
+                {# Details #}
+                <div class="tabs__section" id="build-files">
+                    {% include "account/games/manage-game/manage-build/blocks/game-build-files.twig" %}
+                </div>
+            {% endif %}
+
+            {# Custom Assets #}
+            <div class="tabs__section" id="custom-assets">
+                {% include "account/games/manage-game/manage-build/blocks/game-custom-assets.twig" %}
+            </div>
+
+            {# Custom Data #}
+            <div class="tabs__section" id="custom-data">
+                {% include "account/games/manage-game/manage-build/blocks/game-custom-data.twig" %}
+            </div>
+
+            {% if not game.is_type_offline_game() %}
+                {# VTT Interface #}
+                <div class="tabs__section" id="vtt-interface">
+                    {% include "account/games/manage-game/manage-build/blocks/game-vtt-interface.twig" %}
+                </div>
+            {% endif %}
+
+
+            {% if game_data_definition.has_data() %}
+                <div class="tabs__section" id="gamedata-json">
+
+                    <div class="column is-12">
+                        <div class="sheet">
+                            <div class="sheet-title">
+                                <h3 class="title is-2 is-bold">{% t "Game Definitions" %}</h3>
+                                <p class="admin-desc">
+                                    View the various game setting and customization definitions directly.
+                                </p>
+                            </div>
+
+                            <div class="sheet-content p-l">
+                                <div class="flex is-wrapping">
+                                    {% set definitionSheets = game_data_definition.dataDefinitions.gameDefinitions.sheets %}
+                                    {% set phases = game_data_definition.dataDefinitions.phases %}
+
+                                    {% for sheet in definitionSheets %}
+                                        <div class="column is-12"><h3 class="title is-3 is-bold pt-l">{{ sheet.name }}</h3></div>
+                                        <div class="column is-12 bb-1-grey-7">
+                                            {% if sheet.columns %}
+                                                <table class="table">
+                                                    <thead>
+                                                        <th>Field</th>
+                                                        <th>Options</th>
+                                                    </thead>
+                                                    <tbody>
+                                                    {% for colName, column in sheet.columns %}
+                                                        <tr>
+                                                            <td>
+                                                                <strong>{{ colName }}</strong><br/>
+                                                                Type: {{ column.type }}<br/>
+                                                                ModGroup: {{ column.modGroup }}<br/>
+                                                            </td>
+                                                            <td>
+                                                                {% for typeKey, typeDetail in column.typeDetails %}
+                                                                    {{ typeKey }}: {{ typeDetail }}<br/>
+                                                                {% endfor %}
+                                                            </td>
+                                                        </tr>
+                                                    {% endfor %}
+
+                                                    </tbody>
+                                                </table>
+                                            {% endif %}
+                                        </div>
+                                    {% endfor %}
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+
+
+        </div>
+    </div>
+</div>
+
+

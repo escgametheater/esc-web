@@ -1,0 +1,11 @@
+<div class="ajax-modal-container align-left">
+    <div class="sheet p-m" style="margin-bottom: 0;">
+        <h3 class="title is-3 mb-l">
+            Add Activation
+        </h3>
+        <form method="post" enctype="multipart/form-data" action="{{ path }}?type={{ get.type }}" data-esc-ajax-form="json" >
+            {{ form|raw }}
+            <button class="button is-primary" data-esc-tracking-service="mixpanel" data-esc-tracking="clicked" data-esc-tracking-content-type="cta-button" data-esc-tracking-context="modal-create-activation" data-esc-tracking-element="submit">Add Activation</button>
+        </form>
+    </div>
+</div>

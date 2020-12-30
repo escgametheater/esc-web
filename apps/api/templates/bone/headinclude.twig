@@ -1,0 +1,162 @@
+{# Page Meta Content - Title, Description, OpenGraph, #}
+{# Page Content Meta #}
+<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+<meta http-equiv="content-style-type" content="text/css; charset=UTF-8" />
+<meta http-equiv="content-script-type" content="text/javascript; charset=UTF-8" />
+
+<meta http-equiv="content-language" content="{{ thisLang }}"/>
+<meta name="language" content="{% if thisLang %}{{ thisLang }}{% else %}en{% endif %}"/>
+
+{# Mobile specific stuff #}
+<meta name="viewport" content="{% if page_viewport %}{{ page_viewport }}{% else %}width=device-width, minimal-ui, initial-scale = 1.0,maximum-scale = 1.0, user-scalable=no{% endif %}" />
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+{% if page_twitter_card %}
+    <meta name="twitter:card" content="{{ page_twitter_card }}">
+{% else %}
+    <meta name="twitter:card" content="summary">
+{% endif %}
+
+{# SEO - Title/Description/Language/Canonical #}
+
+<title>{{ title|raw }}</title>
+<meta name="twitter:title" content="{{ title|raw }}" />
+<meta property="og:title" content="{{ title|raw }}" />
+<meta name="twitter:title" content="{{ title|raw }}" />
+
+<link rel="canonical" href="{{ page_canonical }}"/>
+{% if page_canonical %}
+    <meta property="og:url" content="{{ page_canonical }}"/>
+{% endif %}
+{% if page_description %}
+    <meta name="description" content="{{ page_description|raw }}" />
+    <meta property="og:description" content="{{ page_description|raw }}"/>
+    <meta name="twitter:description" content="{{ page_description|raw }}" />
+{% endif %}
+
+
+{# OpenGraph - Image, FbAppId, Type, Site, Twitter, Language #}
+{% if page_image %}
+    <meta property="og:image" content="{{ page_image }}" />
+    {% if page_image_width %}
+        <meta property="og:image:width" content="{{ page_image_width }}" />
+    {% endif %}
+    {% if page_image_height %}
+        <meta property="og:image:height" content="{{ page_image_height }}" />
+    {% endif %}
+    <meta name="twitter:image" content="{{ page_image }}" />
+{% endif %}
+{% if page_fbapp_id %}<meta property="fb:app_id" content="{{ page_fbapp_id }}"/>{% endif %}
+
+<meta property="og:type" content="{% if page_type %}{{ page_type }}{% else %}website{% endif %}"/>
+<meta property="og:site_name" content="{{ website_name }}" />
+<meta name="twitter:site" content="{{ twitter_username }}"/>
+<meta name="twitter:creator" content="{{ twitter_username }}"/>
+
+
+{# Meta Information #}
+{% if page_copyright %}<meta name="copyright" content="{{ page_copyright }}"/>{% endif %}
+{% if page_create_date %}<meta name="date" content="{{ page_create_date }}" />{% endif %}
+
+{# Fav Icon #}
+<!--// link rel="shortcut icon" href="{{ static_url }}images/favicon.ico" / //-->
+
+
+{#<link rel="apple-touch-icon" sizes="57x57" href="{{ images_url }}favicon-esc/apple-icon-57x57.png">#}
+{#<link rel="apple-touch-icon" sizes="60x60" href="{{ images_url }}favicon-esc/apple-icon-60x60.png">#}
+{#<link rel="apple-touch-icon" sizes="72x72" href="{{ images_url }}favicon-esc/apple-icon-72x72.png">#}
+{#<link rel="apple-touch-icon" sizes="76x76" href="{{ images_url }}favicon-esc/apple-icon-76x76.png">#}
+{#<link rel="apple-touch-icon" sizes="114x114" href="{{ images_url }}favicon-esc/apple-icon-114x114.png">#}
+{#<link rel="apple-touch-icon" sizes="120x120" href="{{ images_url }}favicon-esc/apple-icon-120x120.png">#}
+{#<link rel="apple-touch-icon" sizes="144x144" href="{{ images_url }}favicon-esc/apple-icon-144x144.png">#}
+{#<link rel="apple-touch-icon" sizes="152x152" href="{{ images_url }}favicon-esc/apple-icon-152x152.png">#}
+{#<link rel="apple-touch-icon" sizes="180x180" href="{{ images_url }}favicon-esc/apple-icon-180x180.png">#}
+{#<link rel="icon" type="image/png" sizes="192x192"  href="{{ images_url }}favicon-esc/android-icon-192x192.png">#}
+{#<link rel="icon" type="image/png" sizes="32x32" href="{{ images_url }}favicon-esc/favicon-32x32.png">#}
+{#<link rel="icon" type="image/png" sizes="96x96" href="{{ images_url }}favicon-esc/favicon-96x96.png">#}
+{#<link rel="icon" type="image/png" sizes="16x16" href="{{ images_url }}favicon-esc/favicon-16x16.png">#}
+{#<link rel="manifest" href="{{ images_url }}favicon-esc/manifest.json">#}
+{#<meta name="msapplication-TileColor" content="#ffffff">#}
+{#<meta name="msapplication-TileImage" content="{{ images_url }}favicon-esc/ms-icon-144x144.png">#}
+{#<meta name="theme-color" content="#ffffff">#}
+
+
+<link rel="apple-touch-icon-precomposed" sizes="57x57" href="{{ images_url }}favicon/apple-touch-icon-57x57.png" />
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="{{ images_url }}favicon/apple-touch-icon-114x114.png" />
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="{{ images_url }}favicon/apple-touch-icon-72x72.png" />
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="{{ images_url }}favicon/apple-touch-icon-144x144.png" />
+<link rel="apple-touch-icon-precomposed" sizes="60x60" href="{{ images_url }}favicon/apple-touch-icon-60x60.png" />
+<link rel="apple-touch-icon-precomposed" sizes="120x120" href="{{ images_url }}favicon/apple-touch-icon-120x120.png" />
+<link rel="apple-touch-icon-precomposed" sizes="76x76" href="{{ images_url }}favicon/apple-touch-icon-76x76.png" />
+<link rel="apple-touch-icon-precomposed" sizes="152x152" href="{{ images_url }}favicon/apple-touch-icon-152x152.png" />
+<link rel="icon" type="image/png" href="{{ images_url }}favicon/favicon-196x196.png" sizes="196x196" />
+<link rel="icon" type="image/png" href="{{ images_url }}favicon/favicon-96x96.png" sizes="96x96" />
+<link rel="icon" type="image/png" href="{{ images_url }}favicon/favicon-32x32.png" sizes="32x32" />
+<link rel="icon" type="image/png" href="{{ images_url }}favicon/favicon-16x16.png" sizes="16x16" />
+<link rel="icon" type="image/png" href="{{ images_url }}favicon/favicon-128.png" sizes="128x128" />
+<meta name="application-name" content="&nbsp;"/>
+<meta name="msapplication-TileColor" content="#FFFFFF" />
+<meta name="msapplication-TileImage" content="{{ images_url }}favicon/mstile-144x144.png" />
+<meta name="msapplication-square70x70logo" content="{{ images_url }}favicon/mstile-70x70.png" />
+<meta name="msapplication-square150x150logo" content="{{ images_url }}favicon/mstile-150x150.png" />
+<meta name="msapplication-wide310x150logo" content="{{ images_url }}favicon/mstile-310x150.png" />
+<meta name="msapplication-square310x310logo" content="{{ images_url }}favicon/mstile-310x310.png" />
+
+
+
+{# All CSS Definitions #}
+
+<link rel="stylesheet" href="{{ static_url }}css/normalize.css" media="screen" />
+<link rel="stylesheet" href="{{ static_url }}css/blocks/fancybox.css?v=2.1.5" media="screen" />
+{#<link rel="stylesheet" href="{{ static_url }}css/bootstrap.min.css?v=4.1.1" media="screen" />#}
+<link rel="stylesheet" href="{{ static_url }}css/esc.css?v=12" media="screen" />
+{#<link rel="stylesheet" href="{{ static_url }}css/debugbar.css?v=1" media="screen" />#}
+<link rel="stylesheet" href="{{ static_url }}css/style.css?tag=1" media="screen" />
+
+{# Only when in debugmode let's load the css for it #}
+{% if debug %}
+    <link href="{{ static_url }}css/debugbar.css" rel="stylesheet" type="text/css" />
+{% endif %}
+
+{% set jsVersion = 2 %}
+
+{# All Javascript Definitions #}
+
+<!-- jQuery Plugins -->
+<script src="{{ static_url }}js/jquery-1.11.1.min.js" ></script>
+<script src="{{ static_url }}js/jquery.cookie-1.4.1.js" defer></script>
+<script src="{{ static_url }}js/jquery.fancybox-2.1.5.js" ></script>
+<script src="{{ static_url }}js/sha256.js" defer></script>
+<script src="{{ static_url }}js/jquery.noty.packaged.min.js" defer></script>
+
+<!-- JS Model -->
+<script src="{{ static_url }}js/domain/classes/model.js?{{ jsVersion }}" defer></script>
+<script src="{{ static_url }}js/domain/classes/user.js?{{ jsVersion }}" defer></script>
+
+<!-- New JavaScript Framework Settings -->
+<script src="{{ static_url }}js/domain/settings/noty.js?{{ jsVersion }}" defer></script>
+<script src="{{ static_url }}js/domain/settings/croppie.js?{{ jsVersion }}" defer></script>
+
+<script src="{{ static_url }}js/domain/utils/framework.js?{{ jsVersion }}" defer></script>
+
+<!-- Deferred Navigation Content Loaders -->
+<script src="{{ static_url }}js/domain/loaders/deferred-content.js?{{ jsVersion }}" defer></script>
+
+<!-- New JavaScript Framework Handlers -->
+
+<script src="{{ static_url }}js/domain/handlers/clicks.js?{{ jsVersion }}" defer></script>
+<script src="{{ static_url }}js/domain/handlers/modals.js?{{ jsVersion }}" defer></script>
+<script src="{{ static_url }}js/domain/handlers/hovers.js?{{ jsVersion }}" defer></script>
+<script src="{{ static_url }}js/domain/handlers/forms.js?{{ jsVersion }}" defer></script>
+<script src="{{ static_url }}js/domain/handlers/pages.js?{{ jsVersion }}" defer></script>
+<script src="{{ static_url }}js/domain/handlers/debug.js?{{ jsVersion }}" defer></script>
+<script src="{{ static_url }}js/domain/handlers/tracking.js?{{ jsVersion }}" defer></script>
+<script src="{{ static_url }}js/domain/handlers/graphs.js?{{ jsVersion }}" defer></script>
+
+<!-- New Javascript Bindings -->
+<script src="{{ static_url }}js/domain/core.js?{{ jsVersion }}" defer></script>
+<script src="{{ static_url }}js/domain/bi.js?{{ jsVersion }}" defer></script>
+
+{% if use_sortable %}
+    <script src="{{ static_url }}js/sortable.min.js" defer></script>
+{% endif %}

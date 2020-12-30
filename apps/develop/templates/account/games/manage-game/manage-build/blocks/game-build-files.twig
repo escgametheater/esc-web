@@ -1,0 +1,48 @@
+<div class="column is-12">
+    <div class="sheet">
+        <div class="sheet-title">
+            <h3 class="title is-2 is-bold">{% t "Game Build Assets" %}</h3>
+            <p class="admin-desc">
+                View all applicable game build assets
+            </p>
+        </div>
+        <div class="sheet-content p-l">
+            <div class="admin-inputs">
+                {% if game_build.game_assets %}
+                    <form action="{{ game.edit_url }}/{{ update_channel }}/batch-download-game-asset-files/?game_build_id={{ game_build.getPk() }}" method="post" target="_blank" data-esc-ajax-form="file" style="display: inline;" data-esc-tracking-service="mixpanel" data-esc-tracking="clicked" data-esc-tracking-content-type="cta-button" data-esc-tracking-context="edit-game-build" data-esc-tracking-element="download-game-build-zip">
+                        <button class="button is-grey ml-m">Download Game Build</button>
+                    </form>
+                {% endif %}
+            </div>
+            <p class="admin-desc is-fullwidth">
+                File count: {{ count(game_build.game_assets) }} |
+                Total Size: {{ game_build.getGameAssetsFileSize()|filesize }}
+            </p>
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>File Name</th>
+                    <th>Folder Path</th>
+                    <th>Extension</th>
+                    <th>Mime Type</th>
+                    <th>File Size</th>
+                    {#<th>MD5</th>#}
+                </tr>
+                </thead>
+                <tbody>
+                {% for game_asset in game_build.game_assets %}
+                    <tr>
+                        <td>{{ game_asset.filename }}</td>
+                        <td>{{ game_asset.folder_path }}</td>
+                        <td>{{ game_asset.extension }}</td>
+                        <td>{{ game_asset.mime_type }}</td>
+                        <td>{{ game_asset.file_size|filesize }}</td>
+                        {#<td>{{ game_asset.md5 }}</td>#}
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+</div>

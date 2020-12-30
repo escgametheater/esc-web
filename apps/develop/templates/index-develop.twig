@@ -1,0 +1,82 @@
+<div class="section is-paddingless mt-0 is-overflow-hidden">
+
+    <div class="bg-rings animated fadeInSubtle transition--smooth">
+        <div class="bg-ring_blue"><img src="{{ www_url }}/static/images/homepage/ring_blue.svg"/></div>
+        <div class="bg-ring_green"><img src="{{ www_url }}/static/images/homepage/ring_green.svg"/></div>
+        <div class="bg-ring_purple"><img src="{{ www_url }}/static/images/homepage/ring_purple.svg"/></div>
+        <div class="bg-ring_red"><img src="{{ www_url }}/static/images/homepage/ring_red_2.svg"/></div>
+    </div>
+
+
+    <div class="pt-xxl pb-xxl p-mobile-l">
+        <div class="container">
+            <div class="column is-12">
+                <h1 class="column is-7 is-fullwidth-mobile title is-mega is-extrabold is-white pl-0 animated fadeInUpSubtle transition--bezier">
+                    Build the next generation of interactive experiences.
+                </h1>
+                <p class="column color-grey-6 is-7 font-size-16 pb-xl pb-mobile-xl is-fullwidth-mobile pl-0 animated fadeInUpSubtle transition--bezier animation--delay-01">
+                    Our platform enables you to build, publish, and manage interactive gaming experiences that connect thousands of players with big screens.
+                </p>
+                <div class="animated fadeInUpSubtle transition--bezier animation--delay-02">
+                    {% if user.is_authenticated and user_organizations %}
+                        <a href="{{ develop_url }}/teams/{{ user_organizations[0].slug }}/" class="button is-primary is-large mr-s mb-mobile-l" data-esc-tracking-service="mixpanel" data-esc-tracking="clicked" data-esc-tracking-content-type="cta-button" data-esc-tracking-context="dev-header-team-dashboard">
+                            {% t "Team Dashboard" %}
+                        </a>
+                    {% else %}
+                        <a href="{{ www_url }}/customer-contact-form?type=developer" class="button is-primary is-large mr-s mb-mobile-l" data-esc-tracking-service="mixpanel" data-esc-tracking="clicked" data-esc-tracking-content-type="cta-button" data-esc-tracking-context="dev-header-request-access">
+                            {% t "Request Developer Access" %}
+                        </a>
+                    {% endif %}
+                    <a href="https://escgames.helpdocs.io/" target="_blank" class="button is-white is-large mb-mobile-l" data-esc-tracking-service="mixpanel" data-esc-tracking="clicked" data-esc-tracking-content-type="cta-button" data-esc-tracking-context="dev-header-docs">
+                        {% t "View Help Docs" %}
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="section is-paddingless is-overflow-hidden animated fadeInSubtle transition--bezier animation--delay-03">
+    <div class="wave-container is-fullwidth">
+        <div class="wave-animation"></div>
+    </div>
+</div>
+<div class="section is-paddingless bg-white mt-0 pt-xl pb-xxxl pb-mobile-xl animated fadeInSubtle transition--bezier p-mobile-m animation--delay-03">
+    <div class="container bg-white card-shadow--02 is-rounded animated fadeInSubtle transition--bezier">
+        <div class="border-top--marketing-gradient"></div>
+        <div class="flex is-wrapping is-gapless m-0 animated fadeInSubtle transition--bezier ">
+            <div class="flex is-4 is-fullwidth-mobile m-0 br-1-grey-8 br-hidden-mobile">
+                <div class="flex is-wrapping m-0 p-xl p-mobile-l width-100 height-100">
+                    <div class="is-flex flex-direction-column width-100 height-100">
+                        <h2 class="title color-grey-2 is-1 is-extrabold mb-m mt-mobile-xl mb-mobile-s">Docs</h2>
+                        <p class="font-size-16 color-grey-4 mb-xl mb-mobile-l is-flex-1">Read our SDK documentation and step-by-step guides for building games and controllers.</p>
+                        <a href="https://escgames.helpdocs.io/" target="_blank" class="button is-outlined-light is-bold is-large align-content-bottom" data-esc-tracking-service="mixpanel" data-esc-tracking="clicked" data-esc-tracking-content-type="cta-button" data-esc-tracking-context="dev-wayfinder-docs">
+                            Visit Docs Site
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="flex is-4 is-fullwidth-mobile m-0 br-1-grey-8 br-hidden-mobile">
+                <div class="flex is-wrapping m-0 p-xl p-mobile-l width-100 height-100">
+                    <div class="is-flex flex-direction-column width-100 height-100">
+                        <h2 class="title color-grey-2 is-1 is-extrabold mb-m mt-mobile-xl mb-mobile-s is-block">Resources</h2>
+                        <p class="font-size-16 color-grey-4 mb-xl mb-mobile-l is-flex-1">Download our Unity SDK and see code examples to get you building cool stuff in no time.</p>
+                        <a href="{{ www_url }}/sdk-installer/unity" target="_blank" class="button is-outlined-light is-bold is-large align-content-bottom" data-esc-tracking-service="mixpanel" data-esc-tracking="clicked" data-esc-tracking-content-type="cta-button" data-esc-tracking-context="dev-wayfinder-sdk">
+                            Download Unity SDK
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="flex is-4 is-fullwidth-mobile m-0 pb-mobile-xl">
+                <div class="flex is-wrapping m-0 p-xl p-mobile-l width-100 height-100">
+                    <div class="is-flex flex-direction-column width-100 height-100">
+                        <h2 class="title color-grey-2 is-1 is-extrabold mb-m mt-mobile-xl mb-mobile-s is-block">Community</h2>
+                        <p class="font-size-16 color-grey-4 mb-xl mb-mobile-l is-flex-1">Collaborate with our team and other awesome developers building things with ESC Games' platform.</p>
+                        <a href="https://discord.gg/5PQMf53" target="_blank" class="button is-outlined-light is-bold is-large align-content-bottom" data-esc-tracking-service="mixpanel" data-esc-tracking="clicked" data-esc-tracking-content-type="cta-button" data-esc-tracking-context="dev-wayfinder-discord">
+                            Join ESC on Discord
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

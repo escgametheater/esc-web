@@ -1,0 +1,7 @@
+.cropper img {
+	background: var(--cropper--backgroundColor);
+}
+
+.cropper img:not([src]) {
+	visibility: hidden;
+}

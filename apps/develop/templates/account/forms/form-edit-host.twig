@@ -1,0 +1,36 @@
+<div class="sheet-content p-l">
+    <div class="flex is-wrapping">
+        <div class="column is-12">
+            {{ form.display_name()|raw }}
+        </div>
+        <div class="column is-12">
+            {{ form.alternate_url()|raw }}
+        </div>
+
+        <div class="column is-12 pb-0">
+            <label>Default Cloud Experience</label>
+        </div>
+        <div class="column is-3 image is-rounded is-inline-block pt-0">
+            <img src="{{ host.game.avatar.small_url }}" alt="" />
+        </div>
+        <div class="column is-9 pt-0" style="position: relative;">
+            <p class="helptext pb-0 mb-0">Game</p>
+            <h2 class="title is-3 pb-m">{{ host.game.display_name }} <span style="font-size:10px;">or</span> <a href="{{ develop_url }}/teams/{{ active_organization.slug }}/hosts/{{ host.slug }}?modal=change-game" class="esc-link" style="font-size: 10px;" data-esc-fancybox="narrow">Change</a></h2>
+            <p class="helptext pb-0 mb-0">Game Mod</p>
+            <div>
+                {% if form.has_field('game_mod_id') %}
+                    {{ form.game_mod_id("mt-xs")|raw }}
+                {% endif %}
+
+                <span class="pt-s mt-xs is-inline-block">or <a href="{{ develop_url }}/teams/{{ active_organization.slug }}/create-mod/{{ host.game.slug }}?customizeNext=1" data-esc-fancybox="default" class="esc-link" data-esc-tracking-service="mixpanel" data-esc-tracking="clicked" data-esc-tracking-content-type="text-link" data-esc-tracking-context="edit-host" data-esc-tracking-element="create-game-mod">Create a New Mod</a> </span>
+            </div>
+        </div>
+        <div class="column is-12">
+            <span class="helptext">The default cloud experience is what displays to players that visit your host url when you are not running any activations or hosting games.</span>
+        </div>
+        <div class="column is-12">
+            <button type="submit" class="button is-primary" data-esc-tracking-service="mixpanel" data-esc-tracking="clicked" data-esc-tracking-content-type="cta-button" data-esc-tracking-context="edit-host" data-esc-tracking-element="submit">Save Settings</button>
+        </div>
+
+    </div>
+</div>

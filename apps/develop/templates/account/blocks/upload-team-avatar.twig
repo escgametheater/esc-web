@@ -1,0 +1,15 @@
+<div style="background-color: #f8f8f8; width: 600px;">
+    <div class="selector-label-text sheet-top is-grey">Upload new image</div>
+    <div class="modal--user-avatar-upload-container">
+        <form method="post" id="form-upload-cropped-image" class="p-m" data-esc-ajax-form="json" enctype="multipart/form-data" action="{{ path }}">
+            {{ form|raw }}
+        </form>
+        <div class="upload-button-container p-m" style="visibility: visible;">
+            <button class="button is-primary upload-result" form="form-upload-cropped-image" data-esc-tracking-service="mixpanel" data-esc-tracking="clicked" data-esc-tracking-content-type="cta-button" data-esc-tracking-context="avatar-modal" data-esc-tracking-element="submit-upload">{% t "Upload" %}</button>
+            <a href="javascript:parent.$.fancybox.close();" class="button is-outlined ml-s" data-esc-tracking-service="mixpanel" data-esc-tracking="clicked" data-esc-tracking-content-type="cta-button" data-esc-tracking-context="avatar-modal" data-esc-tracking-element="cancel-upload">{% t "Cancel" %}</a>
+        </div>
+        <div class="p-m">
+            {% include "blocks/forms/ajax-form-progressbar.twig" %}
+        </div>
+    </div>
+</div>

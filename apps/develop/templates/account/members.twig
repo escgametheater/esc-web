@@ -1,0 +1,80 @@
+<div class="container pt-m">
+
+    {% include "account/blocks/breadcrumbs.twig" %}
+
+    <div class="flex pt-l is-wrapping">
+        <div class="column is-3 is-fullwidth-mobile">
+
+            {% include "account/blocks/side-nav.twig" %}
+
+        </div>
+        <div class="column is-9 is-fullwidth-mobile">
+            <div class="column is-12">
+                <div class="sheet">
+                    <div class="sheet-title">
+                        <h2 class="title is-2">Members</h2>
+                        <p class="admin-desc">
+                            Manage members in this organization.
+                        </p>
+                    </div>
+                    <div class="sheet-content p-l">
+                        <a class="button is-inset mb-m" href="{{ develop_url}}/teams/{{ active_organization.slug }}/add-member" data-esc-fancybox="default" data-esc-tracking-service="mixpanel" data-esc-tracking="clicked" data-esc-tracking-content-type="cta-button" data-esc-tracking-context="invite-member">Add Member</a>
+                        <table class="table">
+                            <thead>
+                            <th>Email</th>
+                            <th>Name</th>
+                            <th>Role</th>
+                            <th>Status</th>
+                            <th>Join Date</th>
+                            </thead>
+                            <tbody>
+
+                            {% for member in organization_users if member.organization_user_status_id == 2 %}
+                                <tr>
+                                    <td>
+                                        <a href="{{ develop_url }}/teams/{{ active_organization.slug }}/edit-member/{{ member.getPk() }}" data-esc-tracking-service="mixpanel" data-esc-tracking="clicked" data-esc-tracking-content-type="text-link" data-esc-tracking-context="view-member" data-esc-tracking-element="member-{{ member.getPk() }}">{{ member.user.email_address }}</a>
+                                    </td>
+                                    <td>
+                                        {{ member.display_name }}
+                                    </td>
+                                    <td>
+                                        {{ member.organization_role.display_name }}
+                                    </td>
+                                    <td>
+                                        {{ member.organization_user_status.display_name }}
+                                    </td>
+                                    <td>
+                                        {{ member.local_create_time|date_format }}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+
+                            {% for member in organization_users_invites %}
+                                {% if loop.first %}<tr><td colspan="5"></td></tr>{% endif %}
+                                <tr class="bg-info">
+                                    <td>
+                                        <a href="{{ develop_url }}/teams/{{ active_organization.slug }}/edit-member/{{ member.getPk() }}" data-esc-tracking-service="mixpanel" data-esc-tracking="clicked" data-esc-tracking-content-type="text-link" data-esc-tracking-context="view-member" data-esc-tracking-element="member-{{ member.getPk() }}">{{ member.invite_email_address }}</a>
+                                    </td>
+                                    <td>
+                                        {{ member.display_name ? member.display_name : member.invite_display_name }}
+                                    </td>
+                                    <td>
+                                        {{ member.organization_role.display_name }}
+                                    </td>
+                                    <td>
+                                        {{ member.organization_user_status.display_name }}
+                                    </td>
+                                    <td>
+                                        {{ member.local_create_time|date_format }}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

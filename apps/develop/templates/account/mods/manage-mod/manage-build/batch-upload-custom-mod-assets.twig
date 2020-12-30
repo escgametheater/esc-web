@@ -1,0 +1,55 @@
+
+<div class="container pt-m">
+
+    {% include "account/mods/manage-mod/blocks/breadcrumbs.twig" %}
+
+    <div class="flex is-wrapping pt-l">
+
+        <div class="column is-3 is-fullwidth-mobile">
+
+            {% include "account/mods/manage-mod/blocks/side-nav.twig" %}
+
+        </div>
+
+        <div class="column is-9 is-fullwidth-mobile">
+
+            {% include 'account/mods/manage-mod/blocks/mod-build-notice.twig' %}
+
+            <div class="sheet">
+                <div class="sheet-title">
+                    <h3 class="title is-2 is-bold">{% t "Batch Upload Custom Game Mod Assets" %}</h3>
+                    <p class="admin-desc">
+                        Pick a zip file with the custom assets you wish to upload. The filename will be used as the slug in lowercase, excluding the file extension.
+                    </p>
+                </div>
+                <div class="sheet-content p-l pt-s">
+
+                    <p class="admin-desc is-fullwidth">
+                        <input type="file" id="custom-assets-zip-selector" data-esc-form-zip-selector data-esc-tracking-service="mixpanel" data-esc-tracking="clicked" data-esc-tracking-content-type="file-selector" data-esc-tracking-context="batch-custom-mod-assets" data-esc-tracking-element="select-batch-custom-mod-assets" />
+                    </p>
+                    <div id="result">
+
+                    </div>
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>Upload</th>
+                            <th>Status</th>
+                            <th style="width: 40%;">Slug</th>
+                            <th>File Name</th>
+                            <th class="align-center">Shared With Controller</th>
+                            {#<th>File Size</th>#}
+                        </tr>
+                        </thead>
+                        <tbody id="table-body">
+                        </tbody>
+                    </table>
+
+                    <div class="is-hidden" data-esc-hide-toggler>
+                        <button class="button is-primary" data-esc-form-upload-button data-esc-tracking-service="mixpanel" data-esc-tracking="clicked" data-esc-tracking-content-type="cta-button" data-esc-tracking-context="batch-custom-mod-assets" data-esc-tracking-element="submit">Upload Selected (<span data-esc-selected-count>0</span>)</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,12 @@
+<p class="id_{{ field.name }}" style="position: relative;">
+    <label for="id_{{ field.name }}"
+           {% if field.label_style %}style="{{ field.label_style }}"{% endif %}>
+        {{ field.verbose_name }}
+    </label>
+    <input type="{{ field.type }}" id="id_{{ field.name }}" name="{{ field.name }}" class="input {% if class_names %}{{ class_names }}{% endif %}" value="{{ data[field.name] }}"{% if field.style is defined %} style="text-indent: 10px; {{ style }}"{% endif %}{% if field.placeholder %} placeholder="{{ field.placeholder }}" {% endif %} />
+    <span style="position:absolute; bottom: 7px; left: 10px; font-size: 12px;">$</span>
+
+</p>
+{% if field.help_text %}
+    <p class="helptext">{{ field.help_text }}</p>
+{% endif %}

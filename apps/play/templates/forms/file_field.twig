@@ -1,0 +1,12 @@
+<div class="id_{{ field.name }} {% if class_names %} {{ class_names }} {% endif %}">
+    {#{ field.verbose_name }#}
+    <input type="hidden" name="upload_id_{{ field.name }}" value="{{ upload_id }}" />
+    {% if filepath %}
+        <input type="hidden" name="filename_{{ field.name }}" id="id_filename" {{ custom_js|raw }} value="{{ filename }}"  />
+        <span id="uploaded_{{ field.name }}">Uploaded: {{ filename }} ({{ filesize|filesize }})</span>
+    {% endif %}
+    <label for="id_{{ field.name }}"> {{ field.verbose_name }}<br/>
+        <input type="file" class="pt-xs pb-s" {% if field.is_required %}required="required"{% endif %} name="{{ field.name }}" {% if extensions %}accept="{{ extensions }}"{% endif %} id="id_{{ field.name }}" />
+    </label>
+    <br/>
+</div>

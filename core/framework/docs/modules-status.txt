@@ -1,0 +1,22 @@
+Module					Status
+
+ads						unused, works but takes lot of memory
+anonymous-cache			works
+auth					needs DI in get_user_rights
+cache					stable
+cassandra				unfinished, some functionality works
+csrf					stable
+db						stable
+debug					stable
+error-handling			stable
+forms					stable
+http					stable
+i18n					stable
+logs					stable
+managers				new but works
+online-stats			stable
+profiling				stable
+smarty3					works but smarty3 is beta
+tasks					stable
+thrift					works needs more testing maybe some cleanup
+vb						needs DI

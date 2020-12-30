@@ -1,0 +1,89 @@
+
+<div class="container pt-m">
+    {% include "account/mods/manage-mod/blocks/breadcrumbs.twig" %}
+    
+    <div class="flex is-wrapping pt-l">
+        <div class="column is-3 is-fullwidth-mobile">
+
+            {% include "account/mods/manage-mod/blocks/side-nav.twig" %}
+
+        </div>
+        <div class="column is-9 is-fullwidth-mobile">
+
+            {% if update_channel == 'live' %}
+                <div class="pb-s sheet is-info pl-l pt-m">
+                    <h2 class="title is-2_5 pb-s">Mod build uploads are disabled on {{ active_update_channel.display_name }}. <a href="{{ game_mod.edit_url }}/dev/builds" class="button is-primary is-inline is-small pt-xs pb-s float-right mr-l" data-esc-tracking-service="mixpanel" data-esc-tracking="clicked" data-esc-tracking-content-type="cta-button" data-esc-tracking-context="mod-builds-notice" data-esc-tracking-element="swap-to-dev-channel">Switch to Development Channel</a></h2>
+                </div>
+            {% endif %}
+
+            <div class="sheet">
+                <div class="sheet-title">
+                    <h3 class="title is-2 is-bold">{% t "Mod Builds" %}</h3>
+                    <p class="admin-desc">
+                        Manage, delete, update, and set active game mod builds.
+                    </p>
+                </div>
+                {% if update_channel != 'live' %}
+                    <div class="admin-inputs">
+                        <span class="">
+                            <a href="{{ game_mod.edit_url }}/{{ update_channel }}/create-mod-build" data-esc-fancybox="auth-modal-form" class="button is-primary">
+                                Create New Mod Build
+                            </a>
+                        </span>
+                    </div>
+                {% endif %}
+
+                <div class="sheet-content p-l">
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>Version</th>
+                            <th>Create Date</th>
+                            <th class="align-center">Active</th>
+                            {% if update_channel != 'live' %}
+                                <th class="align-center">Published</th>
+                            {% endif %}
+                            <th class="align-right" style="text-align: right;">Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for game_mod_build in game_mod_builds %}
+                            <tr>
+                                <td><a href="{{ game_mod.edit_url }}/{{ update_channel }}/view-mod-build/{{ game_mod_build.game_mod_build_id }}">{{ game_mod_build.build_version }}</a></td>
+                                <td>{{ game_mod_build.local_create_time|date_format }}</td>
+                                <td class="align-center">{% if game_mod_build.game_mod_build_id == active_build_version_summary.game_mod_build_id %}{{ "1"|bool|raw }}{% else %}{{ "0"|bool|raw }}{% endif %}</td>
+                                {% if update_channel != 'live' %}
+                                    <td class="align-center">
+                                        {% if game_mod_build.can_publish() and game_mod_build.is_active_game_mod_build(active_build_version_summary.game_mod_build_id) %}
+                                            <a href="{{ game_mod.edit_url }}/{{ update_channel }}/publish-mod-to-live/{{ game_mod_build.getPk() }}" data-esc-fancybox="default" class="button is-small is-primary">{% t "Publish" %}</a>
+                                        {% else %}
+                                            {{ game_mod_build.is_published()|bool|raw }}
+                                        {% endif %}
+                                    </td>
+                                {% endif %}
+                                <td class="align-right">
+                                    {% if not game_mod_build.is_active_game_mod_build(active_build_version_summary.game_mod_build_id) %}
+                                        <a href="{{ game_mod.edit_url }}/{{ update_channel }}/set-active-build/{{ game_mod_build.game_mod_build_id }}">Set Active</a>
+                                    {% endif %}
+
+                                    {#{% if update_channel != 'live'%}#}
+                                        {#{% if game_mod_build.game_mod_build_id != active_build_version_summary.game_mod_build_id %}#}
+                                            {#| <a href="{{ game_mod.edit_url }}/{{ update_channel }}/delete-game-build/{{ game_mod_build.game_mod_build_id }}" data-esc-fancybox="default">Delete</a>#}
+                                        {#{% endif %}#}
+                                    {#{% endif %}#}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+
+
+        </div>
+
+    </div>
+</div>
+
+

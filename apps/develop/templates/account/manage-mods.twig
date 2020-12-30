@@ -1,0 +1,31 @@
+
+<div class="container pt-m">
+
+    {% include "account/blocks/breadcrumbs.twig" %}
+
+    <div class="flex pt-l is-wrapping">
+        <div class="column is-3 is-fullwidth-mobile">
+
+            {% include "account/blocks/side-nav.twig" %}
+
+        </div>
+        <div class="column is-9 is-fullwidth-mobile">
+            <div class="sheet">
+                <div class="sheet-title">
+                    <h1 class="title is-1">
+                        Manage Mods
+                    </h1>
+                    <p class="admin-desc">
+                        These are mods you can manage.
+                    </p>
+                </div>
+                <div class="sheet-content p-l">
+                    <a href="{{ develop_url }}/teams/{{ active_organization.slug }}/create-mod" data-esc-fancybox="default" class="button is-primary" data-esc-fancybox="default" class="button is-primary {% if not canCreateActivationGroup %}is-disabled{% endif %}" data-esc-tracking-service="mixpanel" data-esc-tracking="clicked" data-esc-tracking-content-type="cta-button" data-esc-tracking-context="create-mod">{% t "Create New Mod" %}</a>
+
+                    {% include "account/mods/blocks/game-mods-table.twig" %}
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

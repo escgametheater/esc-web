@@ -1,0 +1,10 @@
+<div class="ajax-modal-container align-left">
+    <div class="sheet p-m" style="margin-bottom: 0;">
+        <h3 class="title is-3 mb-l">
+            Add New User to Organization: {{ organization.display_name }}
+        </h3>
+        <form method="post" action="{{ develop_url }}/teams/{{ organization.slug }}/add-member" data-esc-ajax-form="json" >
+            {{ form|raw }}
+        </form>
+    </div>
+</div>

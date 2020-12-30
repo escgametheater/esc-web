@@ -1,0 +1,49 @@
+<div class="container pt-m">
+
+    {% include "account/blocks/breadcrumbs.twig" %}
+
+    <div class="flex pt-l is-wrapping">
+        <div class="column is-3 is-fullwidth-mobile">
+
+            {% include "account/blocks/side-nav.twig" %}
+
+        </div>
+        <div class="column is-9 is-fullwidth-mobile">
+            <div class="column is-12">
+                <div class="sheet">
+                    <div class="sheet-title">
+                        <h2 class="title is-2">Roles</h2>
+                        <p class="admin-desc">
+                            Roles grant specific sets of access control to members of the organization.
+                        </p>
+                    </div>
+                    <div class="sheet-content p-l">
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th style="width: 30%;">Role</th>
+                                <th>Description</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for role in active_organization.organization_roles %}
+                                <tr>
+                                    <td>
+                                        <a href="{{ role.edit_url }}" data-esc-tracking-service="mixpanel" data-esc-tracking="clicked" data-esc-tracking-content-type="text-link" data-esc-tracking-context="edit-role" data-esc-tracking-element="{{ role.display_name }}">{{ role.display_name }}</a>
+                                    </td>
+                                    <td>
+                                        {{ role.description }}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                        {#<a class="button is-inset" href="{{ develop_url}}/teams/{{ active_organization.slug }}/add-role" data-esc-fancybox="default">Create New Role</a>#}
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+

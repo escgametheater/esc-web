@@ -1,0 +1,138 @@
+<div class="container pt-m">
+
+    {% include "account/blocks/breadcrumbs.twig" %}
+
+    <div class="flex pt-l is-wrapping">
+        <div class="column is-3 is-fullwidth-mobile">
+
+            {% include "account/blocks/side-nav.twig" %}
+
+        </div>
+        <div class="column is-9 is-fullwidth-mobile">
+
+            {% if licenses %}
+                <div class="sheet mb-xl">
+                    <div class="sheet-title">
+                        <h1 class="title is-1">
+                            Game Licenses
+                        </h1>
+                        <p class="admin-desc">
+                            These are the games licensed to your organization that you can mod freely.
+                        </p>
+                    </div>
+                    <div class="sheet-content p-l">
+                        <table class="table mt-m">
+                            <thead>
+                                <th>Title</th>
+                                <th>Type</th>
+                                <th>Live Version</th>
+                                <th>License Expires</th>
+                                <th style="width: 42px;"></th>
+                            </thead>
+                            <tbody>
+                            {% for license in licenses %}
+                                {% set game = license.game %}
+                                <tr>
+                                    <td>
+                                        <img src="{{ game.avatar.tiny_url }}" style="max-height: 16px; width: auto;" alt="{{ game.display_name }}" /> {{ game.display_name }}
+                                    </td>
+                                    <td>
+                                        {{ game.game_type.display_name }}
+                                    </td>
+                                    <td>
+                                        {% if game.game_builds.live %}
+                                            {{ game.game_builds.live.game_build_version }}
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if license.end_time %}
+                                            {{ license.local_end_time|date }}
+                                        {% else %}
+                                            Never
+                                        {% endif %}
+                                    </td>
+                                    <td class="align-right">
+                                        <span class="expand-container align-left">
+                                            <img src="{{ www_url }}/static/images/icons/more-vert.svg" class="img-more-vert" />
+                                            <div class="expand-options">
+                                                <a href="{{ develop_url }}/teams/{{ active_organization.slug }}/create-mod/{{ game.slug }}{% if game.can_customize() %}?customizeNext=1{% endif %}" data-esc-fancybox="default" data-esc-fancybox="default" data-esc-tracking="clicked" data-esc-tracking-content-type="text-link" data-esc-tracking-context="{% if game.can_customize() %}overflow-create-customize-licensed-game-mod{% else %}overflow-create-licensed-game-mod{% endif %}" data-esc-tracking-element="{{ game.slug }}">Create Mod</a>
+                                            </div>
+                                        </span>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            {% endif %}
+
+            <div class="sheet">
+                <div class="sheet-title">
+                    <h1 class="title is-1">
+                        Custom Games
+                    </h1>
+                    <p class="admin-desc">
+                        These are custom games that are created, developed, and managed by your organization.
+                    </p>
+                </div>
+                <div class="sheet-content p-l">
+                    <a href="{{ develop_url }}/teams/{{ active_organization.slug }}/create-game" data-esc-fancybox="default" class="button is-primary" data-esc-fancybox="default" class="button is-primary"  data-esc-tracking-service="mixpanel" data-esc-tracking="clicked" data-esc-tracking-content-type="cta-button" data-esc-tracking-context="create-game">{% t "Create New Game" %}</a>
+                    <table class="table mt-m">
+                        <thead>
+                            <th>Title</th>
+                            <th>Type</th>
+                            {#<th>Category</th>#}
+                            {#<th>Engine</th>#}
+                            <th>Live Build</th>
+                            <th>Dev Build</th>
+                            <th style="text-align: center;">Can Download</th>
+                            <th style="width: 42px;"></th>
+                        </thead>
+                        <tbody>
+                        {% for game in games %}
+                            <tr>
+                                <td>
+                                    <a href="{{ game.edit_url }}" data-esc-tracking-service="mixpanel" data-esc-tracking="clicked" data-esc-tracking-content-type="text-link" data-esc-tracking-context="edit-game" data-esc-tracking-element="{{ game.slug }}">
+                                        <img src="{{ game.avatar.tiny_url }}" style="max-height: 16px; width: auto;" alt="{{ game.display_name }}" /> {{ game.display_name }}
+                                    </a>
+                                </td>
+                                <td>
+                                    {{ game.game_type.display_name }}
+                                </td>
+                                {#<td>{{ game.game_category.display_name }}</td>#}
+                                {#<td>{{ game.game_engine.display_name }}</td>#}
+                                <td>
+                                    {% if game.game_builds.live %}
+                                        <a href="{{ game.edit_url }}/live/view-game-build/{{ game.game_builds.live.game_build_id }}" data-esc-tracking-service="mixpanel" data-esc-tracking="clicked" data-esc-tracking-content-type="text-link" data-esc-tracking-context="edit-live-game-build" data-esc-tracking-element="{{ game.game_builds.live.game_build_version }}">{{ game.game_builds.live.game_build_version }}</a>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if game.game_builds.dev %}
+                                        <a href="{{ game.edit_url }}/dev/view-game-build/{{ game.game_builds.dev.game_build_id }}" data-esc-tracking-service="mixpanel" data-esc-tracking="clicked" data-esc-tracking-content-type="text-link" data-esc-tracking-context="edit-dev-game-build" data-esc-tracking-element="{{ game.game_builds.dev.game_build_version }}">{{ game.game_builds.dev.game_build_version }}</a>
+                                    {% endif %}
+                                </td>
+                                <td class="align-center">
+                                    {% if game.can_play() %}{{ 1|bool|raw }}{% else %}{{ 0|bool|raw }}{% endif %}
+                                </td>
+                                <td class="align-right">
+                                    <span class="expand-container align-left">
+                                        <img src="{{ www_url }}/static/images/icons/more-vert.svg" class="img-more-vert" />
+                                        <div class="expand-options">
+                                            <a href="{{ game.edit_url }}" data-esc-tracking="clicked" data-esc-tracking-content-type="text-link" data-esc-tracking-context="overflow-edit-game" data-esc-tracking-element="{{ game.slug }}">Manage Game</a>
+                                            <a href="{{ develop_url }}/teams/{{ active_organization.slug }}/create-mod/{{ game.slug }}{% if game.can_customize() %}?customizeNext=1{% endif %}" data-esc-fancybox="default" data-esc-tracking="clicked" data-esc-tracking-content-type="text-link" data-esc-tracking-context="{% if game.can_customize() %}overflow-create-customize-game-mod{% else %}overflow-create-game-mod{% endif %}" data-esc-tracking-element="{{ game.slug }}">Create Mod</a>
+                                        </div>
+                                    </span>
+                                </td>
+                            </tr>
+                        {% endfor %}
+
+                        </tbody>
+                    </table>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,207 @@
+
+<div class="container pt-m">
+
+    {% include "account/mods/manage-mod/blocks/breadcrumbs.twig" %}
+
+    <div class="flex is-wrapping pt-l">
+
+        <div class="column is-3 is-fullwidth-mobile">
+            {% include "account/mods/manage-mod/blocks/side-nav.twig" %}
+        </div>
+
+        <div class="column is-9 is-fullwidth-mobile">
+
+            {% include 'account/mods/manage-mod/blocks/mod-build-notice.twig' %}
+
+            {% set custom_asset_count = count(custom_game_mod_assets) %}
+            {% set custom_data_count = count(game_mod_data) %}
+
+            {% set active_build_tab = get.active_build_tab %}
+
+            <div class="column is-12 pl-0 pr-0">
+                <div class="sheet">
+                    <div class="sheet-title">
+                        <h3 class="title is-2 is-bold">{{ game_mod.display_name }} v{{ game_mod_build.build_version }}-{{ update_channel }}</h3>
+                        <p class="admin-desc">
+                            Manage and view mod specific settings and details.
+                        </p>
+                    </div>
+
+                    <div class="sheet-content p-l">
+                        <div class="flex is-wrapping">
+                            <div class="column is-6" style="background: inherit;">
+                                <p>
+                                    <strong>Game</strong>
+                                </p>
+
+                                <p>
+                                    <img src="{{ game_mod.game.avatar.tiny_url }}" style="max-width: 16px; margin-right: 4px;"/> {{ game_mod.game.display_name }}
+                                </p>
+
+                                <p class="pt-m">
+                                    <strong>About</strong>
+                                </p>
+                                <p>
+                                    {% if game_mod_build.update_channel == 'live' %}
+                                        Published By: {% if game_mod_build.user.display_name %}{{ game_mod_build.user.display_name }}{% else %}{{ game_mod_build.user.username }}{% endif %}<br/>
+                                        Publish Time: {{ game_mod_build.local_create_time }}<br/>
+                                    {% else %}
+                                        Created By: {% if game_mod_build.user.display_name %}{{ game_mod_build.user.display_name }}{% else %}{{ game_mod_build.user.username }}{% endif %}<br/>
+                                        Create Time: {{ game_mod_build.local_create_time }}<br/>
+                                    {% endif %}
+                                </p>
+                                <p>
+                                    Version: {{ game_mod_build.game_build_version }}<br/>
+                                    Size: {{ game_mod_build.getGameAssetsFileSize()|filesize }}<br/>
+                                </p>
+                            </div>
+
+                            {% if update_channel != "live" %}
+                                <div class="column is-6" style="background: inherit;">
+                                    <p>
+                                        <strong>Publishing Status</strong>
+                                    </p>
+                                    <p>
+                                        {{ game_mod_build.is_published()|bool|raw }}
+                                        {% if not game_mod_build.is_published() %}
+                                            <span style="display: inline-block; position: relative; top: -4px;" class="pb-s">not published</span>
+                                        {% else %}
+                                            <span style="display: inline-block; position: relative; top: -4px;" class="pb-s">{% if game_mod_build.published_game_mod_build.user.username %}{% t "By" %} {{ game_mod_build.published_game_mod_build.user.username }} {% t "on" %} {% else %} {{ game_mod_build.published_game_mod_build.user.display_name }} {% t "On" %} {% endif %} {{ game_mod_build.published_game_mod_build.local_create_time|long_date_format }}</span>
+                                        {% endif %}
+                                    </p>
+                                    <p>
+                                        {% if game_mod_build.can_publish() %}
+                                            <a href="{{ game_mod.edit_url }}/{{ update_channel }}/publish-mod-to-live/{{ game_mod_build.getPk() }}" data-esc-fancybox="default" class="button is-primary" data-esc-tracking-service="mixpanel" data-esc-tracking="clicked" data-esc-tracking-content-type="cta-button" data-esc-tracking-context="edit-game-mod-build" data-esc-tracking-element="publish-build">{% t "Publish Build" %}</a>
+                                        {% endif %}
+                                    </p>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <nav class="tabs__navigation group">
+
+                <a class="tabs__link {% if active_build_tab == 'custom-data' or active_build_tab == '' %}tabs__link--active{% endif %}" href="#custom-data">{% t "Custom Mod Data" %} ({{ custom_data_count }} {% t "keys" %})</a>
+                <a class="tabs__link {% if active_build_tab == 'custom-assets' %}tabs__link--active{% endif %}" href="#custom-assets">{% t "Custom Mod Assets" %} ({{ custom_asset_count }})</a>
+            </nav>
+
+
+            {# Custom Data #}
+            <div class="tabs__section" id="custom-data">
+
+                <div class="column is-12">
+                    <div class="sheet">
+                        <div class="sheet-title">
+                            <h3 class="title is-2 is-bold">{% t "Data" %}</h3>
+                            <p class="admin-desc">
+                                Manage, delete, update, and set active game data records.
+                            </p>
+                        </div>
+                        {% if update_channel != 'live' and not game_mod_build.is_published() %}
+                            <div class="admin-inputs">
+                                <span class="">
+                                    <a href="{{ game_mod.edit_url }}/{{ update_channel }}/upload-custom-game-mod-data?game_mod_build_id={{ game_mod_build.getPk() }}" data-esc-fancybox="default" class="button is-primary" data-esc-tracking-service="mixpanel" data-esc-tracking="clicked" data-esc-tracking-content-type="cta-button" data-esc-tracking-context="edit-game-mod-build" data-esc-tracking-element="upload-game-mod-data-xls">Upload Game Mod Data Spreadsheet</a>
+                                </span>
+                            </div>
+                        {% endif %}
+
+                        <div class="sheet-content p-l">
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th>Key</th>
+                                    <th>Sheets</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for data in game_mod_data %}
+                                    <tr>
+                                        <td><a href="{{ game_mod.edit_url }}/{{ update_channel }}/view-custom-game-mod-data/{{ data.key }}?game_mod_build_id={{ game_mod_build.getPk() }}" data-esc-tracking-service="mixpanel" data-esc-tracking="clicked" data-esc-tracking-content-type="text-link" data-esc-tracking-context="edit-game-mod-build" data-esc-tracking-element="edit-game-mod-custom-data">{{ data.key }}</a></td>
+                                        <td>
+                                            {% for sheet in data.getGameModDataSheets() %}
+                                                {{ sheet.name }}{% if not loop.last %}, {% endif %}
+                                            {% endfor %}
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            {# Custom Assets #}
+            <div class="tabs__section" id="custom-assets">
+
+                <div class="column is-12">
+                    <div class="sheet">
+                        <div class="sheet-title">
+                            <h3 class="title is-2 is-bold">{% t "Custom Mod Assets" %}</h3>
+                            <p class="admin-desc">
+                                Manage, delete, update, and set active custom game mod assets.
+                            </p>
+                        </div>
+                        <div class="admin-inputs">
+                            {% if update_channel != 'live' and not game_mod_build.is_published() %}
+
+                                <a href="{{ game_mod.edit_url }}/{{ update_channel }}/upload-custom-game-mod-asset/?game_mod_build_id={{ game_mod_build.getPk() }}" data-esc-fancybox="default" class="button is-primary" data-esc-tracking-service="mixpanel" data-esc-tracking="clicked" data-esc-tracking-content-type="cta-button" data-esc-tracking-context="edit-game-mod-build" data-esc-tracking-element="upload-game-mod-custom-asset">New Custom Mod Asset</a>
+                                <a href="{{ game_mod.edit_url }}/{{ update_channel }}/batch-upload-custom-game-mod-assets/?game_mod_build_id={{ game_mod_build.getPk() }}" class="button is-white is-inset ml-m" data-esc-tracking-service="mixpanel" data-esc-tracking="clicked" data-esc-tracking-content-type="cta-button" data-esc-tracking-context="edit-game-mod-build" data-esc-tracking-element="batch-upload-game-mod-custom-assets">Batch Upload Mod Assets</a>
+
+                            {% endif %}
+                            {% if custom_game_mod_assets %}
+                                <form action="{{ game_mod.edit_url }}/{{ update_channel }}/batch-download-custom-game-mod-asset-files/?game_mod_build_id={{ game_mod_build.getPk() }}" method="post" target="_blank" data-esc-ajax-form="file" style="display: inline;">
+                                    <button class="button is-grey ml-m" data-esc-tracking-service="mixpanel" data-esc-tracking="clicked" data-esc-tracking-content-type="cta-button" data-esc-tracking-context="edit-game-mod-build" data-esc-tracking-element="download-custom-game-mod-assets-zip">Download All Custom Mod Assets</button>
+                                </form>
+                            {% endif %}
+                        </div>
+
+                        <div class="sheet-content p-l">
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th>Slug</th>
+                                    {#<th>File Name</th>#}
+                                    <th>Type & Size</th>
+                                    <th style="text-align: center;">Shared</th>
+                                    <th>Updater</th>
+                                    <th>Upload Time</th>
+                                    {% if update_channel != 'live' %}
+                                        <th class="align-right" style="text-align: right;">Actions</th>
+                                    {% endif %}
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for active_custom_game_mod_asset in custom_game_mod_assets %}
+                                    <tr>
+                                        <td><a href="{{ game_mod.edit_url }}/{{ update_channel }}/view-custom-game-mod-asset/{{ active_custom_game_mod_asset.slug }}?game_mod_build_id={{ game_mod_build.getPk() }}" data-esc-tracking-service="mixpanel" data-esc-tracking="clicked" data-esc-tracking-content-type="text-link" data-esc-tracking-context="edit-game-mod-build" data-esc-tracking-element="edit-game-mod-custom-asset">{{ active_custom_game_mod_asset.slug }}</a></td>
+                                        <td>{{ active_custom_game_mod_asset.custom_game_asset.mime_type }} ({{ active_custom_game_mod_asset.custom_game_asset.file_size|filesize }})</td>
+                                        <td class="align-center">{{ active_custom_game_mod_asset.is_public|bool|raw }}</td>
+                                        <td>{{ active_custom_game_mod_asset.custom_game_asset.user.username }}</td>
+                                        <td>{{ active_custom_game_mod_asset.custom_game_asset.local_create_time|long_date_format }}</td>
+                                        {% if update_channel != 'live' %}
+                                            <td class="align-right">
+                                                <a href="{{ game_mod.edit_url }}/{{ update_channel }}/delete-custom-game-mod-asset/{{ active_custom_game_mod_asset.slug }}/?game_mod_build_id={{ game_mod_build.getPk() }}" data-esc-fancybox="default" data-esc-tracking-service="mixpanel" data-esc-tracking="clicked" data-esc-tracking-content-type="text-link" data-esc-tracking-context="edit-game-mod-build" data-esc-tracking-element="delete-game-mod-custom-asset">Delete</a>
+                                            </td>
+                                        {% endif %}
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+

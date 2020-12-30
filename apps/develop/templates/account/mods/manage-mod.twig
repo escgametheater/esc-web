@@ -1,0 +1,32 @@
+<div class="container pt-m">
+
+    {% include "account/mods/manage-mod/blocks/breadcrumbs.twig" %}
+
+
+    <div class="flex pt-l is-wrapping">
+        <div class="column is-3 is-fullwidth-mobile">
+
+            {% include "account/mods/manage-mod/blocks/side-nav.twig" %}
+
+        </div>
+
+        <div class="column is-9 is-fullwidth-mobile">
+            <div class="flex is-wrapping">
+                <div class="column is-12">
+                    <div class="sheet">
+                        <div class="sheet-title">
+                            <h1 class="title is-1">
+                                General Mod Settings
+                            </h1>
+                        </div>
+                        <div class="sheet-content p-l">
+                            <form method="post" action="{{ path }}" data-esc-ajax-form="json">
+                                {{ form|raw }}
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

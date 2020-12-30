@@ -1,0 +1,10 @@
+<p class="id_{{ field.name }}">
+    <label for="id_{{ field.name }}"
+{% if field.label_style %}style="{{ field.label_style }}"{% endif %}>
+    {{ field.verbose_name }}
+</label>
+<br />
+{{ field.help_text }}
+<br />
+<input type="text" id="id_{{ field.name }}" name="{{ field.name }}" value="{{ data[field.name] }}" {% if field.style %}style="{{ style }}"{% endif %} {% if class_names %}class="{{ class_names }}"{% endif %} />
+</p>

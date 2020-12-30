@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="{% if thisLang %}{{ thisLang }}{% else %}en{% endif %}" lang="{% if thisLang %}{{ thisLang }}{% else %}en{% endif %}">
+
+{# Global Header Content - Meta + SEO + CSS + JS #}
+<head>
+    {% include "bone/headinclude.twig" %}
+
+    {# @JOSH -- PUT THE JAVASCRIPT AND CSS NEEDS FOR CONTROLLER HERE #}
+    <link rel="manifest" href="%PUBLIC_URL%/manifest.json">
+    <link href="/static/controller/css/main.css" rel="stylesheet">
+
+</head>
+
+<body class="sct-{{ section }}">
+
+<noscript>You need to enable JavaScript to run this app.</noscript>
+<div id="root"></div>
+<script type="text/javascript" src="/static/controller/js/bundle.js"></script>
+
+
+{# Global Footer Javascript (Tracking, Model Data, User + Session Notifications #}
+{% include "bone/js-footer.twig" %}
+
+</body>
+
+</html>

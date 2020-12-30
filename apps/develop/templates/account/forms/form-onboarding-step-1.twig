@@ -1,0 +1,69 @@
+<div class="container pt-xl">
+    <div class="flex pt-l is-wrapping">
+        <div class="column is-6 is-fullwidth-mobile p-l is-valigned">
+
+            <h1 class="title is-jumbo is-valigned is-blackish">
+                Review your team name, avatar, and primary team colors.
+            </h1>
+
+        </div>
+        <div class="column is-6 is-fullwidth-mobile">
+
+            <div class="sheet">
+                <div class="sheet-content pl-l pr-l">
+
+                    <div class="flex is-wrapping pb-m mb-m bb-2-grey-8">
+                        <div class="column is-3 is-valigned">
+                            <a href="{{ develop_url }}/teams/{{ organization.slug }}/upload-profile-image" data-esc-fancybox="crop-image" class="image is-rounded is-bordered" data-esc-tracking-service="mixpanel" data-esc-tracking="clicked" data-esc-tracking-content-type="cta-button" data-esc-tracking-context="organization-onboarding" data-esc-tracking-element="upload-avatar">
+                                <img src="{{ organization.avatar.medium_url }}"  class="is-circular"/>
+                            </a>
+                        </div>
+                        <div class="column is-9 is-valigned">
+                            {{ form.title()|raw }}
+                        </div>
+                    </div>
+
+                    <div class="pt-m">
+                        {{ form.description()|raw }}
+                        {{ form.address_line1()|raw }}
+                        {{ form.address_line2()|raw }}
+                        {{ form.address_line3()|raw }}
+                        {{ form.city_name()|raw }}
+                        {{ form.zip_code()|raw }}
+                        {{ form.state_code()|raw }}
+                        {{ form.state()|raw }}
+                        {{ form.country_id()|raw }}
+                    </div>
+
+
+                    {#<h2 class="title is-3 is-bold">Team Colors</h2>#}
+                    {#<span class="helptext">#}
+                        {#These will be used in the ESC Experiences that you run in venues. Don’t worry, you can always edit or change these for each game later.#}
+                    {#</span>#}
+
+                    {#<div class="pt-m">#}
+                        {#{{ form.primary_color()|raw }}#}
+                    {#</div>#}
+                    {#<div class="pt-m">#}
+                        {#{{ form.secondary_color()|raw }}#}
+                    {#</div>#}
+
+                    {#<div class="pt-l">#}
+                        {#<a class="esc-link" href="#">Learn more about team colors.</a>#}
+                    {#</div>#}
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div class="form-bottom is-fixed is-fullwidth bg-white p-l">
+    <a href="{{ previous }}" class="button is-white is-inset float-left" data-esc-tracking-service="mixpanel" data-esc-tracking="clicked" data-esc-tracking-content-type="cta-button" data-esc-tracking-context="organization-onboarding" data-esc-tracking-element="back-account-info">
+        Back: Account Info
+    </a>
+    <button class="button is-primary float-right" type="submit" data-esc-tracking-service="mixpanel" data-esc-tracking="clicked" data-esc-tracking-content-type="cta-button" data-esc-tracking-context="organization-onboarding" data-esc-tracking-element="submit">
+        Next: Members
+    </button>
+</div>

@@ -1,0 +1,43 @@
+
+<table class="table">
+    <thead>
+    <tr>
+        <th style="text-align: left; width: 30%;" class="pl-0">Display Name</th>
+        <th class="" style="width: 38%;">Alternate Url</th>
+        <th class="">Cloud Experience</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for host in hosts %}
+        <tr>
+            <td class="align-left pl-0" style="vertical-align: top;">
+                {{ form.render_field(host.getDynamicFormField('display_name'))|raw }}
+            </td>
+
+            <td>
+                {{ form.render_field(host.getDynamicFormField('alternate_url'))|raw }}
+            </td>
+
+            <td style="vertical-align: top;" class="pt-s">
+                {% if host.game %}
+                    <div style="position: relative;" class="pb-s">
+                        <figure class="image is-game is-tiny is-inline float-left mr-s">
+                            <img src="{{ host.game.avatar.small_url }}" />
+                        </figure>
+                        <span class="is-inline">{{ host.game.display_name }}</span><br/>
+                    </div>
+                {% endif %}
+                <div>
+                    {% if form.has_field(host.getDynamicFormField('game_mod_id')) %}
+                        {{ form.render_field(host.getDynamicFormField('game_mod_id'))|raw }}
+                    {% else %}
+                        N/A
+                    {% endif %}
+                </div>
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+<button type="submit" class="button is-primary" data-esc-tracking-service="mixpanel" data-esc-tracking="clicked" data-esc-tracking-content-type="cta-button" data-esc-tracking-context="edit-hosts" data-esc-tracking-element="submit">Save</button>

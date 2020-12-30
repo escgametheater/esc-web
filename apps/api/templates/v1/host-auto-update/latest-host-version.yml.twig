@@ -1,0 +1,16 @@
+{% if host_build %}
+{% if host_build.host_assets %}
+{% if platform_slug == 'mac' %}
+{% set host_asset = host_build.getInstallerFileAsset(['zip']) %}
+{% set extension = 'zip' %}
+{% elseif platform_slug == 'win' %}
+{% set host_asset = host_build.getInstallerFileAsset(['exe']) %}
+{% set extension = 'exe' %}
+{% endif %}
+{% endif %}
+version: {{ host_build.host_version.version }}
+files:
+  - url: latest-file-{{ platform_slug }}.{{ extension }}
+    sha512: {{ host_asset.sha512 }}
+    size: {{ host_asset.filesize }}
+{% endif %}

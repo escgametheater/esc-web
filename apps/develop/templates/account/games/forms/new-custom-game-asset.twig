@@ -1,0 +1,17 @@
+<div class="flex is-wrapping">
+
+    <div class="column is-fullwidth">
+        {{ form.slug()|raw }}
+        {{ form.replace()|raw }}
+        {{ form.is_public()|raw }}
+    </div>
+
+    <div class="column is-fullwidth">
+        {{ form.game_asset_file()|raw }}
+    </div>
+    <div class="column is-12">
+        {% include "blocks/forms/ajax-form-progressbar.twig" %}
+    </div>
+    <button type="submit" class="button is-primary" data-esc-tracking-service="mixpanel" data-esc-tracking="clicked" data-esc-tracking-content-type="cta-button" data-esc-tracking-context="modal-upload-custom-asset" data-esc-tracking-element="submit">{% t "Upload" %}</button>
+    <a href="javascript:parent.$.fancybox.close();" class="button is-white ml-s mr-s" data-esc-tracking-service="mixpanel" data-esc-tracking="clicked" data-esc-tracking-content-type="cta-button" data-esc-tracking-context="modal-upload-custom-asset" data-esc-tracking-element="cancel">{% t "Cancel" %}</a>
+</div>

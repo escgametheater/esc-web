@@ -1,0 +1,44 @@
+<div class="container pt-m">
+
+    {% include "account/blocks/breadcrumbs.twig" %}
+
+    <div class="flex pt-l is-wrapping">
+        <div class="column is-3 is-fullwidth-mobile">
+
+            {% include "account/blocks/side-nav.twig" %}
+
+        </div>
+        <div class="column is-9 is-fullwidth-mobile">
+            <div class="column is-12">
+                <div class="sheet">
+                    <div class="sheet-title">
+                        <div class="float-left pr-m pt-xs">
+                            <a href="{{ active_organization.url }}/upload-profile-image" data-esc-fancybox="crop-image" class="image is-square" data-esc-tracking-service="mixpanel" data-esc-tracking="clicked" data-esc-tracking-content-type="avatar" data-esc-tracking-context="organization-profile" data-esc-tracking-element="upload-avatar">
+                                <img src="{{ active_organization.avatar.medium_url }}" alt="{{ active_organization.display_name }}" style="max-width: 40px;"/>
+                            </a>
+                        </div>
+                        <h2 class="title is-2">Team Profile</h2>
+                        <p class="admin-desc">
+                            Manage name, look, and feel of this organization.
+                        </p>
+                    </div>
+                    <div class="sheet-content p-l">
+                        <form method="post" action="{{ path }}" data-esc-ajax-form="json">
+                            <div class="flex is-wrapping">
+                                <div class="column is-12">
+                                    {{ form|raw }}
+                                </div>
+                                <div class="column is-12">
+                                    <button class="button is-primary" type="submit" data-esc-tracking-service="mixpanel" data-esc-tracking="clicked" data-esc-tracking-content-type="cta-button" data-esc-tracking-context="organization-profile-save" data-esc-tracking-element="{{ active_organization.slug }}">{% t "Save" %}</button>
+                                </div>
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+

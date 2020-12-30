@@ -1,0 +1,13 @@
+<div class="flex sheet p-m" style="margin-bottom: 0;">
+    <div class="column is-12">
+        <h1 class="title is-1">
+            Create a new game mod
+        </h1>
+        <div class="is-fullwidth">
+            <form action="{{ path }}{% if get.customizeNext == 1 %}?customizeNext=1{% endif %}" method="post" data-esc-ajax-form="json">
+                {{ form|raw }}
+            </form>
+        </div>
+    </div>
+</div>
+

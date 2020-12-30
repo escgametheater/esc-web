@@ -1,0 +1,21 @@
+<p class="id_{{ field.name }}">
+    <label for="id_{{ field.name }}" {% if field.label_style %}style="{{ field.label_style }}"{% endif %} class="checkbox {% if class_names %}{{ class_names }}{% endif %}">
+
+    <span id="id_{{ field.name }}">
+        {% for option in field.options %}
+                {% if option.id != "" %}
+                <input type="checkbox" name="{{ field.name }}[]" value="{{ option.id }}"{% if option.id in data[field.name] %} checked="checked"{% endif %} class="checkbox" />
+                {{ option.name }}
+                {% else %}
+                    <input type="checkbox" name="{{ field.name }}[]" value="{{ option.0 }}"{% if option.0 in data[field.name] %} checked="checked"{% endif %} class="checkbox" />
+                    {{ option.1 }}
+                {% endif %}
+        {% endfor %}
+    </span>
+    {{ field.verbose_name }}
+
+    </label>
+</p>
+{% if field.help_text %}
+    {{ field.help_text }}
+{% endif %}

@@ -1,0 +1,73 @@
+
+<div class="container pt-m">
+
+    {% include "account/games/manage-game/breadcrumbs.twig" %}
+
+    <div class="flex pt-l">
+        <div class="column is-3 is-fullwidth-mobile">
+
+            {% include "account/games/manage-game/side-nav.twig" %}
+
+        </div>
+        <div class="column is-9 is-fullwidth-mobile">
+
+            {% include "account/games/manage-game/blocks/update-channel-selector.twig" %}
+
+            <div class="sheet">
+                <div class="sheet-title">
+                    <h3 class="title is-2 is-bold">{% t "User Licenses" %}</h3>
+                    <p class="admin-desc">
+                        Manage, delete, and update licenses for explicit users to access and play {{ game.display_name }}.
+                    </p>
+                </div>
+
+                <div class="admin-inputs">
+                    <a href="{{ game.edit_url }}/{{ update_channel }}/add-user-access/" class="button is-primary" data-esc-fancybox="default" data-esc-tracking-service="mixpanel" data-esc-tracking="clicked" data-esc-tracking-content-type="cta-button" data-esc-tracking-context="edit-game-user-licenses" data-esc-tracking-element="add-user-license">Add User License</a>
+                </div>
+
+                <div class="sheet-content p-l pt-xs">
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>Email</th>
+                            <th>Username</th>
+                            <th>License Start</th>
+                            <th>License Expires</th>
+                            <th class="align-right" style="text-align: right;">Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for game_user in users %}
+                            <tr>
+                                <td>{{ game_user.email_address }}</td>
+                                <td>{{ game_user.username }}</td>
+                                <td>
+                                    {% for game_license in game_user.game_licenses|reverse %}
+                                        {{ game_license.local_start_time|date_format }}<br/>
+                                    {% endfor %}
+
+                                </td>
+                                <td>
+                                    {% for game_license in game_user.game_licenses|reverse %}
+                                        {% if game_license.local_end_time %}{{ game_license.local_end_time|date_format }}{% else %}Never{% endif %}<br/>
+                                    {% endfor %}
+                                </td>
+                                <td class="align-right">
+                                    {% for game_license in game_user.game_licenses|reverse %}
+                                        {#<a href="{{ game.edit_url }}/edit-license/{{ game_license.getPk() }}/" data-esc-fancybox="default">Edit</a>#}
+                                        <a href="{{ game.edit_url }}/{{ update_channel }}/remove-user-access/{{ game_license.getPk() }}/" data-esc-fancybox="default" data-esc-tracking-service="mixpanel" data-esc-tracking="clicked" data-esc-tracking-content-type="text-link" data-esc-tracking-context="edit-game-user-licenses" data-esc-tracking-element="delete-user-license">Delete</a>
+                                        <br/>
+                                    {% endfor %}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+

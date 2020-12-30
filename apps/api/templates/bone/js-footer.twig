@@ -1,0 +1,22 @@
+{# Javascript - Set up window.esc JS Model Data #}
+<script type="text/javascript">
+
+    {# JS Hash For Login PWD Hashing #}
+    var js_salt = "{{ js_salt }}";
+
+    {# Initialize Global JS Model Data Vatiables #}
+    {% if global_js_data %}
+        // Initialize JS Model
+        window.esc = window.esc || {};
+        window.esc.global = {{ global_js_data|raw }};
+        {% if page_js_data %}
+            window.esc.page = {{ page_js_data|raw }};
+        {% endif %}
+    {% endif %}
+
+    {# Debug Information #}
+    var debug_info = {};
+    <!-- DEBUGINFO_TEMPLATE -->
+    <!-- DEBUGINFO_DEBUG -->
+
+</script>

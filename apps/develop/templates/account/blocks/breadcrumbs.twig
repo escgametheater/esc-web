@@ -1,0 +1,66 @@
+<div class="flex">
+    <div class="column is-12 pb-0">
+
+        <h1 class="title is-4 is-fullwidth">
+
+            {% set active_build_tab = get.active_build_tab %}
+
+            <a href="{{ develop_url }}/teams/{{ active_organization.slug }}/" class="esc-link" data-esc-tracking-service="mixpanel" data-esc-tracking="clicked" data-esc-tracking-content-type="breadcrumb" data-esc-tracking-context="team-dashboard">
+                <span class="image is-creator is-tiny is-inline-block" style="top: 2px;" ><img src="{{ active_organization.avatar.small_url }}" /></span> {{ active_organization.display_name }}
+            </a>
+
+
+            {#{% if count(organizations) > 1 %}#}
+                {#{% include "account/blocks/org-selector-form.twig" %}#}
+            {#{% else %}#}
+                {#<a href="{{ develop_url }}/teams/{{ active_organization.slug }}/" class="esc-link">#}
+                    {#<span class="image is-creator is-tiny is-inline-block" style="top: 2px;"><img src="{{ active_organization.avatar.small_url }}" /></span> {{ active_organization.display_name }}#}
+                {#</a>#}
+            {#{% endif %}#}
+
+            <div class="is-inline-block pt-xs" style="padding-top: 6px !important;">
+                {% if page == 'dev-dashboard' %}
+                    &raquo; {% t "Dashboard" %}
+                {% elseif page == 'dev-manage-games' %}
+                    &raquo; {% t "Games" %}
+                {% elseif page == 'dev-manage-mods' %}
+                    {% if game %}
+                        &raquo; <a class="esc-link" href="{{ develop_url }}/teams/{{ active_organization.slug }}/manage-mods" data-esc-tracking-service="mixpanel" data-esc-tracking="clicked" data-esc-tracking-content-type="breadcrumb" data-esc-tracking-context="manage-mods">Mods</a>
+                        &raquo; {{ game.display_name }}
+                    {% else %}
+                        &raquo; {% t "Mods" %}
+                    {% endif %}
+                {% elseif page == 'dev-org-orders' %}
+                    &raquo; {% t "Order History" %}
+                {% elseif page == 'dev-manage-activations' %}
+                    &raquo; {% t "GameDays" %}
+                {% elseif page == 'dev-edit-activation' %}
+                    &raquo; <a class="esc-link" href="{{ develop_url }}/teams/{{ active_organization.slug }}/activations" data-esc-tracking-service="mixpanel" data-esc-tracking="clicked" data-esc-tracking-content-type="breadcrumb" data-esc-tracking-context="manage-activations">{% t "GameDays" %}</a> &raquo; {{ activation_group.display_name }}
+                {% elseif page == 'dev-org-billing' %}
+                    &raquo; {% t "Billing Information" %}
+                {% elseif page == 'dev-org-payouts' %}
+                    &raquo; {% t "Revenue & Payouts" %}
+                {% elseif page == 'dev-org-profile' %}
+                    &raquo; {% t "Profile Settings" %}
+                {% elseif page == 'dev-org-members' %}
+                    &raquo; {% t "Team Members" %}
+                {% elseif page =='dev-org-member' %}
+                    &raquo; <a class="esc-link" href="{{ develop_url }}/teams/{{ active_organization.slug }}/members" data-esc-tracking-service="mixpanel" data-esc-tracking="clicked" data-esc-tracking-content-type="breadcrumb" data-esc-tracking-context="manage-team-members">{% t "Team Members" %}</a> &raquo; {{ organization_user.display_name ? organization_user.display_name : organization_user.user.email_address ? organization_user.user.email_address : organization_user_invite ? organization_user_invite.display_name ? organization_user_invite.display_name : organization_user_invite.email_address ? organization_user_invite.email_address : 'N/A' }}
+                {% elseif page == 'dev-org-roles' %}
+                    &raquo; {% t "Roles" %}
+                {% elseif page == 'dev-org-role' %}
+                    &raquo; <a class="esc-link" href="{{ develop_url }}/teams/{{ active_organization.slug }}/roles" data-esc-tracking-service="mixpanel" data-esc-tracking="clicked" data-esc-tracking-content-type="breadcrumb" data-esc-tracking-context="manage-team-permissions">{% t "Roles" %}</a> &raquo; {{ organization_role.display_name }}
+                {% elseif page == 'dev-org-edit-right' %}
+                    &raquo; <a class="esc-link" href="{{ develop_url }}/teams/{{ active_organization.slug }}/roles" data-esc-tracking-service="mixpanel" data-esc-tracking="clicked" data-esc-tracking-content-type="breadcrumb" data-esc-tracking-context="manage-team-permissions">{% t "Roles" %}</a> &raquo; Edit Right: {{ organization_right.organization_base_right.display_name }}
+                {% elseif page == 'dev-org-hosts' %}
+                    &raquo; {% t "Host Urls" %}
+                {% elseif page == 'dev-org-edit-host' %}
+                    &raquo; <a class="esc-link" href="{{ develop_url }}/teams/{{ active_organization.slug }}/hosts">{% t "Host Urls" %}</a> &raquo; {{ host.url }}
+
+                {% else %}
+
+                {% endif %}
+            </div>
+        </h1>
+    </div>
+</div>

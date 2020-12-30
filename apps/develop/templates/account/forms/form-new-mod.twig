@@ -1,0 +1,14 @@
+<div class="flex is-wrapping">
+
+    <div class="column is-12">
+        {{ form.game_id()|raw }}
+    </div>
+    {#{{ form.getFields()['game_id'].type }}#}
+    <div class="column is-12">
+        {{ form.display_name()|raw }}
+    </div>
+    <div class="column is-12">
+        <button class="button is-primary" data-esc-tracking-service="mixpanel" data-esc-tracking="clicked" data-esc-tracking-content-type="cta-button" data-esc-tracking-context="modal-create-game" data-esc-tracking-element="submit">{% t "Create Mod" %}</button>
+    </div>
+</div>
+

@@ -1,0 +1,141 @@
+{% set jsVersion = 87 %}
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="{% if thisLang %}{{ thisLang }}{% else %}en{% endif %}" lang="{% if thisLang %}{{ thisLang }}{% else %}en{% endif %}">
+
+{# Global Header Content - Meta + SEO + CSS + JS #}
+<head>
+    {# Page Meta Content - Title, Description, OpenGraph, #}
+    {# Page Content Meta #}
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <meta http-equiv="content-style-type" content="text/css; charset=UTF-8" />
+    <meta http-equiv="content-script-type" content="text/javascript; charset=UTF-8" />
+
+    <meta http-equiv="content-language" content="{{ thisLang }}"/>
+    <meta name="language" content="{% if thisLang %}{{ thisLang }}{% else %}en{% endif %}"/>
+
+    {# Mobile specific stuff #}
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <link rel="apple-touch-icon" href="{{ static_url }}images/beta/homescreen.png">
+
+    {% if controller %}
+        <base href="{{ base_href }}">
+    {% endif %}
+
+
+    {% if page_twitter_card %}
+        <meta name="twitter:card" content="{{ page_twitter_card }}">
+    {% else %}
+        <meta name="twitter:card" content="summary">
+    {% endif %}
+
+    {# SEO - Title/Description/Language/Canonical #}
+    {% if title %}
+        <title>{{ title|raw }}</title>
+        <meta name="twitter:title" content="{{ title|raw }}">
+        <meta property="og:title" content="{{ title|raw }}" />
+    {% else %}
+        <title>{{ website_name }} - Digital Comics Publishing and Community Website</title>
+        <meta property="og:title" content="{{ website_name }}" />
+        <meta name="twitter:title" content="{{ title|raw }}">
+    {% endif %}
+
+    <link rel="canonical" href="{{ page_canonical }}"/>
+    {% if page_canonical %}
+        <meta property="og:url" content="{{ page_canonical }}"/>
+    {% endif %}
+    {% if page_description %}
+        <meta name="description" content="{{ page_description|raw }}" />
+        <meta property="og:description" content="{{ page_description|raw }}"/>
+        <meta name="twitter:description" content="{{ page_description|raw }}" />
+    {% endif %}
+
+
+    {# OpenGraph - Image, FbAppId, Type, Site, Twitter, Language #}
+    {% if page_image %}
+        <meta property="og:image" content="{{ page_image }}" />
+        {% if page_image_width %}
+            <meta property="og:image:width" content="{{ page_image_width }}" />
+        {% endif %}
+        {% if page_image_height %}
+            <meta property="og:image:height" content="{{ page_image_height }}" />
+        {% endif %}
+        <meta name="twitter:image" content="{{ page_image }}" />
+    {% endif %}
+    {% if page_fbapp_id %}<meta property="fb:app_id" content="{{ page_fbapp_id }}"/>{% endif %}
+
+    <meta property="og:type" content="{% if page_type %}{{ page_type }}{% else %}website{% endif %}"/>
+    <meta property="og:site_name" content="{{ website_name }}" />
+    <meta name="twitter:site" content="{{ twitter_username }}"/>
+    <meta name="twitter:creator" content="{{ twitter_username }}"/>
+
+
+    {# Meta Information #}
+    {% if page_copyright %}<meta name="copyright" content="{{ page_copyright }}"/>{% endif %}
+    {% if page_create_date %}<meta name="date" content="{{ page_create_date }}" />{% endif %}
+
+    {% if config.mixpanel.client_id %}
+        <script type="text/javascript" src="{{ www_url }}{{ static_url }}js/domain/handlers/mixpanel.js?{{ jsVersion }}" defer></script>
+    {% endif %}
+
+    <script src="{{ www_url }}{{ static_url }}js/domain/handlers/tracking.js?version={{ jsVersion }}" defer></script>
+
+    {# Fav Icon #}
+    <link rel="shortcut icon" href="{{ www_url }}{{ static_url }}images/favicon.ico" />
+
+
+    {# @JOSH -- PUT THE JAVASCRIPT AND CSS NEEDS FOR CONTROLLER HERE #}
+    <link rel="manifest" href="manifest.json">
+    {% if controller %}
+        {% for asset in controller.getCssAssets() %}
+            <link href="{{ asset.url }}" rel="stylesheet" />
+        {% endfor %}
+    {% else %}
+        <meta http-equiv="refresh" content="5" >
+        <link rel="stylesheet" href="{{ www_url }}{{ static_url }}css/esc.css?version={{ cssVersion }}" media="screen" />
+    {% endif %}
+
+</head>
+
+<body class="sct-{{ section }}">
+    {% if not controller %}
+        {% include "bone/svg.twig" %}
+        <div class="section">
+            <div class="container">
+                <div class="flex is-wrapping">
+                    <div class="column is-fullwidth is-fullwidth-mobile  align-center">
+                        <div class="">
+                            <svg class="esc-header-logo" style="max-width: 80px; fill: black; height: auto;"><use xlink:href="#esc-logo"></use></svg>
+                        </div>
+                    </div>
+                    <div class="column is-12">
+                        <div class="sheet p-l">
+                            <h1 class="title is-1 pb-m"><strong>Welcome {% if user.is_authenticated() %}back, {% if user.entity.first_name %}{{ user.entity.first_name }}{% elseif user.entity.username %}{{ user.entity.username }}{% else %}friend{% endif %}{% else %}Anonymous User{% endif %}!</strong></h1>
+                            <p>
+                                Unfortunately, it does not seem like the host has started any games. This page will refresh every 5 seconds automatically :)
+                            </p>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script type="text/javascript">
+          console.log('*** No Game Found, Reloading In 5 Seconds');
+        </script>
+
+    {% endif %}
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div id="root"></div>
+    {# Global Footer Javascript (Tracking, Model Data, User + Session Notifications #}
+    {% include "bone/js-footer.twig" %}
+    {% if controller %}
+        {% for asset in controller.getJsAssets() %}
+            <script type="text/javascript" src="{{ asset.url }}" defer></script>
+        {% endfor %}
+    {% endif %}
+
+</body>
+
+</html>

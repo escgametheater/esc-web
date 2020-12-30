@@ -1,0 +1,74 @@
+
+<div class="container pt-m">
+
+    {% include "account/mods/manage-mod/blocks/breadcrumbs.twig" %}
+
+    <div class="flex is-wrapping pt-l">
+
+        <div class="column is-3 is-fullwidth-mobile">
+            {% include "account/mods/manage-mod/blocks/side-nav.twig" %}
+        </div>
+
+        <div class="column is-9 is-fullwidth-mobile">
+
+
+            {% include "account/mods/manage-mod/blocks/update-channel-selector.twig" %}
+
+            <div class="sheet">
+                <div class="sheet-title">
+                    <h3 class="title is-2 is-bold">{% t "User Licenses" %}</h3>
+                    <p class="admin-desc">
+                        Manage, delete, and update licenses for explicit users to access and play {{ game_mod.display_name }}.
+                    </p>
+                </div>
+
+                <div class="admin-inputs">
+                    <a href="{{ game_mod.edit_url }}/{{ update_channel }}/add-user-access/" class="button is-primary" data-esc-fancybox="default" data-esc-tracking-service="mixpanel" data-esc-tracking="clicked" data-esc-tracking-content-type="cta-button" data-esc-tracking-context="game-mod-user-licenses" data-esc-tracking-element="add-game-mod-user-license-{{ update_channel }}">Add User License</a>
+                </div>
+
+                <div class="sheet-content p-l pt-xs">
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>Email</th>
+                            <th>Username</th>
+                            <th>License Start</th>
+                            <th>License Expires</th>
+                            <th class="align-right" style="text-align: right;">Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for license_user in license_users %}
+                            <tr>
+                                <td>{{ license_user.email_address }}</td>
+                                <td>{{ license_user.username }}</td>
+                                <td>
+                                    {% for game_mod_license in license_user.game_mod_licenses|reverse %}
+                                        {{ game_mod_license.local_start_time|date_format }}<br/>
+                                    {% endfor %}
+
+                                </td>
+                                <td>
+                                    {% for game_mod_license in license_user.game_mod_licenses|reverse %}
+                                        {% if game_mod_license.local_end_time %}{{ game_mod_license.local_end_time|date_format }}{% else %}Never{% endif %}<br/>
+                                    {% endfor %}
+                                </td>
+                                <td class="align-right">
+                                    {% for game_mod_license in license_user.game_mod_licenses|reverse %}
+                                        {#<a href="{{ game.edit_url }}/edit-license/{{ game_mod_license.getPk() }}/" data-esc-fancybox="default">Edit</a>#}
+                                        <a href="{{ game_mod.edit_url }}/{{ update_channel }}/remove-user-access/{{ game_mod_license.getPk() }}/" data-esc-fancybox="default">Delete</a>
+                                        <br/>
+                                    {% endfor %}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+

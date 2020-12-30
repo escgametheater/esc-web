@@ -1,0 +1,124 @@
+<div class="container pt-m">
+
+    {% include "account/blocks/breadcrumbs.twig" %}
+
+    <div class="flex pt-l is-wrapping">
+        <div class="column is-3 is-fullwidth-mobile">
+
+            {% include "account/blocks/side-nav.twig" %}
+
+        </div>
+        <div class="column is-9 is-fullwidth-mobile">
+            <div class="column is-12">
+                <div class="sheet">
+                    <div class="sheet-title">
+                        <h2 class="title is-2">Orders</h2>
+                        <p class="admin-desc">
+                            Manage orders and billing for this organization.
+                        </p>
+                    </div>
+                    <div class="sheet-content p-l">
+                        {% for order in orders %}
+                            <p>
+                                {{ order.local_create_time|date }} &raquo; {% t "Order" %} #{{ order.order_id }} - {% t order.order_status.display_name %}
+                            </p>
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th style="width: 40%;">{% t "Item" %}</th>
+                                    {#<th>{% t "Status" %}</th>#}
+                                    <th style="width: 15%; text-align: center;">{% t "Unit Price" %}</th>
+                                    <th style="width: 15%; text-align: center;">{% t "Quantity" %}</th>
+                                    <th style="width: 30%;"></th>
+                                    <th style="width: 15%; text-align: right;">{% t "Amount" %}</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for order_item in order.order_items %}
+                                    <tr>
+                                        <td>
+                                            {#{% t order_item.order_item_type.display_name %} -> #}
+                                            {{ order_item.display_name }}
+                                        </td>
+                                        <td style="text-align: center;">
+                                            {{ i18n.displayCurrency(order_item.getNetPrice()) }}
+                                        </td>
+                                        {#<td>{% t order_item.order_item_status.display_name %}</td>#}
+                                        <td style="text-align: center;">{{ order_item.quantity }}</td>
+                                        <td></td>
+                                        <td style="text-align: right;">
+                                            {% if order_item.is_nullified() %}
+                                                <div class="is-grey" style="text-decoration: line-through;">{{ i18n.displayCurrency(order_item.getSubTotalPrice()) }}</div>
+                                                {{ i18n.displayCurrency(0.00) }}
+
+                                            {% else %}
+                                                {{ i18n.displayCurrency(order_item.getSubTotalPrice()) }}
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                {% if order.getTaxAmountAsFloat() > 0 %}
+                                    {% if count(order.order_items) > 1 %}
+                                        <tr>
+                                            <td colspan="2" style="border: none;"></td>
+                                            <td colspan="2"><strong>{% t "Sub-Total" %}</strong></td>
+                                            <td style="text-align: right;">{{ i18n.displayCurrency(order.getSubTotalAmountAsFloat()) }}</td>
+                                        </tr>
+                                    {% endif %}
+                                    <tr>
+                                        <td colspan="2" style="border: none;"></td>
+                                        <td colspan="2"><strong>{% t "Tax" %}</strong></td>
+                                        <td style="text-align: right;">{{ i18n.displayCurrency(order.getTaxAmountAsFloat()) }}</td>
+                                    </tr>
+                                {% endif %}
+                                {% if order.getDiscountAmountAsFloat() %}
+                                    <tr>
+                                        <td colspan="2" style="border: none;"></td>
+                                        <td colspan="2"><strong>{% t "Discount" %} ({{ order.getDiscountIncentiveInstance().getIncentive().discount_percentage }}%)</strong></td>
+                                        <td style="text-align: right;">-{{ i18n.displayCurrency(order.getDiscountAmountAsFloat()) }}</td>
+                                    </tr>
+                                {% endif %}
+                                {#<tr>#}
+                                {#<td colspan="2" style="border: none;"></td>#}
+                                {#<td><strong>{% t "Total" %}</strong></td>#}
+                                {#<td style="text-align: right;">{{ i18n.displayCurrency(order.getTotalAmountAsFloat()) }}</td>#}
+                                {#</tr>#}
+                                {% if order.payment %}
+                                    <tr>
+                                        <td colspan="2" style="border: none;"></td>
+                                        <td colspan="2"><strong>{% t "Payment" %} ({% t order.payment.payment_service.display_name %}) - {% t order.payment.payment_status.display_name %}</strong></td>
+                                        <td style="text-align: right;">
+                                            {% if order.payment.is_paid() %}
+                                                -{{ i18n.displayCurrency(order.payment.getTotalPaymentAmount()) }}
+                                            {% elseif order.payment.is_accepted() %}
+                                                (-{{ i18n.displayCurrency(order.payment.getTotalPaymentAmount()) }})
+                                            {% elseif order.payment.is_nullified() %}
+                                                {{ i18n.displayCurrency(0.00) }}
+                                            {% elseif order.payment.is_authorized() %}
+                                                {% if order.payment.payment_service.is_type_internal() %}
+                                                    Pending
+                                                {% else %}
+                                                    N/A
+                                                {% endif %}
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                {% endif %}
+                                <tr>
+                                    <td colspan="2" style="border: none;"></td>
+                                    <td colspan="2"><strong>{% t "Amount Due" %}</strong></td>
+                                    <td style="text-align: right;">{{ i18n.displayCurrency(order.getTotalAmountDueAsFloat()) }}</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <div class="payment-information">
+
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+       </div>
+    </div>
+</div>
+

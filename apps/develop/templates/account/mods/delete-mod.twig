@@ -1,0 +1,10 @@
+<div class="ajax-modal-container align-center p-l">
+    <h3 class="title is-3 mb-l is-white">{% t "Are you sure you want to delete this game mod?" %}</h3>
+    <p><strong>This can not be un-done!</strong></p>
+    <br/>
+    <form method="post" action="{{ path }}" data-esc-ajax-form="json">
+        <input type="hidden" name="game_mod_id" value="{{ game_mod.getPk() }}" />
+        <button type="submit" class="button is-primary" data-esc-tracking-service="mixpanel" data-esc-tracking="clicked" data-esc-tracking-content-type="cta-button" data-esc-tracking-context="modal-delete-game-mod" data-esc-tracking-element="submit">{% t "Yes" %}</button>
+        <a href="javascript:parent.$.fancybox.close();" class="button is-white ml-s mr-s" data-esc-tracking-service="mixpanel" data-esc-tracking="clicked" data-esc-tracking-content-type="cta-button" data-esc-tracking-context="modal-delete-game-mod" data-esc-tracking-element="cancel">{% t "Cancel" %}</a>
+    </form>
+</div>

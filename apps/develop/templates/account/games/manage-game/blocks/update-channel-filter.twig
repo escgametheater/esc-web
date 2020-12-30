@@ -1,0 +1,12 @@
+<form method="post" action="{{ path }}?game_build_id={{ selected_game_build_id }}" data-esc-form-dev-mode="1">
+    <input type="hidden" value="{{ update_channel }}" name="change-channel" />
+    <p class="float-right">
+        <label for="update-channel">Update Channel</label><br/>
+        <span class="select">
+                <select id="update-channel" name="update-channel" style="background-color: #fff;">
+                    <option value="live" {% if update_channel == 'live' %}selected{% endif %}>{% t "Live / Public" %}</option>
+                    <option value="dev" {% if update_channel == 'dev' %}selected{% endif %}>{% t "Development" %}</option>
+                </select>
+            </span>
+    </p>
+</form>

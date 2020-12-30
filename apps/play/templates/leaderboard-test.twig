@@ -1,0 +1,17 @@
+
+<table cellspacing="0" cellpadding="0">
+    <thead>
+        <th> Rank -> </th>
+        <th> Name -> </th>
+        <th> Seconds</th>
+        {#<td> Date</td>#}
+    </thead>
+    {% for stat in stats %}
+        <tr>
+            <td>{{ loop.index }}</td>
+            <td>{{ stat.name }}</td>
+            <td>{{ stat.value|number_format(1) }}</td>
+            {#<td>{{ stat.create_time }}</td>#}
+        </tr>
+    {% endfor %}
+</table>

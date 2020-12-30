@@ -1,0 +1,30 @@
+<div class="container pt-m">
+
+    {% include "account/blocks/breadcrumbs.twig" %}
+
+    <div class="flex pt-l is-wrapping">
+        <div class="column is-3 is-fullwidth-mobile">
+
+            {% include "account/blocks/side-nav.twig" %}
+
+        </div>
+        <div class="column is-9 is-fullwidth-mobile">
+            <div class="column is-12">
+                <div class="sheet">
+                    <div class="sheet-title">
+                        <h2 class="title is-2">Edit Right: {{ organization_right.organization_base_right.display_name }}</h2>
+                        <p class="admin-desc">
+                            {{ organization_right.organization_base_right.description }}
+                        </p>
+                    </div>
+                    <div class="sheet-content p-l">
+                        <form action="{{ path }}" method="post" data-esc-ajax-form="json">
+                            {{ form|raw }}
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

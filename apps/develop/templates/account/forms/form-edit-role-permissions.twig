@@ -1,0 +1,78 @@
+<table class="table pl-0">
+    <thead>
+    <tr>
+        <th class="pl-0" style="width: 30%;">Right</th>
+        <th class="align-center">None</th>
+        <th class="align-center">View</th>
+        <th class="align-center">Edit</th>
+        <th class="align-center">Administer</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for permission in organization.getOrganizationPermissionsByRoleId(organization_role.getPk()) %}
+
+        {% set right = organization_rights[permission.organization_right_id] %}
+
+        {% set right_administer = right.permissions.a_rights[organization_role.getPk()] %}
+        {% set right_moderate = right.permissions.m_rights[organization_role.getPk()] %}
+        {% set right_use = right.permissions.u_rights[organization_role.getPk()] %}
+
+        <tr>
+            <td>
+                <a href="{{ right.edit_url }}" data-esc-tooltip="{{ right.organization_base_right.description }}" data-esc-tracking-service="mixpanel" data-esc-tracking="clicked" data-esc-tracking-content-type="text-link" data-esc-tracking-context="edit-team-right" data-esc-tracking-element="{{ right.organization_base_right.name }}">
+                    {{ right.display_name }}
+                </a>
+            </td>
+            <td class="align-center">
+                {% if organization.permissions.has('organization.permissions', 'm') %}
+                    <input type="radio" value="" {% if organization_role.organization_base_role_id == 1 %}disabled{% endif %} name="{{ permission.getDynamicFormField() }}" {% if not right_administer and not right_moderate and not right_use %}checked="checked"{% endif %} />
+                {% else %}
+                    {% if not right_administer and not right_moderate and not right_use %}
+                        {{ 1|bool|raw }}
+                    {% else %}
+                        {{ 0|bool|raw }}
+                    {% endif %}
+                {% endif %}
+            <td class="align-center">
+                {% if organization.permissions.has('organization.permissions', 'm') %}
+                    <input type="radio" value="u" {% if organization_role.organization_base_role_id == 1 %}disabled{% endif %} name="{{ permission.getDynamicFormField() }}" {% if not right_administer and not right_moderate and right_use %}checked="checked"{% endif %} />
+                {% else %}
+                    {% if not right_administer and not right_moderate and right_use %}
+                        {{ 1|bool|raw }}
+                    {% else %}
+                        {{ 0|bool|raw }}
+                    {% endif %}
+                {% endif %}
+            </td>
+            <td class="align-center">
+                {% if organization.permissions.has('organization.permissions', 'm') %}
+                    <input type="radio" value="m" {% if organization_role.organization_base_role_id == 1 %}disabled{% endif %} name="{{ permission.getDynamicFormField() }}" {% if not right_administer and right_moderate %}checked="checked"{% endif %} />
+                {% else %}
+                    {% if not right_administer and right_moderate %}
+                        {{ 1|bool|raw }}
+                    {% else %}
+                        {{ 0|bool|raw }}
+                    {% endif %}
+                {% endif %}
+
+            </td>
+            <td class="align-center">
+                {% if organization.permissions.has('organization.permissions', 'm') %}
+                    <input type="radio" value="a" {% if organization_role.organization_base_role_id == 1 %}disabled{% endif %} name="{{ permission.getDynamicFormField() }}" {% if right_administer %}checked="checked"{% endif %} />
+                {% else %}
+                    {% if right_administer %}
+                        {{ 1|bool|raw }}
+                    {% else %}
+                        {{ 0|bool|raw }}
+                    {% endif %}
+                {% endif %}
+
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+{% if organization.permissions.has('organization.permissions', 'm') %}
+    <button class="button is-primary" type="submit" data-esc-tracking-service="mixpanel" data-esc-tracking="clicked" data-esc-tracking-content-type="cta-button" data-esc-tracking-context="edit-team-permissions" data-esc-tracking-element="submit">Save</button>
+{% endif %}

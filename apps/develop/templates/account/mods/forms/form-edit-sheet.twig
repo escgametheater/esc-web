@@ -1,0 +1,19 @@
+<div class="flex is-wrapping">
+    <div class="column is-6 bg-white">
+        <div class="flex is-wrapping">
+            <div class="column is-12 pb-0 bg-white">
+                <h2 class="title is-2">Sheet Settings</h2>
+            </div>
+            <div class="column is-12 pb-0 bg-white">
+                {{ form.name("pb-0")|raw }}
+            </div>
+            <div class="column is-12 pb-0 bg-white">
+                {{ form.game_mod_data_sheet_column_id("pb-0")|raw }}
+            </div>
+        </div>
+    </div>
+
+    <div class="column is-12 pb-0 bg-white">
+        <button class="button is-primary" data-esc-tracking-service="mixpanel" data-esc-tracking="clicked" data-esc-tracking-content-type="cta-button" data-esc-tracking-context="edit-game-mod-sheet" data-esc-tracking-element="submit">{% t "Save" %}</button>
+    </div>
+</div>

@@ -1,0 +1,46 @@
+<html>
+	<head>
+		<title>Unhandled exception</title>
+		<link href="{{ static_url }}css/debugbar.css" rel="stylesheet" type="text/css" />
+	</head>
+<body style="background-color: #555A5D;">
+
+	<div id="mainwrapper">
+		{% include "bone/debugbar.twig" %}
+
+		<!-- Header and Logo -->
+		<div id="HeaderContainer" style="background-image: url({{ header_image }});">
+			<a href="/"></a>
+		</div>
+
+		<div id="contentwrapper">
+			<div id="content">
+				<h1>{{ exception }}</h1>
+				{{ message|raw }}
+				<div style="text-align: left; padding: 7px; font-size: 15px;">
+					<h3>Stack Trace:</h3>
+					<ul>
+						{% for call in stack %}
+						<li>
+							{{ call.file }}({{ call.line }}){% if call.function %} @ {{ call.function }}{% endif %}
+							<div>
+								<a href="#" onclick="return toggle('args_{{ loop.index }}');">
+									Click here to show args ({{ call.args|length }})
+								</a>
+							</div>
+							<ul id="args_{{ loop.index }}" style="display: none;">
+								{% for arg in call.args %}
+								<li>
+                                    {{ arg|getclass }}
+								</li>
+								{% endfor %}
+							</ul>
+						</li>
+						{% endfor %}
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

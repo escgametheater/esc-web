@@ -1,0 +1,12 @@
+<div class="flex is-wrapping">
+    <div class="column is-12">
+        {{ form.display_name()|raw }}
+    </div>
+    <div class="column is-12">
+        {{ form.organization_role_id()|raw }}
+    </div>
+    <div class="column is-12 pt-m">
+        <button class="button is-primary" type="submit" data-esc-tracking-service="mixpanel" data-esc-tracking="clicked" data-esc-tracking-content-type="cta-button" data-esc-tracking-context="modal-delete-member" data-esc-tracking-element="submit">{% t "Save" %}</button>
+        <a href="{{ develop_url }}/teams/{{ active_organization.slug }}/delete-member/{{ organization_user.getPk() }}" class="button is-danger" data-esc-fancybox="default" data-esc-tracking-service="mixpanel" data-esc-tracking="clicked" data-esc-tracking-content-type="cta-button" data-esc-tracking-context="modal-delete-member" data-esc-tracking-element="cancel">Remove Member</a>
+    </div>
+</div>

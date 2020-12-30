@@ -1,0 +1,132 @@
+<div class="container pt-m">
+
+    {% include "account/blocks/breadcrumbs.twig" %}
+
+    <div class="flex pt-l is-wrapping">
+        <div class="column is-3 is-fullwidth-mobile">
+
+            {% include "account/blocks/side-nav.twig" %}
+
+        </div>
+        <div class="column is-9 is-fullwidth-mobile">
+
+            <div class="flex is-wrapping">
+                <div class="column is-12" style="position: relative;">
+                    <h2 class="title is-2 is-bold pb-s pl-0">
+                        Upcoming GameDays
+                    </h2>
+                    {% set canCreateActivationGroup = count(service_access_token_instances) > 0 %}
+                    <a href="/teams/{{ active_organization.slug }}/activations/create" data-esc-fancybox="default" class="button is-primary {% if not canCreateActivationGroup %}is-disabled{% endif %}" style="position: absolute; right: 8px; top: 5px;" {% if not canCreateActivationGroup %}data-esc-tooltip="You need to purchase a licence for each GameDay that you add. If you have no more GameDays available, you need to re-fill your available GameDay licenses by contacting ESC Business Development."{% endif %} data-esc-tracking-service="mixpanel" data-esc-tracking="clicked" data-esc-tracking-content-type="cta-button" data-esc-tracking-context="create-activation">
+                        Add New
+                    </a>
+
+                </div>
+
+                <div class="column is-12">
+                    <div class="sheet p-0">
+                        <div class="sheet-content p-s">
+                            {% include "account/activations/blocks/activation-groups-table.twig" %}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="column is-12 mt-m">
+                    <h2 class="title is-2 is-bold pb-s">
+                        Analytics Overview
+                    </h2>
+                </div>
+                <div class="column is-3">
+                    <div class="sheet">
+                        <div class="sheet-content p-m pt-l pb-l align-center">
+                            <span style="font-size: 44px; font-weight: bold;">{{ "N/A"|large_number }}</span><br/>
+                            <span class="helptext">Active players right now</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="column is-3">
+                    <div class="sheet">
+                        <div class="sheet-content p-m pt-l pb-l align-center">
+                            <span style="font-size: 44px; font-weight: bold;">{{ summary.count_unique_players|large_number }}</span><br/>
+                            <span class="helptext">Cumulative total uniques</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="column is-3">
+                    <div class="sheet">
+                        <div class="sheet-content p-m pt-l pb-l align-center">
+                            <span style="font-size: 44px; font-weight: bold;">{{ summary.count_gamedays|large_number }}</span><br/>
+                            <span class="helptext">Count of total gamedays</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="column is-3">
+                    <div class="sheet">
+                        <div class="sheet-content p-m pt-l pb-l align-center">
+                            {% set timeString = summary.avg_time_played|clean_time %}
+                            <span style="font-size: 44px; font-weight: bold;">{{ timeString }}</span><br/>
+                            <span class="helptext">Average time played</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="column is-12" style="position: relative;">
+                    <h2 class="title is-2 mt-m is-bold pb-s pl-0">
+                        Game Mods
+                    </h2>
+                    <a href="/teams/{{ active_organization.slug }}/create-mod" data-esc-fancybox="default" style="position: absolute; right: 8px; top: 21px;" class="button is-primary" style="position: absolute; right: 8px; top: 5px;" data-esc-fancybox="default" class="button is-primary {% if not canCreateActivationGroup %}is-disabled{% endif %}" style="position: absolute; right: 8px; top: 5px;" data-esc-tracking-service="mixpanel" data-esc-tracking="clicked" data-esc-tracking-content-type="cta-button" data-esc-tracking-context="create-mod">
+                        Add New
+                    </a>
+
+                </div>
+
+                <div class="column is-12 pt-s">
+                    <div class="sheet">
+                        <div class="sheet-content p-s">
+                            {% include "account/mods/blocks/game-mods-table.twig" %}
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+
+
+            {#<h2 class="title is-1">Recent Activity</h2>#}
+
+                {#{% for organization_activity in organization_activities %}#}
+                    {#{% set orgUser = organization_activity.organization_user %}#}
+                    {#{% set activity = organization_activity.activity %}#}
+                    {#<div class="sheet">#}
+                        {#<div class="sheet-wrapper">#}
+                            {#<div class="sheet-content--chat p-0">#}
+                                {#<div class="is-flex">#}
+                                    {#<div class="sheet-left is-small">#}
+                                        {#<figure class="image is-creator is-small">#}
+                                            {#<img src="{{ orgUser.user.avatar_small_url }}" alt="" />#}
+                                            {#{{ orgUser.user.getJSONData()|dump|raw }}#}
+                                        {#</figure>#}
+                                    {#</div>#}
+                                    {#<div class="sheet-right">#}
+                                        {#<h4 class="sheet-author">#}
+                                            {#<a href="#">{{ orgUser.display_name ? orgUser.display_name : orgUser.user.display_name }}</a> <span class="sheet-author-timestamp">{{ organization_activity.create_time_ago }}:</span>#}
+                                        {#</h4>#}
+                                    {#</div>#}
+                                {#</div>#}
+                                {#<div class="sheet-content">#}
+                                    {#did {{ activity.activity_id }} - {{ activity.activity_type_id }} -#}
+                                {#</div>#}
+
+                            {#</div>#}
+
+                        {#</div>#}
+                    {#</div>#}
+
+                {#{% endfor %}#}
+
+        </div>
+    </div>
+</div>
+

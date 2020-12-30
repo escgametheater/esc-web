@@ -1,0 +1,58 @@
+
+<div class="column is-12">
+    <div class="sheet">
+        <div class="sheet-title">
+            <h3 class="title is-2 is-bold">{% t "Custom Assets" %}</h3>
+            <p class="admin-desc">
+                Manage, delete, update, and set active custom game assets.
+            </p>
+        </div>
+        <div class="admin-inputs">
+            {% if update_channel != 'live' and not game_build.is_published() %}
+
+                <a href="{{ game.edit_url }}/{{ update_channel }}/upload-custom-game-asset/?game_build_id={{ game_build.getPk() }}" data-esc-fancybox="default" class="button is-primary">Create New Custom Game Asset</a>
+                <a href="{{ game.edit_url }}/{{ update_channel }}/batch-upload-custom-game-assets/?game_build_id={{ game_build.getPk() }}" class="button is-white is-inset ml-m" data-esc-tracking-service="mixpanel" data-esc-tracking="clicked" data-esc-tracking-content-type="cta-button" data-esc-tracking-context="edit-game-build" data-esc-tracking-element="batch-upload-custom-assets">Batch Upload Assets</a>
+
+            {% endif %}
+            {% if custom_game_assets %}
+                <form action="{{ game.edit_url }}/{{ update_channel }}/batch-download-custom-game-asset-files/?game_build_id={{ game_build.getPk() }}" method="post" target="_blank" data-esc-ajax-form="file" style="display: inline;">
+                    <button class="button is-grey ml-m" data-esc-tracking-service="mixpanel" data-esc-tracking="clicked" data-esc-tracking-content-type="cta-button" data-esc-tracking-context="edit-game-build" data-esc-tracking-element="download-custom-assets-zip">Download All Custom Assets</button>
+                </form>
+            {% endif %}
+        </div>
+
+        <div class="sheet-content p-l">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Slug</th>
+                    {#<th>File Name</th>#}
+                    <th>Type & Size</th>
+                    <th style="text-align: center;">Shared</th>
+                    <th>Updater</th>
+                    <th>Upload Time</th>
+                    <th class="align-right" style="text-align: right;">Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for active_custom_game_asset in custom_game_assets %}
+                    <tr>
+                        <td><a href="{{ game.edit_url }}/{{ update_channel }}/view-custom-game-asset/{{ active_custom_game_asset.slug }}?game_build_id={{ game_build.getPk() }}" data-esc-tracking-service="mixpanel" data-esc-tracking="clicked" data-esc-tracking-content-type="text-link" data-esc-tracking-context="edit-game-build" data-esc-tracking-element="edit-custom-game-asset">{{ active_custom_game_asset.slug }}</a></td>
+                        <td>{{ active_custom_game_asset.custom_game_asset.mime_type }} ({{ active_custom_game_asset.custom_game_asset.file_size|filesize }})</td>
+                        <td class="align-center">{{ active_custom_game_asset.is_public|bool|raw }}</td>
+                        <td>{{ active_custom_game_asset.custom_game_asset.user.username }}</td>
+                        <td>{{ active_custom_game_asset.custom_game_asset.local_create_time|long_date_format }}</td>
+                        <td class="align-right">
+                            {% if update_channel != 'live' %}
+                                <a href="{{ game.edit_url }}/{{ update_channel }}/delete-custom-game-asset/{{ active_custom_game_asset.slug }}/?game_build_id={{ game_build.getPk() }}" data-esc-fancybox="default" data-esc-tracking-service="mixpanel" data-esc-tracking="clicked" data-esc-tracking-content-type="text-link" data-esc-tracking-context="edit-game-build" data-esc-tracking-element="delete-custom-game-asset">Delete</a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+
+</div>

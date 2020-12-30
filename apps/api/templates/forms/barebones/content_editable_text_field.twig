@@ -1,0 +1,10 @@
+<label for="id_{{ field.name }}" {% if field.label_style %}style="{{ field.label_style }}"{% endif %}>
+    {{ field.verbose_name }}
+    {% if field.help_text %}
+        <span class="formhelper">{{ field.help_text }}</span>
+    {% endif %}
+</label>
+
+<input type="hidden" data-esc-form-hidden-textarea="{{ field.name }}{% if field.identifier %}-{{ field.identifier }}{% endif %}" name="{{ field.name }}" value="{{ data[field.name] }}" />
+
+<div class="textarea {% if class_names %}{{ class_names }}{% endif %}" data-esc-form-textarea="{{ field.name }}{% if field.identifier %}-{{ field.identifier }}{% endif %}" contenteditable="true" onkeydown="return disableKeys(this,event);" data-text="{% if field.placeholder %}{{ field.placeholder }}{% else %} {{ field.default_placeholder }} {% endif %}">{{ data[field.name] }}</div>

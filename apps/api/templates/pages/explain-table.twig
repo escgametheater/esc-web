@@ -1,0 +1,11 @@
+<div class="section">
+    <div class="container">
+        <div class="flex is-wrapping pt-m">
+            <h1 class="title is-3">Table Info = `{{ table_name }}`</h1><br/>
+            <div class="is-fullwidth">
+                {{ table_sql|replace(",", ", ")|raw }}
+            </div>
+
+        </div>
+    </div>
+</div>

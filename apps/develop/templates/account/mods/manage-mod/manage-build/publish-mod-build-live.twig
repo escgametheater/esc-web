@@ -1,0 +1,81 @@
+
+<div class="sheet" style="margin-bottom: 0;">
+    <div class="sheet-title">
+        <h3 class="title is-3 mb-s">
+            Publish Game Build Version {{ game_mod_build.build_version }} to live?
+        </h3>
+    </div>
+    <div class="sheet-content p-l" style="color: #666;">
+        <div class="flex is-wrapping">
+            <div class="column is-4">
+                <p style="color: #111;">
+                    This Build
+                </p>
+                <p>
+                    Version: {{ game_mod_build.build_version }}<br/>
+                </p>
+
+                <p>
+                    Custom Assets: {{ count(game_mod_build.custom_game_assets) }}<br/>
+                    Custom Data: {{ count(game_mod_build.custom_data) }}<br/>
+                </p>
+
+
+            </div>
+
+            <div class="column is-4">
+                <p style="color: #111;">
+                    Current Live Build
+                </p>
+                {% if live_game_mod_build %}
+                    <p>
+                        Version: {{ live_game_mod_build.build_version }}<br/>
+                    </p>
+
+                    <p>
+                        Custom Assets: {{ count(live_game_mod_build.custom_game_assets) }}<br/>
+                        Custom Data: {{ count(live_game_mod_build.custom_data) }}<br/>
+                    </p>
+                {% else %}
+                    <p>N/A</p>
+                {% endif %}
+
+            </div>
+            <div class="column is-4">
+                <p style="color: #111;">
+                    Changes
+                </p>
+                <p>
+                    {% if live_game_mod_build %}
+
+                        {% if live_game_mod_build.build_version != game_mod_build.build_version %}
+                            New Version Number<br/>
+                        {% endif %}
+
+                        {% if change_summary.custom_assets %}
+                            <br/>Custom Assets<br/>
+                            {{ change_summary.custom_assets }}<br/>
+                        {% endif %}
+
+                        {% if change_summary.custom_data %}
+                            <br/>Custom Data<br/>
+                            {{ change_summary.custom_data }} <br/>
+                        {% endif %}
+
+                    {% else %}
+                        N/A
+
+                    {% endif %}
+                </p>
+
+            </div>
+
+        </div>
+
+        <div class="pt-m">
+            <form method="post" action="{{ path }}" data-esc-ajax-form="json">
+                {{ form|raw }}
+            </form>
+        </div>
+    </div>
+</div>

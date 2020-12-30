@@ -1,0 +1,44 @@
+<tr>
+    <td style="width: 80%;" class="p-s" colspan="1">
+        {% if service_access_token.service_access_token_type.service_access_token_type_group.service_access_token_type_category_id == 1 %}
+            <strong class="pb-xs is-inline-block">{% if order_item %}An Entire Season of GameDays{% else %}A set of free GameDays{% endif %}</strong><br/>
+        {% endif %}
+        {% if service_access_token.service_access_token_type.service_access_token_type_group.service_access_token_type_category_id == 2 %}
+            <strong class="pb-xs is-inline-block">Early Access to {% if order_item %}Fan Engagement Platform{% else %}CMS Platform{% endif %}</strong>
+        {% endif %}
+        <div class="pl-m">
+            {% if service_access_token.service_access_token_type.service_access_token_type_group.service_access_token_type_category_id == 1 %}
+                {{ service_access_token.original_uses }}x GameDays, up to {{ service_access_token.max_seats|large_number }} players/activation<br/>
+            {% endif %}
+            {% if service_access_token.service_access_token_type.service_access_token_type_group.service_access_token_type_category_id == 2 %}
+                {% if service_access_token.duration == "+1 year" %}
+                    365 Days of CMS access ({{ service_access_token.max_seats }}x user seats)<br/>
+                {% else %}
+                {% endif %}
+                Full license to ESC Games Library<br/>
+                Analytics Integration<br/>
+                {% if host %}
+                    Dedicated host URL: esc.io/{{ host.slug }}<br/>
+                {% endif %}
+            {% endif %}
+        </div>
+
+    </td>
+    <td style="width: 20%; text-align: right;" class="p-s">
+        {% if order_item %}
+            {% if order_item.is_nullified() %}
+                <div class="is-grey" style="text-decoration: line-through;">{{ i18n.displayCurrency(order_item.getSubTotalPrice()) }}</div>
+                {{ i18n.displayCurrency(0.00) }}
+
+            {% else %}
+                {{ i18n.displayCurrency(order_item.getSubTotalPrice()) }}
+            {% endif %}
+        {% else %}
+            {% if service_access_token.service_access_token_type.service_access_token_type_group.service_access_token_type_category_id == 1 %}
+                    {{ i18n.displayCurrency(service_access_token.net_price*service_access_token.original_uses) }}
+            {% elseif service_access_token.service_access_token_type.service_access_token_type_group.service_access_token_type_category_id == 2 %}
+                {{ i18n.displayCurrency(service_access_token.net_price) }}
+            {% endif %}
+        {% endif %}
+    </td>
+</tr>

@@ -1,0 +1,301 @@
+<div class="container pt-m">
+
+    {% include "account/blocks/breadcrumbs.twig" %}
+
+    <div class="flex pt-l is-wrapping">
+        <div class="column is-3 is-fullwidth-mobile">
+
+            {% include "account/blocks/side-nav.twig" %}
+
+        </div>
+        <div class="column is-9 is-fullwidth-mobile">
+            <div class="column is-12">
+                <div class="sheet">
+                    <div class="sheet-title">
+                        <h2 class="title is-2">Edit Host: {{ host.slug }} (Type: {% if host.is_prod %}Production{% else %}Test{% endif %})</h2>
+                        <p class="admin-desc pt-s">
+                            Url: <a href="{{ host.url }}" class="esc-link" target="_blank">{{ host.url }}</a>
+                        </p>
+                    </div>
+                    <form action="{{ path }}" method="post" data-esc-ajax-form="json">
+                        {{ form|raw }}
+                    </form>
+                </div>
+            </div>
+
+            <div class="column is-fullwidth pb-0">
+                <nav class="tabs__navigation group">
+                    <a class="tabs__link tabs__link--active" href="#hostinstances">{% t "Active Host Instances" %}</a>
+                    <a class="tabs__link" href="#gamedays">{% t "GameDays" %}</a>
+                </nav>
+
+                {# Hosts #}
+                <div class="tabs__section" id="hostinstances">
+                    <div class="column is-12">
+                        <div class="sheet">
+                            <div class="sheet-title">
+                                <h2 class="title is-2">Active Host Instances</h2>
+                                <p class="admin-desc">
+                                    Host instances are created and run when you start the ESCHost&trade; App.
+                                </p>
+                            </div>
+                            <div class="sheet-content p-0">
+
+                                {% for host_instance in host_instances %}
+                                    {% set activationGroup = host_instance.activation_group %}
+                                    {% set usedActivationIds = [] %}
+                                    {% set gameRunning = false %}
+
+                                    <div class="sheet">
+
+                                        <table class="table" style="width: 100%; text-align: left;" cellpadding="0" cellspacing="0">
+                                            <thead style="{% if not host_instance.exit_status %}{% if host_instance.platform_id == 7 %}background-color: lightblue;{% else %}background-color: lightgreen;{% endif %} {% else %} background-color: #ececec;{% endif %}">
+                                                <th style="width: 30%;">
+                                                    Status:
+                                                    {% if host_instance.exit_status %}
+                                                        {% if host_instance.exit_status == "timed-out" %}
+                                                            Timed Out
+                                                        {% elseif host_instance.exit_status == 'quit' %}
+                                                            Quit
+                                                        {% else %}
+                                                            {{ host_instance.exit_status }}
+                                                        {% endif %}
+                                                    {% else %}
+                                                        Active
+                                                    {% endif %}
+                                                </th>
+                                            <th style="width: 25%">User Account</th>
+                                            <th>Game Details</th>
+                                            </thead>
+                                            <tbody>
+                                            <tr>
+                                                <td style="vertical-align: top; width: 20%;">
+                                                    Host Version:
+                                                    {% if host_instance.host_version %}
+                                                        {{ host_instance.host_version.version }}
+                                                    {% else %}
+                                                        {% if host_instance.platform_id == 7 %}
+                                                            ESC Cloud Server
+                                                        {% else %}
+                                                            Dev Branch
+                                                        {% endif %}
+                                                    {% endif %}
+                                                    {% if host_instance.platform %}
+                                                        ({{ host_instance.platform.display_name }})
+                                                    {% else %}
+                                                        (Unknown Platform)
+                                                    {% endif %}
+                                                    <br/>
+                                                    <br/>
+                                                    Started: {{ host_instance.local_start_time }}<br/>
+                                                    Stopped: {{ host_instance.local_end_time }}<br/><br/>
+                                                    Last Ping: {{ host_instance.local_last_ping_time }}<br/>
+
+                                                </td>
+                                                <td style="width: 15%;">
+                                                    {% set user = host_instance.user %}
+
+                                                    {% if user.username %}
+                                                        {{ user.username }}<br/>
+                                                    {% endif %}
+                                                    {% if user.first_name %}
+                                                        {{ user.first_name }} {{ user.last_name }}<br/>
+                                                    {% endif %}
+                                                    {{ user.phone_number }}<br/>
+                                                    {{ user.email_address }}
+
+                                                    <br/><br/>
+                                                    {% if host_instance.location %}
+                                                        {% set location = host_instance.location %}
+                                                        {% if location.address %}
+                                                            {% set address = location.address %}
+                                                            {% if address.address_line1 %}
+                                                                {{ address.address_line1 }}<br/>
+                                                            {% endif %}
+                                                            {{ address.city }}, {{ address.zip }} {{ address.state }}<br/>
+                                                            {% if address.country %}
+                                                                {{ address.country.display_name }}<br/>
+                                                            {% endif %}
+
+                                                        {% endif %}
+                                                    {% else %}
+                                                        Unknown Location
+                                                    {% endif %}
+                                                </td>
+                                                <td style="vertical-align: top;">
+                                                    <table style="width: 100%; text-align: left; background-color: lightyellow;">
+                                                        <tbody>
+
+                                                        {% for index, game_instance in host_instance.game_instances %}
+
+                                                            {% if loop.first %}
+                                                                <tr style="background-color: #fff;">
+                                                                    <td colspan="2" class="pt-0 pb-s pl-0">
+                                                                        <strong>Game Instances</strong>
+                                                                    </td>
+                                                                </tr>
+                                                            {% endif %}
+
+
+                                                            {% set game = game_instance.game %}
+                                                            {% if game_instance.activation_id and game_instance.activation_id not in usedActivationIds %}
+                                                                {% set usedActivationIds = usedActivationIds|merge([ game_instance.activation_id ]) %}
+                                                            {% endif %}
+
+                                                            {% if not game_instance.end_time %}
+                                                                {% set gameRunning = true %}
+                                                            {% endif %}
+
+                                                            <tr {% if not game_instance.end_time %}style="background-color: #CFEED0;"{% endif %}>
+                                                                <td style="vertical-align: top; width: 70%;">
+                                                                    <div class="float-left pr-xs" style="padding-top: 2px;">
+                                                                        <div class="image is-square">
+                                                                            <img src="{{ game.avatar.tiny_url }}" style="width: 16px; height: auto; display: inline-block;"/>
+                                                                        </div>
+
+                                                                    </div>
+                                                                    <strong>{{ game.display_name }} v{{ game_instance.game_build.game_build_version }}</strong>
+                                                                    <div style="clear: both;"></div>
+                                                                    Start: {{ game_instance.local_start_time }}<br/>
+                                                                    Stop: {{ game_instance.local_end_time }}<br/>
+
+                                                                    {% if game_instance.game_mod_build %}
+                                                                        {% set game_mod = game_instance.game_mod %}
+                                                                        {% set game_mod_build = game_instance.game_mod_build %}
+                                                                        <br/><strong>Mod</strong><br/>
+                                                                        {{ game_mod.display_name }} v{{ game_mod_build.build_version }} ({{ game_mod_build.update_channel }})
+                                                                    {% endif %}
+
+                                                                    {% if game_instance.activation_id %}
+                                                                        <br/>Activation <br/>{{ game_instance.activation.display_name }}
+                                                                    {% endif %}
+                                                                    <br/><br/>
+
+                                                                </td>
+                                                                <td>
+                                                                    {% if not game_instance.end_time %}
+
+                                                                        {% if game_instance.has_admin_controller() %}
+                                                                            <a href="#" class="button is-black is-small is-fullwidth" target="_blank" data-esc-game-instance-button="admin-controller" data-game-instance-id="{{ game_instance.getPk() }}" data-url="{{ host.url }}/admin">Admin Controller</a>
+                                                                        {% endif %}
+
+                                                                        <a href="#"
+                                                                           class="button is-danger is-small is-fullwidth"
+                                                                           data-esc-game-instance-button="quit-game"
+                                                                           data-pub-sub-channel="{{ host_instance.getPubSubChannel() }}"
+                                                                           data-host-instance-id="{{ host_instance.getPk() }}"
+                                                                           data-game-instance-id="{{ game_instance.getPk() }}">Quit Game</a>
+
+                                                                        {% if game_instance.has_running_round() %}
+                                                                            <a href="#"
+                                                                               class="button is-danger is-mini is-small is-fullwidth"
+                                                                               data-esc-game-instance-button="go-offline"
+                                                                               data-pub-sub-channel="{{ host_instance.getPubSubChannel() }}"
+                                                                               data-host-instance-id="{{ host_instance.getPk() }}"
+                                                                               data-game-instance-id="{{ game_instance.getPk() }}">End Live Game</a>
+                                                                        {% else %}
+                                                                            <a href="#"
+                                                                               class="button is-primary is-small is-fullwidth"
+                                                                               data-esc-game-instance-button="go-live"
+                                                                               data-pub-sub-channel="{{ host_instance.getPubSubChannel() }}"
+                                                                               data-host-instance-id="{{ host_instance.getPk() }}"
+                                                                               data-game-instance-id="{{ game_instance.getPk() }}">Go Live</a>
+                                                                        {% endif %}
+                                                                    {% endif %}
+                                                                </td>
+                                                            </tr>
+                                                        {% endfor %}
+
+                                                        {% for activation in activationGroup.activations %}
+
+                                                            {% if loop.first %}
+                                                                <tr style="background-color: #fff;">
+                                                                    <td colspan="2" class="pt-s pb-s pl-0">
+                                                                        <strong>Scheduled Activations</strong>
+                                                                    </td>
+                                                                </tr>
+                                                            {% endif %}
+
+                                                            {% set game = activation.game %}
+                                                            {% set game_build = game.game_builds.live %}
+                                                            <tr style="background-color: #f1f1f1;">
+                                                                <td style="vertical-align: top; width: 70%;">
+                                                                    <div class="float-left pr-xs" style="padding-top: 2px;">
+                                                                        <div class="image is-square">
+                                                                            <img src="{{ game.avatar.tiny_url }}" style="width: 16px; height: auto; display: inline-block;"/>
+                                                                        </div>
+                                                                    </div>
+                                                                    <strong>{{ game.display_name }} v{{ game_build.game_build_version }}</strong>
+                                                                    <div style="clear: both;"></div>
+                                                                    {#Start: {{ game_instance.local_start_time }}<br/>#}
+                                                                    {#Stop: {{ game_instance.local_end_time }}<br/>#}
+
+
+                                                                    {% if activation.game_mod.game_mod_builds.live %}
+                                                                        {% set game_mod = activation.game_mod %}
+                                                                        {% set game_mod_build = activation.game_mod.game_mod_builds.live %}
+                                                                        <br/>Mod<br/>
+                                                                        <strong>{{ game_mod.display_name }} v{{ game_mod_build.build_version }} ({{ game_mod_build.update_channel }})</strong>
+                                                                    {% endif %}
+
+                                                                    {% if game_instance.activation_id %}
+                                                                        <br/>Activation <br/>{{ game_instance.activation.display_name }}
+                                                                    {% endif %}
+                                                                    <br/><br/>
+
+                                                                </td>
+                                                                <td>
+                                                                    {% if activation.getPk() not in usedActivationIds %}
+                                                                        {% set startAgainWarning = false %}
+                                                                    {% else %}
+                                                                        {% set startAgainWarning = true %}
+                                                                    {% endif %}
+                                                                    <a href="#"
+                                                                       class="button {% if startAgainWarning %}is-primary{% else %}is-primary{% endif %} is-mini is-small is-fullwidth {% if gameRunning %}is-disabled{% endif %}"
+                                                                       data-esc-game-button="start-game"
+                                                                       data-host-instance-id="{{ host_instance.getPk() }}"
+                                                                       data-game-id="{{ game.getPk() }}"
+                                                                       data-activation-id="{{ activation.getPk() }}"
+                                                                       data-pub-sub-channel="{{ host_instance.getPubSubChannel() }}"
+                                                                       data-game-mod-build-id="{{ game_mod_build.getPk() }}"
+                                                                       {% if gameRunning %}data-esc-tooltip="You have to stop your current games before starting a new one."{% else %}{% if startAgainWarning %}data-esc-tooltip="You've already run this activation once. Are you sure you want to do this?"{% else %}{% endif %}{% endif %}>{% if startAgainWarning %}Restart Game{% else %}Start Game{% endif %}</a>
+                                                                </td>
+                                                            </tr>
+                                                        {% endfor %}
+
+                                                        </tbody>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                {% endfor %}
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {# Hosts #}
+                <div class="tabs__section" id="gamedays">
+                    <div class="column is-12">
+                        <div class="sheet">
+                            <div class="sheet-title">
+                                <h2 class="title is-2">GameDays</h2>
+                                <p class="admin-desc">
+                                    Below you can view the list of GameDays that were scheduled for this host.
+                                </p>
+                            </div>
+                            <div class="sheet-content p-0">
+                                {% include "account/activations/blocks/activation-groups-table.twig" %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+

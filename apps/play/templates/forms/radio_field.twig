@@ -1,0 +1,23 @@
+
+<fieldset class="id_{{ field.name }} " id="id_{{ field.name }}">
+    <legend>{{ field.verbose_name }}</legend>
+    {% for option in field.options %}
+
+        <label class="radio {% if class_names %}{{ class_names }}{% endif %}">
+            {% if option.id %}
+                <input type="radio" name="{{ field.name }}"  {% if data[field.name] == option.id %} checked="checked"{% endif %} value="{{ option.id }}" {% if option.disabled is defined and option.disabled %}disabled="disabled"{% endif %} />
+                {% if option.display_name %}{{ option.display_name }}{% else %}{{ option.name }}{% endif %}
+            {% else %}
+                <input type="radio" name="{{ field.name }}"  {% if data[field.name] == option[0] %} checked="checked"{% endif %} value="{{ option[0] }}" {% if option[2] and option[2] == 0 %}disabled="disabled"{% endif %} />
+                {{ option[1] }}
+            {% endif %}
+        </label>
+
+        {% if field.inline %}<br />{% endif %}
+    {% endfor %}
+</fieldset>
+{% if field.help_text %}
+    <span class="helptext">
+            {{ field.help_text }}
+        </span>
+{% endif %}

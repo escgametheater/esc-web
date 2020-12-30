@@ -1,0 +1,132 @@
+======================
+Database API reference
+======================
+
+Retrieving data
+===============
+
+Chaining filters
+~~~~~~~~~~~~~~~~
+
+The result of refining a ``Query`` is itself a ``Query``, so it's
+possible to chain refinements together. For example::
+
+    $q = NewsManager::objects()
+		->filter(Q::Eq('title', 'Hello'))
+		->limit(10);
+
+...takes the initial ``Query`` of all entries in the database, adds a filter, then a limit on the number of fetched results. The final result is a ``Query`` containing up to 10 entries with a headline that is equal to "Hello".
+
+Counting rows
+~~~~~~~~~~~~~
+
+$total = GroupNewsManager::objects()
+	->filter(Q::Eq('group_id', $group['id']))
+	->count();
+
+Calls
+-----
+factory
+``start``
+
+modifiers
+``group_by``
+``order_by``
+``paging``
+``offset``
+``limit``
+``table``
+``virtual_fields``
+``foreign_key``
+
+triggers query
+``increment``
+``decrement``
+``count``
+``exists``
+
+``get``
+``get_list``
+``sql``
+``random``
+
+``get_or_404``
+``get_bool``
+``get_int``
+``get_value``
+``get_options``
+``get_foreign_key``
+
+``update``
+``delete``
+``replace``
+``add``
+
+Saving data
+===========
+
+$id = GroupsManager::objects()->add(array(
+	'name'			=> $form->cleaned_data[Form::FIELD_NAME],
+	'slug'			=> $form->cleaned_data[Form::FIELD_SLUG],
+	'description'	=> $form->cleaned_data[Form::FIELD_DESCRIPTION],
+	'website'		=> $form->cleaned_data[FormField::WEBSITE],
+));
+
+It accepts additional parameters
+1st on duplicate clause (what do on duplicate key error)
+2nd ignore the error on duplicate key (failed to insert row)
+and continue execution as if it succeded
+
+Updating data
+=============
+
+GroupsManager::objects()
+	->filter($group['id'])
+	->update(array(
+		'name'			=> $form->cleaned_data[Form::FIELD_NAME],
+		'slug'			=> $form->cleaned_data[Form::FIELD_SLUG],
+		'description'	=> $form->cleaned_data[Form::FIELD_DESCRIPTION],
+		'website'		=> $form->cleaned_data[FormField::WEBSITE],
+	)
+);
+
+Replacing data
+==============
+
+GroupsManager::objects()
+	->filter($group['id'])
+	->replace(array(
+		'name'			=> $form->cleaned_data[Form::FIELD_NAME],
+		'slug'			=> $form->cleaned_data[Form::FIELD_SLUG],
+		'description'	=> $form->cleaned_data[Form::FIELD_DESCRIPTION],
+		'website'		=> $form->cleaned_data[FormField::WEBSITE],
+	)
+);
+
+Querying for data
+=================
+
+There are some commodity shortcuts for getting single values:
+* get_int
+* get_bool
+* get_value
+* get_404 -> throws a 404 exception instead of a ObjectNotFound exception, handy for details pages
+* get_options -> get in a way compatible with the form module options ({0 => <name>, 1 => <value>})
+* get_foreign_key -> added more data when you have a foreign key: for example you have row[DBField::COMIC_ID],
+you can fetch the name and other info as row['comic_name'] like this
+MangaManager::objects()->get_foreign_key($existing_data, 'manga'/*prefix*/, array('name'));
+The prefix is the part before the _ to indicate where the data should stored.
+In general you would use the foreign_key wrapper for this function.
+
+The main functions for getting data are:
+* get -> single row, throws a ObjectNotFound when that row doesn't exist
+* get_list -> get mutliple rows and return then as an array
+
+Example use:
+// fetch on manga
+MangaManager::objects()
+	->filter($id)
+	->get('id', 'slug', 'name');
+
+// fetch all the manga
+MangaManager::objects()->get_list('id', 'slug', 'name');

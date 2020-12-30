@@ -1,0 +1,15 @@
+<p class="id_{{ field.name }}">
+
+  <label for="id_{{ field.name }}"
+{% if field.label_style %}style="{{ field.label_style }}"{% endif %} class="tgl-btn {% if class_names %}{{ class_names }}{% endif %}">
+<input type="checkbox" id="id_{{ field.name }}" name="{{ field.name }}"
+       {% if data[field.name] %}checked="checked"{% endif %}
+        {% if field.style %}style="{{ style }}"{% endif %} />
+{{ field.verbose_name }}
+
+
+</label>
+
+</p>
+<!-- <input id="cb1" type="checkbox" class="tgl tgl-light"/>
+    <label for="cb1" class="tgl-btn"></label> -->

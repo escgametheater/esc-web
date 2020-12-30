@@ -1,0 +1,51 @@
+<div class="flex">
+    <div class="column is-12">
+
+        <h1 class="title is-4 is-fullwidth">
+
+            {% set active_build_tab = get.active_build_tab %}
+
+            <a href="{{ develop_url }}/teams/{{ active_organization.slug }}/" class="esc-link">
+                <span class="image is-creator is-tiny is-inline-block" style="top: 2px;"><img src="{{ active_organization.avatar.small_url }}" /></span> <a class="esc-link ml-xs" href="{{ develop_url }}/teams/{{ active_organization.slug }}/" data-esc-tracking-service="mixpanel" data-esc-tracking="clicked" data-esc-tracking-content-type="breadcrumb" data-esc-tracking-context="team-dashboard">{{ active_organization.display_name }}</a>
+            </a>
+
+
+            {#{% if count(organizations) > 1 %}#}
+                {#{% include "account/blocks/org-selector-form.twig" %}#}
+            {#{% else %}#}
+                {#<a href="{{ develop_url }}/teams/{{ active_organization.slug }}/" class="esc-link">#}
+                    {#<span class="image is-creator is-tiny is-inline-block" style="top: 2px;"><img src="{{ active_organization.avatar.small_url }}" /></span> <a class="esc-link ml-xs" href="{{ develop_url }}/teams/{{ active_organization.slug }}/">{{ active_organization.display_name }}</a>#}
+                {#</a>#}
+            {#{% endif %}#}
+
+            <div class="is-inline-block pt-xs" style="padding-top:6px !important;">
+                &raquo;
+
+            <a class="esc-link" href="/teams/{{ active_organization.slug }}/manage-mods" data-esc-tracking-service="mixpanel" data-esc-tracking="clicked" data-esc-tracking-content-type="breadcrumb" data-esc-tracking-context="manage-game-mods">Mods</a> &raquo;
+                <a href="{{ develop_url }}/teams/{{ active_organization.slug }}/manage-mods/{{ game_mod.game.slug }}" class="esc-link" data-esc-tracking-service="mixpanel" data-esc-tracking="clicked" data-esc-tracking-content-type="breadcrumb" data-esc-tracking-context="manage-game-mods" data-esc-tracking-element="game">{{ game.display_name }}</a> &raquo;
+                {% if page == 'dev-org-manage-mod' %}
+                    {{ game_mod.display_name }}
+                {% else %}
+                    <a class="esc-link" href="{{ game_mod.edit_url }}" data-esc-tracking-service="mixpanel" data-esc-tracking="clicked" data-esc-tracking-content-type="breadcrumb" data-esc-tracking-context="manage-game-mods" data-esc-tracking-element="mod">{{ game_mod.display_name }}</a>
+                {% endif %}
+
+                {% if page == 'game-access-control' %}
+                    &raquo; User Licenses &raquo; {{ active_update_channel.display_name }}
+                {% elseif page == 'game-vtt-interface' %}
+                    &raquo; VTT Interface &raquo; {{ active_update_channel.display_name }}
+
+                {% elseif page == 'game-mod-builds' %}
+                    &raquo; Builds &raquo; {{ active_update_channel.display_name }}
+                {% elseif page == 'view-game-mod-build' %}
+                    &raquo; <a href="{{ game_mod.edit_url }}/{{ update_channel }}/builds" class="esc-link" data-esc-tracking-service="mixpanel" data-esc-tracking="clicked" data-esc-tracking-content-type="breadcrumb" data-esc-tracking-context="manage-game-mod-builds" data-esc-tracking-element="{{ update_channel }}">Builds</a> &raquo; {{ active_update_channel.display_name }} v{{ game_mod_build.build_version }}
+                {% elseif page == 'game-mod-view-custom-data' %}
+                    &raquo; <a href="{{ game_mod.edit_url }}/{{ update_channel }}/builds" class="esc-link" data-esc-tracking-service="mixpanel" data-esc-tracking="clicked" data-esc-tracking-content-type="breadcrumb" data-esc-tracking-context="manage-game-mod-builds" data-esc-tracking-element="{{ update_channel }}">Builds</a> &raquo; <a class="esc-link" href="{{ game_mod.edit_url }}/{{ update_channel }}/view-mod-build/{{ game_mod_build.getPk() }}" data-esc-tracking-service="mixpanel" data-esc-tracking="clicked" data-esc-tracking-content-type="breadcrumb" data-esc-tracking-context="manage-game-mod-build" data-esc-tracking-element="{{ update_channel }}">{{ active_update_channel.display_name }} v{{ game_mod_build.build_version }}</a> &raquo; <a href="{{ game_mod.edit_url }}/{{ update_channel }}/view-mod-build/{{ game_mod_build.getPk() }}?active_build_tab=custom-data" class="esc-link" data-esc-tracking-service="mixpanel" data-esc-tracking="clicked" data-esc-tracking-content-type="breadcrumb" data-esc-tracking-context="manage-game-mod-build" data-esc-tracking-element="custom-data">Custom Data</a> &raquo; {{ game_mod_data.key }}
+                {% elseif page == 'batch-upload-custom-mod-assets' %}
+                    &raquo; <a href="{{ game_mod.edit_url }}/{{ update_channel }}/builds" class="esc-link" data-esc-tracking-service="mixpanel" data-esc-tracking="clicked" data-esc-tracking-content-type="breadcrumb" data-esc-tracking-context="manage-game-mod-builds" data-esc-tracking-element="{{ update_channel }}">Builds</a> &raquo; <a class="esc-link" href="{{ game_mod.edit_url }}/{{ update_channel }}/view-mod-build/{{ game_mod_build.getPk() }}" data-esc-tracking-service="mixpanel" data-esc-tracking="clicked" data-esc-tracking-content-type="breadcrumb" data-esc-tracking-context="manage-game-mod-build" data-esc-tracking-element="{{ update_channel }}">{{ active_update_channel.display_name }} v{{ game_mod_build.build_version }}</a> &raquo; <a href="{{ game_mod.edit_url }}/{{ update_channel }}/view-mod-build/{{ game_mod_build.getPk() }}?active_build_tab=custom-assets" class="esc-link" data-esc-tracking-service="mixpanel" data-esc-tracking="clicked" data-esc-tracking-content-type="breadcrumb" data-esc-tracking-context="manage-game-mod-build" data-esc-tracking-element="custom-assets">Custom Assets</a> &raquo; Batch Upload
+                {% elseif page == 'view-custom-game-mod-asset' %}
+                    &raquo; <a href="{{ game_mod.edit_url }}/{{ update_channel }}/builds" class="esc-link" data-esc-tracking-service="mixpanel" data-esc-tracking="clicked" data-esc-tracking-content-type="breadcrumb" data-esc-tracking-context="manage-game-mod-builds" data-esc-tracking-element="{{ update_channel }}">Builds</a> &raquo; <a class="esc-link" href="{{ game_mod.edit_url }}/{{ update_channel }}/view-mod-build/{{ game_mod_build.getPk() }}" data-esc-tracking-service="mixpanel" data-esc-tracking="clicked" data-esc-tracking-content-type="breadcrumb" data-esc-tracking-context="manage-game-mod-build" data-esc-tracking-element="{{ update_channel }}">{{ active_update_channel.display_name }} v{{ game_mod_build.build_version }}</a> &raquo; <a href="{{ game_mod.edit_url }}/{{ update_channel }}/view-mod-build/{{ game_mod_build.getPk() }}?active_build_tab=custom-assets" class="esc-link" data-esc-tracking-service="mixpanel" data-esc-tracking="clicked" data-esc-tracking-content-type="breadcrumb" data-esc-tracking-context="manage-game-mod-build" data-esc-tracking-element="custom-assets">Custom Assets</a> &raquo; {{ custom_game_asset_link.slug }}
+                {% endif %}
+            </div>
+        </h1>
+    </div>
+</div>

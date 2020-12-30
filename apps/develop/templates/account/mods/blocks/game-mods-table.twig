@@ -1,0 +1,52 @@
+<table class="table mt-m">
+    <thead>
+    <th>Title</th>
+    <th>Game</th>
+    <th>Live Build</th>
+    <th>Dev Build</th>
+    <th></th>
+    </thead>
+    <tbody>
+    {% for game_mod in game_mods %}
+        <tr>
+            <td>
+                <a href="{{ game_mod.edit_url }}{% if game_mod.game.can_customize() %}/customizer{% endif %}" data-esc-tracking-service="mixpanel" data-esc-tracking="clicked" data-esc-tracking-content-type="text-link" data-esc-tracking-context="{% if game_mod.game.can_customize() %}customize-game-mod{% else %}edit-game-mod{% endif %}" data-esc-tracking-element="{{ game_mod.getPk() }}">
+                    {{ game_mod.display_name }}
+                </a>
+            </td>
+            <td>
+                <img src="{{ game_mod.game.avatar.tiny_url }}" style="max-height: 16px; width: auto; margin-right: 5px;" alt="{{ game_mod.display_name }}" />
+                {{ game_mod.game.display_name }}
+            </td>
+            <td>
+                {% if game_mod.game_mod_builds.live %}
+                    <a href="{{ game_mod.edit_url }}/live/view-mod-build/{{ game_mod.game_mod_builds.live.getPk() }}" data-esc-tracking-service="mixpanel" data-esc-tracking="clicked" data-esc-tracking-content-type="text-link" data-esc-tracking-context="edit-live-mod-build" data-esc-tracking-element="{{ game_mod.game_mod_builds.live.getPk() }}">{{ game_mod.game_mod_builds.live.build_version }}</a>
+                {% endif %}
+            </td>
+            <td>
+                {% if game_mod.game_mod_builds.dev %}
+                    <a href="{{ game_mod.edit_url }}/dev/view-mod-build/{{ game_mod.game_mod_builds.dev.getPk() }}" data-esc-tracking-service="mixpanel" data-esc-tracking="clicked" data-esc-tracking-content-type="text-link" data-esc-tracking-context="edit-dev-mod-build" data-esc-tracking-element="{{ game_mod.game_mod_builds.dev.getPk() }}">{{ game_mod.game_mod_builds.dev.build_version }}</a>
+                {% endif %}
+            </td>
+            <td class="align-right">
+
+                <span class="expand-container align-left">
+                    <img src="{{ www_url }}/static/images/icons/more-vert.svg" class="img-more-vert" />
+                    <div class="expand-options" >
+                        {% if game_mod.game.can_customize() %}
+                            <a href="{{ game_mod.edit_url }}/customizer" class="is-block" data-esc-tracking-service="mixpanel" data-esc-tracking="clicked" data-esc-tracking-content-type="text-link" data-esc-tracking-context="overflow-customize-game-mod" data-esc-tracking-element="{{ game_mod.getPk() }}">Customize</a>
+                        {% endif %}
+                        <a href="{{ game_mod.edit_url }}" class="is-block" data-esc-tracking-service="mixpanel" data-esc-tracking="clicked" data-esc-tracking-content-type="text-link" data-esc-tracking-context="overflow-edit-game-mod" data-esc-tracking-element="{{ game_mod.getPk() }}">Edit</a>
+                        <a href="{{ game_mod.delete_url }}" class="is-block" data-esc-fancybox="default" data-esc-tracking-service="mixpanel" data-esc-tracking="clicked" data-esc-tracking-content-type="text-link" data-esc-tracking-context="overflow-delete-game-mod" data-esc-tracking-element="{{ game_mod.getPk() }}">Delete</a>
+                        {% if game_mod.game_mod_builds.live is defined %}
+                            <a href="{{ game_mod.clone_url }}" class="block" data-esc-fancybox="default" data-esc-tracking-service="mixpanel" data-esc-tracking="clicked" data-esc-tracking-content-type="text-link" data-esc-tracking-context="overflow-clone-game-mod" data-esc-tracking-element="{{ game_mod.getPk() }}">Clone</a>
+                        {% else %}
+                            <span class="is-grey is-block" data-esc-tooltip="You can only clone from live published builds into a new mod.">Clone</span>
+                        {% endif %}
+                    </div>
+                </span>
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>

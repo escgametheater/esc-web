@@ -1,0 +1,11 @@
+* class: instanciable classes
+* core: code needs to manage modules
+* helpers: non instantiable classes
+* docs: documentation
+* func: various functions
+* handlers: entrance point using various methods
+* libs: external libs used by the framework
+* managers: classes to access database objects (requires managers module)
+* modules: all the modules
+* scripts: scripts to be executed via the CLI
+* tests: tests

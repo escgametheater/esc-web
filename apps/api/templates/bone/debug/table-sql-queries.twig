@@ -1,0 +1,15 @@
+<table id="debug_queries" style="width: 100%" cellspacing="0" cellpadding="0">
+	<tr>
+		<th style="width: 25px;">Time</th>
+		<th style="padding-left: 10px;">Query</th>
+	</tr>
+
+	{% for query in sql_queries %}
+		<tr class="qrow">
+			<td style="{% if query[0] >= 20 %}color: red; {% endif %}{% if query[0] >= 7 and query[0] <= 20 %}color: orange; {% endif %}{% if query[0] <= 7 %}color: green; {% endif %}font-weight: bold;">{{ query[0] }}</td>
+			<td style="padding-left: 10px; padding-top: 3px; padding-bottom: 3px;">
+				<a href="/debug/explain-query?query={{ query[1]|base64_encode|urlencode }}" style="text-decoration: none; color: black;">{{ query[2]|raw }}</a>
+			</td>
+		</tr>
+	{% endfor %}
+</table>

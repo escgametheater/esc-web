@@ -1,0 +1,58 @@
+<div class="content align-center"><a id="edit-translations-trigger" href="#edit-translations">Edit Translations</a></div>
+<script>
+    $(document).ready(function(){
+        $('#edit-translations-trigger').fancybox({
+            type: 'inline',
+            maxWidth: 1280,
+            maxHeight: '80%',
+            width: '80%',
+            fitToView: true,
+            autoCenter: true,
+            keys: {
+                close: [27]
+            },
+            autoSize: false,
+            // closeClick  : false,
+            openEffect: 'none',
+            closeEffect: 'none',
+            wrapCSS: '',
+            helpers: {
+                overlay: {
+                    locked: false,
+                    css : {
+                        'background' : 'rgba(58, 42, 45, .95) !important'
+                    }
+                }
+            }
+        });
+    })
+</script>
+<div class="is-hidden">
+    <div class="content" id="edit-translations" style="max-height: 85vh; overflow-y: scroll;">
+        <div class="pt-l pl-l">
+            <h2 class="title is-2">Editing Translations for Language: {{ ui_lang }}</h2>
+        </div>
+        {% for t in i18n.get_edit_translations() %}
+            <div class="sheet">
+                <div class="sheet-title">
+                    ID: {{ t.id }}<br/>
+                    Default: {{ t.default }}<br/>
+                    {% if t.variables %}
+                        Variables:
+                        {% for name, value in t.variables %}
+                            {<span>{{ name }}</span>}{% if not loop.last %}, {% endif %}
+                        {% endfor %} gets replaced with dynamic data.
+                    {% endif %}
+                </div>
+                <div class="sheet-content">
+                    <form method="post" data-esc-ajax-form="json" action="/submit-translation" data-esc-form-success-method="remain">
+                        <input type="hidden" name="id" value="{{ t.id }}" />
+                        <input type="hidden" name="lang_id" value="{{ ui_lang }}" />
+                        <textarea class="textarea" name="text" style="min-height: 60px;">{{ t.text }}</textarea><br/>
+                        <button type="submit" class="button is-primary is-small">Save</button>
+                    </form>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>

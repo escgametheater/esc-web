@@ -1,0 +1,18 @@
+<div class="sidebar-title mb-s"> {% t "Mod Settings" %}</div>
+<div class="pb-l">
+    <a href="{{ game_mod.edit_url }}" class="sidebar-settinglink {% if page == "dev-org-manage-mod" %} is-active{% endif %}" data-esc-tracking-service="mixpanel" data-esc-tracking="clicked" data-esc-tracking-content-type="side-nav-link" data-esc-tracking-context="manage-game-mod-settings">{% t "Settings" %}</a>
+</div>
+
+<div class="sidebar-title mb-s"> {% t "Access Control" %}</div>
+<div class="pb-l">
+    <a href="{{ game_mod.edit_url }}/{% if update_channel %}{{ update_channel }}{% else %}live{% endif %}/access-control" class="sidebar-settinglink {% if page == "game-mod-access-control" %} is-active{% endif %}" data-esc-tracking-service="mixpanel" data-esc-tracking="clicked" data-esc-tracking-content-type="side-nav-link" data-esc-tracking-context="manage-game-mod-user-licenses">{% t "Licenses" %}</a>
+</div>
+
+<div class="sidebar-title mb-s"> {% t "Builds & Content" %}</div>
+<div class="pb-l">
+    {% set game_build_pages = ["game-mod-builds", "view-custom-game-mod-asset", "view-game-mod-build", "game-mod-view-custom-data"] %}
+    {% for uc in update_channels %}
+        <a href="{{ game_mod.edit_url }}/{{ uc.id }}/builds" class="sidebar-settinglink {% if update_channel == uc.id and in_array(page, game_build_pages) %} is-active{% endif %}" data-esc-tracking-service="mixpanel" data-esc-tracking="clicked" data-esc-tracking-content-type="side-nav-link" data-esc-tracking-context="manage-game-mod-builds" data-esc-tracking-element="{{ uc.id }}">{% t uc.display_name %}</a>
+    {% endfor %}
+</div>
+

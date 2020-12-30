@@ -1,0 +1,40 @@
+<div class="container pt-m">
+
+    {% include "account/blocks/breadcrumbs.twig" %}
+
+    <div class="flex pt-l is-wrapping">
+        <div class="column is-3 is-fullwidth-mobile">
+
+            {% include "account/blocks/side-nav.twig" %}
+
+        </div>
+        <div class="column is-9 is-fullwidth-mobile">
+            <div class="column is-12">
+                <div class="sheet">
+                    <div class="sheet-title">
+                        <h2 class="title is-2">GameDays</h2>
+                        <p class="admin-desc">
+                            Schedule the dates and times when you will run ESC activations. You have {{ count(service_access_token_instances) }} unused GameDay licenses left.
+                        </p>
+                        <div>
+                            {% set canCreateActivationGroup = count(service_access_token_instances) > 0 %}
+                            <a class="button is-primary {% if not canCreateActivationGroup %}is-disabled{% endif %}" href="{{ develop_url }}/teams/{{ active_organization.slug }}/activations/create" data-esc-fancybox="default" {% if not canCreateActivationGroup %}data-esc-tooltip="You need to purchase a licence for each GameDay that you add. If you have no more GameDays available, you need to re-fill your available GameDay licenses by contacting ESC Business Development."{% endif %} data-esc-tracking-service="mixpanel" data-esc-tracking="clicked" data-esc-tracking-content-type="cta-button" data-esc-tracking-context="create-activation">
+                                Add New
+                            </a>
+                        </div>
+                    </div>
+                    <div class="sheet-content p-l">
+
+
+                        {% include "account/activations/blocks/activation-groups-table.twig" %}
+
+                        {#<button type="submit" class="button is-primary">Save</button>#}
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

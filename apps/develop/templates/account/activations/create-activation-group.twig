@@ -1,0 +1,10 @@
+<div class="ajax-modal-container align-left">
+    <div class="sheet p-l" style="margin-bottom: 0;">
+        <h3 class="title is-3 mb-l">
+            Create GameDay
+        </h3>
+        <form method="post" action="{{ develop_url }}/teams/{{ active_organization.slug }}/activations/create" data-esc-ajax-form="json" data-esc-form-success-method="reload">
+            {{ form|raw }}
+        </form>
+    </div>
+</div>

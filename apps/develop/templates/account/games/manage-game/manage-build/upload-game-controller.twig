@@ -1,0 +1,10 @@
+<div class="ajax-modal-container align-left">
+    <div class="sheet p-m" style="margin-bottom: 0;">
+        <h3 class="title is-3 mb-l">
+            {{ game.display_name }}: Create new game controller for build: {{ game_build.game_build_id }}
+        </h3>
+        <form method="post" enctype="multipart/form-data" action="{{ path }}?game_build_id={{ game_build.getPk() }}" data-esc-ajax-form="json" >
+            {{ form|raw }}
+        </form>
+    </div>
+</div>

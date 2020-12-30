@@ -1,0 +1,17 @@
+
+    <select id="id_{{ field.name }}" name="{{ field.name }}[]" multiple="multiple" style="width: 100%;">
+        {% if not field.is_required %}
+            <!-- <option value="">All</option> -->
+        {% endif %}
+        {% for option in field.options %}
+            {% if option.id %}
+                <option value="{{ option.id }}"{% if data[field.name] == option.id %} selected="selected"{% endif %} {% if class_names %}class="{{ class_names }}"{% endif %}>
+                    {{ option.name }}
+                </option>
+            {% else %}
+                <option value="{{ option[0] }}"{% if data[field.name] == option[0] %} selected="selected"{% endif %} {% if class_names %}class="{{ class_names }}"{% endif %}>
+                    {{ option[1] }}
+                </option>
+            {% endif %}
+        {% endfor %}
+    </select>

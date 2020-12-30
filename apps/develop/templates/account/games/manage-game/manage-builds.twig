@@ -1,0 +1,114 @@
+
+<div class="container pt-m">
+    {% include "account/games/manage-game/breadcrumbs.twig" %}
+    <div class="flex is-wrapping pt-l">
+        <div class="column is-3 is-fullwidth-mobile">
+
+            {% include "account/games/manage-game/side-nav.twig" %}
+
+        </div>
+        <div class="column is-9 is-fullwidth-mobile">
+
+            {% if update_channel == 'live' %}
+                <div class="pb-s sheet is-info pl-l pt-m">
+                    <h2 class="title is-2_5 pb-s">Game build uploads are disabled on {{ active_update_channel.display_name }}. <a href="{{ game.edit_url }}/dev/builds" class="button is-primary is-inline is-small pt-xs pb-s float-right mr-l">Switch to Development Channel</a></h2>
+                </div>
+            {% endif %}
+
+            <div class="sheet">
+                <div class="sheet-title">
+                    <h3 class="title is-2 is-bold">{% t "Game Builds" %}</h3>
+                    <p class="admin-desc">
+                        Manage, delete, update, and set active game builds.
+                    </p>
+                </div>
+                {% if update_channel != 'live' %}
+                    <div class="admin-inputs">
+                        <span class="">
+                            <a href="{{ game.edit_url }}/{{ update_channel }}/upload-game-build" data-esc-fancybox="narrow" class="button is-primary" data-esc-tracking-service="mixpanel" data-esc-tracking="clicked" data-esc-tracking-content-type="cta-button" data-esc-tracking-context="manage-game-builds" data-esc-tracking-element="upload-build">
+                                Upload New Game Build
+                            </a>
+                        </span>
+                    </div>
+                {% endif %}
+
+                <div class="sheet-content p-l">
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>Version</th>
+                            <th>Controllers</th>
+                            <th class="align-center">
+                                <span data-esc-tooltip="Indicates whether this game build supports the automatic customizer UI app.">Customizable</span>
+                            </th>
+                            <th class="align-center">
+                                <span data-esc-tooltip="Indicates whether this game build uses WAN message aggregation or connects directly to controllers.">Aggregate</span>
+                            </th>
+                            <th>Create Date</th>
+                            <th class="align-center">
+                                <span data-esc-tooltip="Indicates whether this game build is currently active and playable in this update channel.">Active</span>
+                            </th>
+                            {% if update_channel != 'live' %}
+                                <th class="align-center">Published</th>
+                            {% endif %}
+                            <th class="align-right" style="text-align: right;"></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for game_build in game_builds %}
+                            <tr>
+                                <td><a href="{{ game.edit_url }}/{{ update_channel }}/view-game-build/{{ game_build.game_build_id }}" data-esc-tracking-service="mixpanel" data-esc-tracking="clicked" data-esc-tracking-content-type="text-link" data-esc-tracking-context="edit-{{ game_build.update_channel }}-game-build" data-esc-tracking-element="{{ game_build.game_build_version }}">{{ game_build.game_build_version }} {% if not game.is_type_offline_game() %}({{ game_build.getGameAssetsFileSize()|filesize }}){% endif %}</a></td>
+                                <td>
+                                    {% for game_controller in game_build.game_controllers %}
+                                        <span><a href="{{ game.edit_url }}/{{ update_channel }}/view-game-controller/{{ game_controller.game_controller_id }}" data-esc-tracking-service="mixpanel" data-esc-tracking="clicked" data-esc-tracking-content-type="text-link" data-esc-tracking-context="edit-game-controller" data-esc-tracking-element="{{ game_controller.display_name }}">{{ game_controller.display_name }} v{{ game_controller.game_controller_version }} ({{ game_controller.getGameControllerAssetsFileSize()|filesize }})</a></span><br/>
+                                    {% endfor %}
+                                </td>
+                                <td class="align-center">{{ game_build.can_mod()|bool|raw }}</td>
+                                <td class="align-center">{{ game_build.is_aggregate_game()|bool|raw }}</td>
+                                <td>{{ game_build.local_create_time|date_format }}</td>
+
+                                <td class="align-center">{% if game_build.game_build_id == active_build_version_summary.game_build_id %}{{ "1"|bool|raw }}{% else %}{{ "0"|bool|raw }}{% endif %}</td>
+                                {% if update_channel != 'live' %}
+                                    <td class="align-center">
+                                        {% if game.canPublish(game_build) and game_build.is_active_game_build(active_build_version_summary.game_build_id) %}
+                                            <a href="{{ game.edit_url }}/{{ update_channel }}/publish-to-live/{{ game_build.getPk() }}" data-esc-fancybox="default" class="button is-small is-primary" data-esc-tracking-service="mixpanel" data-esc-tracking="clicked" data-esc-tracking-content-type="cta-button" data-esc-tracking-context="edit-dev-game-build" data-esc-tracking-element="publish">{% t "Publish" %}</a>
+                                        {% else %}
+                                            {{ game_build.is_published()|bool|raw }}
+                                        {% endif %}
+                                    </td>
+                                {% endif %}
+                                <td class="align-right">
+
+                                    {#{% if update_channel != 'live' and game.game_type_id == 1 %}#}
+                                        {#{% if game_build.game_build_id != active_build_version_summary.game_build_id %}#}
+                                            {#| <a href="{{ game.edit_url }}/{{ update_channel }}/delete-game-build/{{ game_build.game_build_id }}" data-esc-fancybox="default">Delete</a>#}
+                                        {#{% endif %}#}
+                                    {#{% endif %}#}
+
+
+                                    <span class="expand-container align-left">
+                                        <img src="{{ www_url }}/static/images/icons/more-vert.svg" class="img-more-vert" />
+                                        <div class="expand-options" >
+                                            {% if not game_build.is_active_game_build(active_build_version_summary.game_build_id) and ((game.game_type_id == 1 and game_build.game_assets and game_build.game_controllers) or game.is_type_offline_game()) %}
+                                                <a href="{{ game.edit_url }}/{{ update_channel }}/set-active-build/{{ game_build.game_build_id }}" data-esc-tracking-service="mixpanel" data-esc-tracking="clicked" data-esc-tracking-content-type="text-link" data-esc-tracking-context="overflow-set-gamebuild-active" data-esc-tracking-element="{{ game_build.game_build_version }}">Set Active</a>
+                                            {% else %}
+                                                <span class="is-block">No Options Available</span>
+                                            {% endif %}
+                                        </div>
+                                    </span>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+
+
+        </div>
+
+    </div>
+</div>
+
+

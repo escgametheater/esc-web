@@ -1,0 +1,39 @@
+<div class="stats-hl">
+    {% t "live-statistics" %}<br/>
+    <ul class="infoline">
+        <li>{{ stats.online_members }} {% t "members" %}</li>
+        <!--			<li>
+                    {{ stats.online_admin }}
+                    {% if stats.online_admin != 1 %}
+                        {% t "administrators" %}
+                    {% else %}
+                        {% t "administrator" %}
+                    {% endif %}</li>
+                <li>{{ stats.online_staff }} {% t "staff" %}</li> -->
+        <li>{{ stats.online_anonymous }} {% t "anonymous" %}</li>
+        <li>{{ stats.online_visitors }} {% t "total" %}</li>
+    </ul>
+    <br/>
+</div>
+<div class="stats-hl">
+    {% t "activity-this-week" %}<br/>
+    <ul class="infoline">
+        <!-- <li>{{ stats.raws_weekly }} {% t "raws-posted" %}</li> -->
+        <!--			<li>{{ stats.translations_weekly }} {% t "translations-posted" %}</li> -->
+        <li>{{ stats.scanlations_weekly }} {% t "scanlations-posted" %}</li>
+        <li>{{ stats.images_weekly }} {% t "images-posted" %}</li>
+        <li>{{ stats.members_weekly }} {% t "members-joined" %}</li>
+    </ul>
+    <br/>
+</div>
+<div class="stats-hl last">
+    {% t "all-time-totals" %}<br/>
+    <ul class="infoline">
+        <li>{{ stats.max_visitors }} {% t "most-visitors-online" %}</li>
+        <!-- <li>{{ stats.raws_total }} {% t "raws-posted" %}</li>
+                <li>{{ stats.translations_total }} {% t "translations-posted" %}</li> -->
+        <li>{{ stats.scanlations_total }} {% t "scanlations-posted" %}</li>
+        <li>{{ stats.images_total }} {% t "images-posted" %}</li>
+        <!-- <li>{{ stats.members_total }} {% t "members" %}</li> -->
+    </ul>
+</div>

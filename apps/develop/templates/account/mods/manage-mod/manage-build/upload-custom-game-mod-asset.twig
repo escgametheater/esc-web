@@ -1,0 +1,10 @@
+<div class="ajax-modal-container align-left">
+    <div class="sheet p-m" style="margin-bottom: 0;">
+        <h3 class="title is-3 mb-l">
+            {{ game_mod.display_name }}: Upload Custom Game Mod Asset
+        </h3>
+        <form method="post" enctype="multipart/form-data" action="{{ game_mod.edit_url }}/{{ update_channel }}/upload-custom-game-mod-asset/{% if slug %}{{ slug }}/{% endif %}?game_mod_build_id={{ game_mod_build.getPk() }}" data-esc-ajax-form="json">
+            {{ form|raw }}
+        </form>
+    </div>
+</div>

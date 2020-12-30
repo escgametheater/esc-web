@@ -1,0 +1,22 @@
+<div class="sidebar-title mb-s"> {% t "Global Settings" %}</div>
+<div class="pb-l">
+    <a href="{{ game.edit_url }}" class="sidebar-settinglink {% if page == "game-settings" %} is-active{% endif %}" data-esc-tracking-service="mixpanel" data-esc-tracking="clicked" data-esc-tracking-content-type="side-nav-link" data-esc-tracking-context="manage-game-settings">{% t "Settings" %}</a>
+</div>
+
+<div class="sidebar-title mb-s"> {% t "Analytics & Access" %}</div>
+<div class="pb-l">
+    {% if not game.is_type_offline_game() %}
+        <a href="{{ game.edit_url }}/{{ update_channel }}/analytics" class="sidebar-settinglink {% if page == "game-analytics" %} is-active{% endif %}" data-esc-tracking-service="mixpanel" data-esc-tracking="clicked" data-esc-tracking-content-type="side-nav-link" data-esc-tracking-context="manage-game-analytics">{% t "Analytics" %}</a>
+    {% endif %}
+    <a href="{{ game.edit_url }}/{{ update_channel }}/access-control" class="sidebar-settinglink {% if page == "game-access-control" %} is-active{% endif %}" data-esc-tracking-service="mixpanel" data-esc-tracking="clicked" data-esc-tracking-content-type="side-nav-link" data-esc-tracking-context="manage-game-user-licenses">{% t "User Licenses" %}</a>
+</div>
+
+<div class="sidebar-title mb-s"> {% t "Builds & Content" %}</div>
+<div class="pb-l">
+    {% set game_build_pages = ["game-builds", "view-custom-game-asset", "view-game-controller", "view-game-build", "game-view-custom-data"] %}
+    {#  #}
+    {% for uc in update_channels %}
+        <a href="{{ game.edit_url }}/{{ uc.id }}/builds" class="sidebar-settinglink {% if update_channel == uc.id and in_array(page, game_build_pages) %} is-active{% endif %}" data-esc-tracking-service="mixpanel" data-esc-tracking="clicked" data-esc-tracking-content-type="side-nav-link" data-esc-tracking-context="manage-game-builds" data-esc-tracking-element="{{ uc.id }}">{% t uc.display_name %}</a>
+    {% endfor %}
+</div>
+

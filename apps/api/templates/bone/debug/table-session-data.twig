@@ -1,0 +1,9 @@
+Is new ? {% if user.session.is_new_session() %}yes{% else %}no{% endif %}
+<table>
+    {% include "bone/debug/shared-table-row-array-header.twig" %}
+    <tbody>
+    {% for value in user.session %}
+        {% include "bone/debug/shared-table-row-array-content.twig" %}
+    {% endfor %}
+    </tbody>
+</table>

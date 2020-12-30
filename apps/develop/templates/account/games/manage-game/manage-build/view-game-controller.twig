@@ -1,0 +1,74 @@
+
+<div class="container pt-m">
+
+    {% include "account/games/manage-game/breadcrumbs.twig" %}
+
+    <div class="flex is-wrapping pt-l">
+
+        <div class="column is-3 is-fullwidth-mobile">
+
+            {% include "account/games/manage-game/side-nav.twig" %}
+
+        </div>
+
+        <div class="column is-9 is-fullwidth-mobile">
+
+            {% include 'account/games/manage-game/blocks/game-build-notice.twig' %}
+
+            <div class="sheet">
+                <div class="sheet-title">
+                    <h3 class="title is-2 is-bold">{% t "Game Controller Assets" %}</h3>
+                    <p class="admin-desc">
+                        View all applicable game controller assets, or <a class="esc-link" href="{{ game_controller.url }}">preview it</a>.
+                    </p>
+                </div>
+                <div class="sheet-content p-l pt-s">
+                    <div class="pl-0 ml-0 pb-m">
+                        {% if update_channel != 'live' and not game_build.is_published() %}
+                            <a href="{{ game.edit_url }}/{{ update_channel }}/upload-game-controller/{{ game_build.game_build_id }}/{{ game_controller.game_controller_type_id }}" data-esc-fancybox="default" class="button is-primary" data-esc-tracking-service="mixpanel" data-esc-tracking="clicked" data-esc-tracking-content-type="cta-button" data-esc-tracking-context="edit-game-controller" data-esc-tracking-element="upload-file">Replace Game Controller</a>
+                        {% endif %}
+                        {% if game_controller.game_controller_assets %}
+                            <form action="{{ game.edit_url }}/{{ update_channel }}/batch-download-controller-asset-files/{{ game_controller.getPk() }}?game_build_id={{ game_build.getPk() }}" method="post" target="_blank" data-esc-ajax-form="file" style="display: inline;">
+                                <button class="button is-grey ml-m" data-esc-tracking-service="mixpanel" data-esc-tracking="clicked" data-esc-tracking-content-type="cta-button" data-esc-tracking-context="edit-game-controller" data-esc-tracking-element="download-controller-zip">Download Game Controller Build</button>
+                            </form>
+                        {% endif %}
+                    </div>
+
+
+                    <p class="admin-desc is-fullwidth">
+
+                    File count: {{ count(game_controller.game_controller_assets) }} |
+                        Total Size: {{ game_controller.getGameControllerAssetsFileSize()|filesize }}
+                    </p>
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>File Name</th>
+                            <th>Folder Path</th>
+                            <th>Extension</th>
+                            <th>Mime Type</th>
+                            <th>File Size</th>
+                            {#<th>MD5</th>#}
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for game_asset in game_controller.game_controller_assets %}
+                            <tr>
+                                <td>{{ game_asset.filename }}</td>
+                                <td>{{ game_asset.folder_path }}</td>
+                                <td>{{ game_asset.extension }}</td>
+                                <td>{{ game_asset.mime_type }}</td>
+                                <td>{{ game_asset.file_size|filesize }}</td>
+                                {#<td>{{ game_asset.md5 }}</td>#}
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+

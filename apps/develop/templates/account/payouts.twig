@@ -1,0 +1,166 @@
+<div class="container pt-m">
+
+    {% include "account/blocks/breadcrumbs.twig" %}
+
+    <div class="flex pt-l is-wrapping">
+        <div class="column is-3 is-fullwidth-mobile">
+
+            {% include "account/blocks/side-nav.twig" %}
+
+        </div>
+        <div class="column is-9 is-fullwidth-mobile">
+
+            <div class="sheet">
+                <div class="sheet-title">
+                    <h2 class="title is-2">Pending Revenue</h2>
+                    <p class="admin-desc">
+                        View / manage pending revenues for this organization.
+                    </p>
+                </div>
+                <div class="sheet-content p-0">
+                    <h1 class="title is-2">{{ h1 }}</h1>
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>{% t "Date" %}</th>
+                            <th>{% t "Type" %}</th>
+                            <th>{% t "Status" %}</th>
+                            {#<th>{% t "Tax Rate" %}</th>#}
+                            <th>{% t "Amount" %}</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for income in revenues %}
+                            <tr>
+                                <td>{{ income.local_create_time|date }}</td>
+                                <td>{% t income.income_type.display_name %}</td>
+                                <td>{% t income.income_status.display_name %}</td>
+                                {#<td>#}
+                                {#{% if income.tax_rate > 0 %}#}
+                                {#{{ income.tax_rate }}%#}
+                                {#{% else %}#}
+                                {#{% t "N/A" %}#}
+                                {#{% endif %}#}
+                                {#</td>#}
+                                <td>{{ i18n.displayCurrency(income.net_amount) }}</td>
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td colspan="4" class="align-center">{% t "There's no revenue pending :(" %}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+
+
+
+
+            <div class="sheet">
+                <div class="sheet-title">
+                    <h2 class="title is-2">Confirmed Claimable Revenue (${{ i18n.displayCurrency(total_payable_pending_income) }})</h2>
+                    <p class="admin-desc">
+                        View / manage confirmed revenues for this organzation.
+                    </p>
+                </div>
+                <div class="sheet-content p-0">
+
+                    <h1 class="title is-2">{{ h1 }}</h1>
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>{% t "Date" %}</th>
+                            <th>{% t "Type" %}</th>
+                            <th>{% t "Status" %}</th>
+                            {#<th>{% t "Tax Rate" %}</th>#}
+                            <th>{% t "Amount" %}</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for income in revenues_confirmed %}
+                            <tr>
+                                <td>{{ income.local_create_time|date }}</td>
+                                <td>{% t income.income_type.display_name %}</td>
+                                <td>{% t income.income_status.display_name %}</td>
+                                {#<td>#}
+                                {#{% if income.tax_rate > 0 %}#}
+                                {#{{ income.tax_rate }}%#}
+                                {#{% else %}#}
+                                {#{% t "N/A" %}#}
+                                {#{% endif %}#}
+                                {#</td>#}
+                                <td>{{ i18n.displayCurrency(income.net_amount) }}</td>
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td colspan="4" class="align-center">{% t "There's no claimable revenue available :(" %}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+
+
+
+            <div class="sheet">
+
+                <div class="sheet-title">
+                    <h2 class="title is-2">Payouts</h2>
+                    <p class="admin-desc">
+                        Total claimable at this time: ${{ i18n.displayCurrency(total_payable_pending_income) }}
+                    </p>
+                </div>
+
+                <div class="sheet-content p-0">
+                    <p>
+
+                    </p>
+                    <table class="table is-fullwidth is-12">
+                        <thead>
+                        <tr>
+                            <th>{% t "Payout Date" %}</th>
+                            <th>{% t "Payout Method" %}</th>
+                            <th>{% t "Status" %}</th>
+                            <th>{% t "Revenue Earned" %}</th>
+                            <th>{% t "Payout Fee" %}</th>
+                            <th>{% t "Payout Amount" %}</th>
+                            <th>{% t "Invoice" %}</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for payout in payouts %}
+                            <tr>
+                                <td>{{ payout.payout_date|date }}</td>
+                                <td>{% t payout.payout_service.display_name %}</td>
+                                <td>{% t payout.payout_status.display_name %}</td>
+                                <td>
+                                    {% if not payout.is_failed() %}
+                                        <a href="{{ artist.edit_url }}view-payout/{{ payout.id }}" class="" data-gc-fancybox="default">{{ i18n.displayCurrency(payout.getTotalNetIncomeAmount()) }}</a>
+                                    {% else %}
+                                        {{ i18n.displayCurrency(payout.getTotalNetIncomeAmount()) }}
+                                    {% endif %}
+                                </td>
+                                <td>{{ i18n.displayCurrency(payout.transaction_fee) }}</td>
+                                <td>{{ i18n.displayCurrency(payout.payout_amount) }}</td>
+                                <td>{% if payout.is_paid() %}<a href="{{ artist.url }}/admin/download-invoice?payoutId={{ payout.id }}">{% t "Download" %}</a>{% else %}N/A{% endif %}</td>
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td colspan="7" class="align-center">{% t "There's no previous payouts :(" %}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+

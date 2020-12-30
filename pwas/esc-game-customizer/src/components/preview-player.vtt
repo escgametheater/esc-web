@@ -1,0 +1,142 @@
+WEBVTT
+
+00:00:00.001 --> 00:00:00.100
+{
+  "type": "call",
+  "method": "SetControllerPhase",
+  "parameters": {
+    "phase": "WaitForStart",
+    "user": {
+      "name": "Bob"
+    },
+    "isPlaying": true,
+    "gameData": {
+      "loadingMessages": [{
+        "phase": "WaitForStart",
+        "text": "The round is starting..."
+      }]
+    }
+  }
+}
+
+00:00:01.001 --> 00:00:01.100
+{
+  "type": "call",
+  "method": "SetControllerPhase",
+  "parameters": {
+    "phase": "Countdown",
+    "text": "3",
+    "user": {
+      "name": "Bob"
+    },
+    "isPlaying": true,
+    "gameData": {
+      "loadingMessages": [{
+        "phase": "PreQuestion",
+        "text": "Waiting..."
+      }],
+      "selectedOptions": {
+        "question": 0
+      }
+    }
+  }
+}
+
+00:00:06.001 --> 00:00:06.100
+{
+  "type": "call",
+  "method": "SetControllerPhase",
+  "parameters": {
+    "phase": "PreQuestion",
+    "user": {
+      "name": "Bob"
+    },
+    "isPlaying": true,
+    "gameData": {
+      "loadingMessages": [{
+        "phase": "PreQuestion",
+        "text": "Waiting..."
+      }],
+      "selectedOptions": {
+        "question": 0
+      }
+    }
+  }
+}
+
+00:00:07.001 --> 00:00:07.100
+{
+  "type": "call",
+  "method": "SetControllerPhase",
+  "parameters": {
+    "phase": "Question",
+    "text": "5",
+    "duration": "5",
+    "user": {
+      "name": "Bob"
+    },
+    "isPlaying": true,
+    "gameData": {
+      "loadingMessages": [{
+        "phase": "WaitForStart",
+        "text": "Waiting..."
+      }],
+      "selectedOptions": {
+        "question": 0
+      },
+      "questions": [
+        {
+          "text": "This is a default question",
+          "id": 1,
+          "answerA_id": 1,
+          "answerA_text": "Incorrect answer",
+          "answerA_correct": true,
+          "answerB_id": 2,
+          "answerB_text": "Also incorrect",
+          "answerB_correct": false,
+          "answerC_id": 3,
+          "answerC_text": "Maybe incorrect",
+          "answerC_correct": false
+        }
+      ]
+    }
+  }
+}
+
+00:00:11.001 --> 00:00:16.100
+{
+  "type": "call",
+  "method": "SetControllerPhase",
+  "parameters": {
+    "phase": "RevealAnswer",
+    "user": {
+      "name": "Bob"
+    },
+    "isPlaying": true,
+    "gameData": {
+      "loadingMessages": [{
+        "phase": "WaitForStart",
+        "text": "Waiting..."
+      }],
+      "selectedOptions": {
+        "question": 0
+      },
+      "questions": [
+        {
+          "text": "This is a default question",
+          "id": 1,
+          "answerA_id": 1,
+          "answerA_text": "Incorrect answer",
+          "answerA_correct": true,
+          "answerB_id": 2,
+          "answerB_text": "Also incorrect",
+          "answerB_correct": false,
+          "answerC_id": 3,
+          "answerC_text": "Maybe incorrect",
+          "answerC_correct": false
+        }
+      ]
+    }
+  }
+}
+

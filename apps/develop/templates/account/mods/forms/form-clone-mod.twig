@@ -1,0 +1,8 @@
+<h1 class="title is-2">Clone {{ game_mod.display_name }} ({{ game_mod.game.display_name }})?</h1>
+<div class="column is-12 p-0 pb-s">
+    {{ form.display_name()|raw }}
+</div>
+<div class="colunn is-12 p-0">
+    <button class="button is-primary"  data-esc-tracking-service="mixpanel" data-esc-tracking="clicked" data-esc-tracking-content-type="cta-button" data-esc-tracking-context="modal-clone-game-mod" data-esc-tracking-element="submit">{% t "Clone" %}</button>
+    <a href="javascript:parent.$.fancybox.close();" class="button is-white ml-s mr-s" data-esc-tracking-service="mixpanel" data-esc-tracking="clicked" data-esc-tracking-content-type="cta-button" data-esc-tracking-context="modal-clone-game-mod" data-esc-tracking-element="cancel">{% t "Cancel" %}</a>
+</div>

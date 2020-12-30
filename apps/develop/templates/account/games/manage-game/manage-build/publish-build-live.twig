@@ -1,0 +1,111 @@
+
+    <div class="sheet" style="margin-bottom: 0;">
+        <div class="sheet-title">
+            <h3 class="title is-3 mb-s">
+                Publish Game Build Version {{ game_build.game_build_version }} to live?
+            </h3>
+        </div>
+        <div class="sheet-content p-l" style="color: #666;">
+            <div class="flex is-wrapping">
+                <div class="column is-4">
+                    <p style="color: #111;">
+                        This Build
+                    </p>
+                    <p>
+                        Version: {{ game_build.game_build_version }}<br/>
+                        {% if not game.is_type_offline_game() %}
+                            Files & Size: {{ count(game_build.game_assets) }} / {{ game_build.getGameAssetsFileSize()|filesize }}
+                        {% endif %}
+                    </p>
+
+                    <p>
+                        Controllers<br/>
+                        {% for game_controller in game_build.game_controllers %}
+                            {{ game_controller.display_name }} {{ game_controller.game_controller_version }}<br/>
+                        {% endfor %}
+                        <br/>
+                        Custom Assets: {{ count(game_build.custom_game_assets) }}<br/>
+                        Custom Data: {{ count(game_build.custom_data) }}<br/>
+                    </p>
+
+
+                </div>
+
+                <div class="column is-4">
+                    <p style="color: #111;">
+                        Current Live Build
+                    </p>
+                    {% if live_game_build %}
+                        <p>
+                            Version: {{ live_game_build.game_build_version }}<br/>
+                            {% if not game.is_type_offline_game() %}
+                                Files & Size: {{ count(live_game_build.game_assets) }} / {{ live_game_build.getGameAssetsFileSize()|filesize }}
+                            {% endif %}
+                        </p>
+
+                        <p>
+                            Controllers<br/>
+                            {% for game_controller in live_game_build.game_controllers %}
+                                {{ game_controller.display_name }} {{ game_controller.game_controller_version }}<br/>
+                            {% endfor %}
+                            <br/>
+                            Custom Assets: {{ count(live_game_build.custom_game_assets) }}<br/>
+                            Custom Data: {{ count(live_game_build.custom_data) }}<br/>
+                        </p>
+                    {% else %}
+                        <p>N/A</p>
+                    {% endif %}
+
+                </div>
+                <div class="column is-4">
+                    <p style="color: #111;">
+                        Changes
+                    </p>
+                    <p>
+                        {% if live_game_build %}
+
+                            {% if live_game_build.game_build_version != game_build.game_build_version %}
+                                New Version Number<br/>
+                            {% endif %}
+
+                            {% if not game.is_type_offline_game() %}
+                                {% if game_build.version_hash != live_game_build.version_hash %}
+                                    New Game Build Binaries<br/>
+                                    {#({{ (game_build.getGameAssetsFileSize() - live_game_build.getGameAssetsFileSize())|filesize }})<Br/>#}
+                                {% endif %}
+                            {% endif %}
+
+                            {% if change_summary.controllers %}
+                                <br/>Controllers<br/>
+                                {{ change_summary.controllers }}<br/>
+                            {% endif %}
+
+
+                            {% if change_summary.custom_assets %}
+                                <br/>Custom Assets<br/>
+                                {{ change_summary.custom_assets }}<br/>
+                            {% endif %}
+
+                            {% if change_summary.custom_data %}
+                                <br/>Custom Data<br/>
+                                {{ change_summary.custom_data }} <br/>
+                            {% endif %}
+
+                    {% else %}
+                        N/A
+
+
+                    {% endif %}
+                    </p>
+
+                </div>
+
+            </div>
+
+            <div class="pt-m">
+                <form method="post" action="{{ path }}" data-esc-ajax-form="json">
+                    {{ form|raw }}
+                </form>
+            </div>
+        </div>
+    </div>

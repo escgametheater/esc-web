@@ -1,0 +1,14 @@
+<p class="id_{{ field.name }} mb-xs">
+    <label class="checkbox" for="id_{{ field.name }}"
+           {% if field.label_style %}style="{{ field.label_style }}"{% endif %}>
+           <input type="checkbox" id="id_{{ field.name }}" name="{{ field.name }}" {% if class_names %}class="{{ class_names }}"{% endif %}
+                  {% if data[field.name] %}checked="checked"{% endif %}
+                   {% if field.style %}style="{{ style }}"{% endif %} />
+        {{ field.verbose_name }}
+    </label>
+</p>
+{% if field.help_text %}
+    <p class="helptext">
+        {{ field.help_text }}
+    </p>
+{% endif %}

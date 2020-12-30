@@ -1,0 +1,86 @@
+<div class="flex is-wrapping">
+    <div class="column is-5" style="background: inherit;">
+        <p>
+            <strong>About</strong>
+        </p>
+        <p>
+            {% if game_build.update_channel == 'live' %}
+                Published By: {% if game_build.user.display_name %}{{ game_build.user.display_name }}{% else %}{{ game_build.user.username }}{% endif %}<br/>
+                Publish Time: {{ game_build.local_create_time }}<br/>
+            {% else %}
+                Created By: {% if game_build.user.display_name %}{{ game_build.user.display_name }}{% else %}{{ game_build.user.username }}{% endif %}<br/>
+                Create Time: {{ game_build.local_create_time }}<br/>
+            {% endif %}
+        </p>
+        <p>
+            Version: {{ game_build.game_build_version }}<br/>
+            Size: {{ game_build.getGameAssetsFileSize()|filesize }}<br/>
+        </p>
+    </div>
+
+
+        <div class="column is-7" style="background: inherit;">
+            <p>
+                <strong>Info</strong>
+            </p>
+            <p>
+                {{ (game_build.game_instances.count ? true : false)|bool|raw }}
+                <span style="display: inline-block; position: relative; top: -4px;" class="pb-s">
+                    {% if game_build.game_instances.count %}
+                        Played {{ game_build.game_instances.count }} times by {{ game_build.game_instances.players }} {% if game_build.game_instances.players == 1 %}user{% else %}users{% endif %}
+                    {% else %}
+                        Has not been played
+                    {% endif %}
+                </span>
+            </p>
+            <p>
+                {{ game_build.can_mod()|bool|raw }}
+                <span style="display: inline-block; position: relative; top: -4px;" class="pb-s">
+                    {% if game_build.can_mod() %}
+                        Can be customized
+                    {% else %}
+                        Can not be customized
+                    {% endif %}
+                </span>
+            </p>
+            {% if not game_build.is_live_build() %}
+            <p>
+                {{ game_build.is_published()|bool|raw }}
+                {% if not game_build.is_published() %}
+                    <span style="display: inline-block; position: relative; top: -4px;" class="pb-s">Has not been published</span>
+                {% else %}
+                    <span style="display: inline-block; position: relative; top: -4px;" class="pb-s">Published by {% if game_build.published_game_build.user.username %}{{ game_build.published_game_build.user.username }}{% else %} {{ game_build.published_game_build.user.display_name }}{% endif %} on {{ game_build.published_game_build.local_create_time|long_date_format }}</span>
+                {% endif %}
+            </p>
+            <p>
+                {% if game.canPublish(game_build) and game_build.is_active_game_build(active_build_version_summary.game_build_id) %}
+                    <a href="{{ game.edit_url }}/{{ update_channel }}/publish-to-live/{{ game_build.getPk() }}" data-esc-fancybox="default" class="button is-primary">{% t "Publish Build" %}</a>
+                {% endif %}
+            </p>
+            {% endif %}
+        </div>
+
+    <div class="column is-12">
+        <p>
+            <strong>Networking Settings</strong>
+        </p>
+        {{ form.is_aggregate_game()|raw }}
+    </div>
+
+    <div class="column is-12 mb-0 pb-0">
+        <p class="pt-0 pb-0">
+            <strong>Changelog</strong>
+        </p>
+    </div>
+
+    <div class="column is-12">
+        {{ form.description("mb-xs")|raw }}
+    </div>
+    {% if not game_build.is_live_build() %}
+    <div class="column is-12">
+        <button class="button is-primary {% if game_build.is_published() %}is-disabled{% endif %}" {% if game_build.is_published() %}data-esc-tooltip="You can only save settings on unpublished builds."{% endif %}>
+            Save Settings
+        </button>
+    </div>
+    {% endif %}
+</div>

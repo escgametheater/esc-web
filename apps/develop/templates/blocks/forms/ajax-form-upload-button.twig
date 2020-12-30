@@ -1,0 +1,9 @@
+<div class="upload-button-container" style="visibility: visible;">
+    <button class="button is-primary upload-result">{% t "Upload" %}</button>
+    <a href="javascript:parent.$.fancybox.close();" class="button is-outlined ml-s mr-s">{% t "Cancel" %}</a>
+    {% include "blocks/forms/ajax-form-progressbar.twig" %}
+</div>
+
+<div class="upload-button-container" data-esc-form-component="upload-button-container" style="visibility: visible;">
+    <button class="button is-small is-primary">{% t "Upload" %}</button> <a href="javascript:parent.$.fancybox.close();" class="button is-outlined ml-s mr-s">{% t "Cancel" %}</a>
+</div>

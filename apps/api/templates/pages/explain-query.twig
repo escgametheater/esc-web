@@ -1,0 +1,42 @@
+<div class="section">
+    <div class="container">
+        <div class="flex is-wrapping pt-m">
+            <div class="is-fullwidth">
+                <h1>Explain Query</h1>
+            </div>
+            <div class="">
+                {{ query|raw }}
+            </div>
+            <table class="table" style="width: 100%;">
+                <thead>
+                <th>id</th>
+                <th>select_type</th>
+                <th>table</th>
+                <th>type</th>
+                <th>possible_keys</th>
+                <th>key</th>
+                <th>key_len</th>
+                <th>ref</th>
+                <th>rows</th>
+                <th>extra</th>
+                </thead>
+                <tbody>
+                {% for p in plan %}
+                    <tr>
+                        <td>{{ p.id }}</td>
+                        <td>{{ p.select_type }}</td>
+                        <td><a href="/debug/explain-table?table={{ p.table|base64_encode }}">{{ p.table }}</a></td>
+                        <td>{{ p.type }}</td>
+                        <td>{{ p.possible_keys|replace(",", ", ") }}</td>
+                        <td>{{ p.key|replace(",", ", ") }}</td>
+                        <td>{{ p.key_len }}</td>
+                        <td>{{ p.ref|replace(",", ", ") }}</td>
+                        <td>{{ p.rows }}</td>
+                        <td>{{ p.Extra }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

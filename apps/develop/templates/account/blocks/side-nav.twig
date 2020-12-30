@@ -1,0 +1,94 @@
+{% if user.permissions.has('organizations', 'm') %}
+    <a href="{{ www_url }}/admin/organizations/edit/{{ active_organization.getPk() }}/" target="_blank" class="button is-grey7 is-small mb-s mt-s">Admin Edit</a>
+{% endif %}
+
+{% if active_organization.permissions.has('hosts', 'u') %}
+    <div class="sidebar-title mb-s"> {% t "Activations" %}</div>
+    <div class="pb-l">
+        {% if active_organization.permissions.has('hosts', 'u') %}
+            <a href="{{ develop_url }}/teams/{{ active_organization.slug }}/activations" class="sidebar-settinglink {% if page == "dev-manage-activations" or page == "dev-edit-activation" %} is-active{% endif %}" data-esc-tracking-service="mixpanel" data-esc-tracking="clicked" data-esc-tracking-content-type="side-nav-link" data-esc-tracking-context="manage-activations">{% t "GameDays" %}</a>
+            <a href="{{ develop_url }}/teams/{{ active_organization.slug }}/activations/analytics" class="sidebar-settinglink {% if page == "dev-activation-analytics" %} is-active{% endif %}" data-esc-tracking-service="mixpanel" data-esc-tracking="clicked" data-esc-tracking-content-type="side-nav-link" data-esc-tracking-context="view-analytics">{% t "Analytics" %}</a>
+        {% endif %}
+    </div>
+{% endif %}
+
+{# Content Section #}
+{%
+    if active_organization.permissions.has('games.profile', 'u')
+    or active_organization.permissions.has('mods.profile', 'u')
+%}
+    <div class="sidebar-title mb-s"> {% t "Content" %}</div>
+    <div class="pb-l">
+        {% if active_organization.permissions.has('games.profile', 'u') %}
+            <a href="{{ develop_url }}/teams/{{ active_organization.slug }}/manage-games" class="sidebar-settinglink {% if page == "dev-manage-games" %} is-active{% endif %}" data-esc-tracking-service="mixpanel" data-esc-tracking="clicked" data-esc-tracking-content-type="side-nav-link" data-esc-tracking-context="manage-games">{% t "Games" %}</a>
+        {% endif %}
+        {% if active_organization.permissions.has('mods.profile', 'u') %}
+            <a href="{{ develop_url }}/teams/{{ active_organization.slug }}/manage-mods" class="sidebar-settinglink {% if page == "dev-manage-mods" %} is-active{% endif %}" data-esc-tracking-service="mixpanel" data-esc-tracking="clicked" data-esc-tracking-content-type="side-nav-link" data-esc-tracking-context="manage-mods">{% t "Mods" %}</a>
+        {% endif %}
+    </div>
+{% endif %}
+
+
+{# Services Section #}
+{%
+    if active_organization.permissions.has('hosts', 'u')
+%}
+    <div class="sidebar-title mb-s"> {% t "Services" %}</div>
+    <div class="pb-l">
+
+        {% if active_organization.permissions.has('hosts', 'u') %}
+            <a href="{{ develop_url }}/teams/{{ active_organization.slug }}/hosts" class="sidebar-settinglink {% if page == "dev-org-hosts" or page == 'dev-org-edit-host' %} is-active{% endif %}" data-esc-tracking-service="mixpanel" data-esc-tracking="clicked" data-esc-tracking-content-type="side-nav-link" data-esc-tracking-context="manage-hosts">{% t "Host Urls" %}</a>
+        {% endif %}
+
+    </div>
+{% endif %}
+
+
+{#<div class="sidebar-title mb-s"> {% t "Analytics" %}</div>#}
+{#<div class="pb-l">#}
+    {# Todo: Implement Development Analytics #}
+    {#<a href="{{ develop_url }}/teams/{{ active_organization.slug }}/analytics/team" class="sidebar-settinglink {% if page == "dev-game-analytics" %} is-active{% endif %}">{% t "Development" %}</a>#}
+    {#<a href="{{ develop_url }}/teams/{{ active_organization.slug }}/analytics/game" class="sidebar-settinglink {% if page == "dev-game-analytics" %} is-active{% endif %}">{% t "Usage" %}</a>#}
+{#</div>#}
+
+
+{# Finance Section #}
+{%
+    if active_organization.permissions.has('billing.payments', 'u')
+    or active_organization.permissions.has('billing.payouts', 'u')
+%}
+    <div class="sidebar-title mb-s"> {% t "Finance" %}</div>
+    <div class="pb-l">
+        {% if active_organization.permissions.has('billing.payments', 'u') %}
+            <a href="{{ develop_url }}/teams/{{ active_organization.slug }}/orders" class="sidebar-settinglink {% if page == "dev-org-orders" %} is-active{% endif %}" data-esc-tracking-service="mixpanel" data-esc-tracking="clicked" data-esc-tracking-content-type="side-nav-link" data-esc-tracking-context="manage-orders">{% t "Orders" %}</a>
+            <a href="{{ develop_url }}/teams/{{ active_organization.slug }}/billing" class="sidebar-settinglink {% if page == "dev-org-billing" %} is-active{% endif %}" data-esc-tracking-service="mixpanel" data-esc-tracking="clicked" data-esc-tracking-content-type="side-nav-link" data-esc-tracking-context="manage-billing">{% t "Billing" %}</a>
+        {% endif %}
+        {% if active_organization.permissions.has('billing.payouts', 'u') %}
+            <a href="{{ develop_url }}/teams/{{ active_organization.slug }}/payouts" class="sidebar-settinglink {% if page == "dev-org-payouts" %} is-active{% endif %}" data-esc-tracking-service="mixpanel" data-esc-tracking="clicked" data-esc-tracking-content-type="side-nav-link" data-esc-tracking-context="manage-payouts">{% t "Payouts" %}</a>
+        {% endif %}
+    </div>
+{% endif %}
+
+
+{# Members & Permissions Section#}
+{%
+    if active_organization.permissions.has('organization.members', 'u')
+    or active_organization.permissions.has('organization.profile', 'u')
+    or active_organization.permissions.has('organization.roles', 'u')
+    or active_organization.permissions.has('organization.permissions', 'a')
+%}
+
+    <div class="sidebar-title mb-s"> {% t "Team" %}</div>
+    <div class="pb-l">
+        {% if not active_organization or active_organization.permissions.has('organization.profile', 'u') %}
+            <a href="{{ develop_url }}/teams/{{ active_organization.slug }}/profile" class="sidebar-settinglink {% if page == "dev-org-profile"%} is-active{% endif %}" data-esc-tracking-service="mixpanel" data-esc-tracking="clicked" data-esc-tracking-content-type="side-nav-link" data-esc-tracking-context="manage-team-profile">{% t "Profile" %}</a>
+        {% endif %}
+        {% if active_organization.permissions.has('organization.members', 'u') %}
+            <a href="{{ develop_url }}/teams/{{ active_organization.slug }}/members" class="sidebar-settinglink {% if page == "dev-org-members" or page == "dev-org-member" %} is-active{% endif %}" data-esc-tracking-service="mixpanel" data-esc-tracking="clicked" data-esc-tracking-content-type="side-nav-link" data-esc-tracking-context="manage-team-members">{% t "Members" %}</a>
+        {% endif %}
+        {% if active_organization.permissions.has('organization.roles', 'u') or active_organization.permissions.has('organization.permissions', 'a')  %}
+            <a href="{{ develop_url }}/teams/{{ active_organization.slug }}/roles" class="sidebar-settinglink {% if page == "dev-org-roles" or page == "dev-org-role" or page == 'dev-org-edit-right' %} is-active{% endif %}" data-esc-tracking-service="mixpanel" data-esc-tracking="clicked" data-esc-tracking-content-type="side-nav-link" data-esc-tracking-context="manage-team-permissions">{% t "Roles & Permissions" %}</a>
+        {% endif %}
+    </div>
+
+{% endif %}

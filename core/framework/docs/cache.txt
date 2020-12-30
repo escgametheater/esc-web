@@ -1,0 +1,91 @@
+===================
+Cache API Reference
+===================
+
+Setting up the cache
+====================
+
+The cache system requires a small amount of setup. Namely, you have to tell it where your cached data should live -- whether in a database, on the filesystem or directly in memory. This is an important decision that affects your cache's performance; yes, some cache types are faster than others.
+
+Your cache preference goes in the $CONFIG['cache'] setting in your settings file. Here's an explanation of all available values for $CONFIG['cache'].
+
+Memcached
+~~~~~~~~~
+
+By far the fastest, most efficient type of cache available, Memcached is an entirely memory-based cache framework originally developed to handle high loads at LiveJournal.com and subsequently open-sourced by Danga Interactive. It's used by sites such as Slashdot and Wikipedia to reduce database access and dramatically increase site performance.
+
+Memcached is available for free at http://danga.com/memcached/ . It runs as a daemon and is allotted a specified amount of RAM. All it does is provide an interface -- a super-lightning-fast interface -- for adding, retrieving and deleting arbitrary data in the cache. All data is stored directly in memory, so there's no overhead of database or filesystem usage.
+
+After installing Memcached itself, you'll need to install the Memcached PHP module.
+
+To use Memcached, set $CONFIG['cache'] to 'memcache' and $CONFIG['memcache'] to 'ip:port', where ip is the IP address of the Memcached daemon and port is the port on which Memcached is running.
+
+In this example, Memcached is running on localhost (127.0.0.1) port 11211:
+
+$CONFIG['cache'] = 'memcache'
+$CONFIG['memcache'] = '127.0.0.1:11211'
+
+One excellent feature of Memcached is its ability to share cache over multiple servers. To take advantage of this feature, include all server addresses in CACHE_BACKEND, separated by semicolons. In this example, the cache is shared over Memcached instances running on IP address 172.19.26.240 and 172.19.26.242, both on port 11211:
+
+$CONFIG['cache'] = 'memcache'
+$CONFIG['memcache'] = '172.19.26.240:11211,172.19.26.242:11211'
+
+Memory-based caching has one disadvantage: Because the cached data is stored in memory, the data will be lost if your server crashes. Clearly, memory isn't intended for permanent data storage, so don't rely on memory-based caching as your only data storage. Actually, none of the Django caching backends should be used for permanent storage -- they're all intended to be solutions for caching, not storage -- but we point this out here because memory-based caching is particularly temporary.
+
+Filesystem caching
+~~~~~~~~~~~~~~~~~~
+
+To store cached items on a filesystem, use the "disk" cache type for $CONFIG['cache']. For example, to store cached data in /var/tmp/cache, use this setting:
+
+$CONFIG['cache'] = 'disk';
+$CONFIG['cache_directory'] = '/var/tmp/cache';
+
+The directory path should be absolute -- that is, it should start at the root of your filesystem. You mustn't put a slash at the end of the setting.
+
+Make sure the directory pointed-to by this setting exists and is readable and writable by the system user under which your Web server runs. Continuing the above example, if your server runs as the user apache, make sure the directory /var/tmp/cache exists and is readable and writable by the user apache.
+
+Dummy caching (for development)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Finally, the cache module comes with a "dummy" cache that doesn't actually cache -- it just implements the cache interface without doing anything.
+
+This is useful if you have a production site that uses heavy-duty caching in various places but a development/test environment on which you don't want to cache. As a result, your development environment won't use caching and your production environment still will. To activate dummy caching, set $CONFIG['cache'] like so:
+
+$CONFIG['cache'] = 'dummy';
+
+
+
+The low-level cache API
+=======================
+
+Sometimes, however, caching an entire rendered page doesn't gain you very much. For example, you may find it's only necessary to cache the result of an intensive database query. In cases like this, you can use the low-level cache API to store objects in the cache with any level of granularity you like.
+
+The cache API is simple. The cache module exports a cache object that's automatically created from the $CONFIG['cache'] setting:
+
+The basic interface is Cache::set(key, value, timeout_seconds) and Cache::get(key):
+
+>>> Cache::set('my_key', 'hello, world!', 30)
+>>> Cache::get('my_key')
+'hello, world!'
+
+The timeout_seconds argument is optional and defaults to DEFAULT_CACHE_TIME.
+
+If the object doesn't exist in the cache, Cache::get() returns a cache result with $r->isset == false:
+
+>>> $r = Cache::get('some_other_key')
+>>> $r->isset
+false
+
+# Wait 30 seconds for 'my_key' to expire...
+
+>>> $r = cache.get('my_key')
+>>> $r->isset
+false
+
+Cache refresh
+=============
+
+The cache modules handles locking of the cache.
+When the cache is about to expire (60s), one server gets the lock (20s) and refreshes it.
+This gives 3 tries to refresh the cache before it expires.
+This extra step prevents multiple servers to reprocess once the cache has expired as classic cache modules do, sometimes leading to slowness because of very slow queries being run needlessly.

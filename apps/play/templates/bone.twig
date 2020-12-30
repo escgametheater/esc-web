@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="{% if thisLang %}{{ thisLang }}{% else %}en{% endif %}" lang="{% if thisLang %}{{ thisLang }}{% else %}en{% endif %}">
+
+    {# Global Header Content - Meta + SEO + CSS + JS #}
+	<head>
+        {% include "bone/headinclude.twig" %}
+	</head>
+
+	<body class="sct-{{ section }} p-m">
+
+        {% include "bone/svg.twig" %}
+
+		{# Debug Bar #}
+		{% if debug %}
+			{#{% include "bone/debugbar.twig" %}#}
+		{% endif %}
+
+        {# Page Content HTML Template #}
+		<div class="main">
+			<div class="content-wrapper">
+			    {# Global Header Html #}
+			    {#{% include "bone/header.twig" %}#}
+
+                {% include template_name %}
+
+			{# Global Footer Html Templates #}
+			{% include "bone/footer-platform.twig" %}
+		 </div>
+		</div>
+
+        {# Global Footer Javascript (Tracking, Model Data, User + Session Notifications #}
+    {% include "bone/js-footer.twig" %}
+
+	</body>
+
+
+
+</html>

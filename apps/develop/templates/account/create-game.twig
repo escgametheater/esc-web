@@ -1,0 +1,19 @@
+<div class="flex sheet p-m" style="margin-bottom: 0;">
+    <div class="column is-12">
+        <h1 class="title is-1">
+            Create a new game
+        </h1>
+        <div class="is-fullwidth">
+            <form action="/teams/{{ active_organization.slug }}/create-game" method="post" data-esc-ajax-form="json">
+                {% if form.has_field('organization_id') %}
+                    {{ form.organization_id|raw }}
+                {% endif %}
+                {{ form.display_name()|raw }}
+                {{ form.game_type_id()|raw }}
+                {{ form.game_category_id()|raw }}
+                <button class="button is-primary" data-esc-tracking-service="mixpanel" data-esc-tracking="clicked" data-esc-tracking-content-type="cta-button" data-esc-tracking-context="modal-create-game" data-esc-tracking-element="submit">>{% t "Create Game" %}</button>
+            </form>
+        </div>
+    </div>
+</div>
+

@@ -1,0 +1,32 @@
+<div class="pb-s sheet is-info pl-l pt-m">
+    <form method="post" action="{{ path }}?game_build_id={{ selected_game_build_id }}" data-esc-form-dev-mode="1">
+        <input type="hidden" value="{{ update_channel }}" name="change-channel" />
+        <p class="float-left">
+            <label for="update-channel">Update Channel</label><br/>
+            <span class="select">
+                <select id="update-channel" name="update-channel" style="background-color: #fff;">
+                    {% for uc in update_channels %}
+                        <option value="{{ uc.id }}" {% if update_channel == uc.id %}selected{% endif %}>{% t uc.display_name %}</option>
+                    {% endfor %}
+                </select>
+            </span>
+        </p>
+
+    </form>
+
+    {#<form method="post" action="{{ path }}?game_build_id={{ selected_game_build_id }}" data-esc-form-dev-mode="2">#}
+        {#<input type="hidden" value="{{ selected_game_build_id }}" name="selected_game_build_id" />#}
+        {#<p class="float-left ml-m">#}
+            {#<label for="update-channel">Selected Game Build</label><br/>#}
+            {#<span class="select">#}
+                {#<select id="selected-game-build" name="selected-game-build" style="background-color: #fff;">#}
+                    {#{% for option in game_build_options|reverse %}#}
+                        {#<option value="{{ option.id }}" {% if selected_game_build_id == option.id %}selected{% endif %}>{{ option.display_name }}{% if active_build_version_summary.game_build_id == option.id%} (Active) {% endif %}</option>#}
+                    {#{% endfor %}#}
+                {#</select>#}
+            {#</span>#}
+        {#</p>#}
+    {#</form>#}
+
+    <div style="clear: both;"></div>
+</div>

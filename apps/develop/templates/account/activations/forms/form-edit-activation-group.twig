@@ -1,0 +1,123 @@
+<div class="sheet">
+    <div class="sheet-title">
+        <h3 class="title is-3 is-bold pb-s">Title</h3>
+        {{ form.display_name()|raw }}
+        {#<h2 class="title is-1 is-extrabold">{{ activation_group.display_name }}</h2>#}
+    </div>
+    <div class="sheet-content pb-s pl-l pr-l is-border-bottom">
+        <div class="flex is-wrapping">
+            <div class="column is-12 pb-0">
+                <h3 class="title is-3 is-bold pb-s">Date and time</h3>
+                <p class="helptext">
+                    This ensures that web servers are available to handle peak player numbers during your events.
+                </p>
+            </div>
+
+            <div class="column is-3">
+                {{ form.start_date()|raw }}
+            </div>
+            <div class="column is-2">
+                {{ form.start_time()|raw }}
+            </div>
+            <div class="column is-1 is-valigned align-center">
+                to
+            </div>
+            <div class="column is-2">
+                {{ form.end_time()|raw }}
+            </div>
+            <div class="column is-3">
+                {{ form.time_zone()|raw }}
+            </div>
+        </div>
+    </div>
+    <div class="sheet-content pl-l pr-l is-border-bottom">
+        <div class="flex is-wrapping">
+            <div class="column is-12">
+                <h3 class="title is-3 is-bold pb-s">Cloud Activation</h3>
+                <div class="pl-s pr-s pt-s">
+                    {% set cloud_activation = false %}
+                    {% if activation_group.activations %}
+                        {% for activation in activation_group.activations if activation.activation_type_id == 1 %}
+                            {% set cloud_activation = true %}
+                            <div class="flex is-wrapping p-0 mb-m activation" style="border: 1px solid #dbdbdb; border-radius: 4px;">
+                                <div class="column is-3 image is-rounded is-inline-block">
+                                    <img src="{{ activation.game.avatar.small_url }}" alt="" />
+                                </div>
+                                <div class="column is-9" style="position: relative;">
+                                    <p class="helptext pb-0 mb-0">Game</p>
+                                    <h2 class="title is-3 pb-m">{{ activation.game.display_name }}</h2>
+                                    <p class="helptext pb-0 mb-0">Game Mod</p>
+                                    <div>
+                                        {{ form.render_field(activation.getDynamicFormField('game_mod_id'), "mt-xs")|raw }}
+                                        <span class="pt-s mt-xs is-inline-block">or <a href="{{ develop_url }}/teams/{{ active_organization.slug }}/create-mod/{{ activation.game.slug }}?customizeNext=1" data-esc-fancybox="default" class="esc-link" data-esc-tracking-service="mixpanel" data-esc-tracking="clicked" data-esc-tracking-content-type="text-link" data-esc-tracking-context="cloud-activation" data-esc-tracking-element="create-game-mod">Create a New Mod</a> </span>
+                                    </div>
+                                    <a data-esc-fancybox="default" class="forumpost-icon activation-container" href="{{ develop_url }}/teams/{{ active_organization.slug }}/activations/delete-activation/{{ activation_group.getPk() }}/{{ activation.getPk() }}" style="position: absolute; top: 0px; right: 5px;" data-esc-tracking-service="mixpanel" data-esc-tracking="clicked" data-esc-tracking-content-type="hover-icon" data-esc-tracking-context="cloud-activation" data-esc-tracking-element="delete"><img src="{{ www_url }}/static/images/beta/forum_delete.svg" /></a>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                    {% if not cloud_activation and activation_group.host.offline_game_id %}
+                        <div class="flex is-wrapping p-0 mb-m activation" style="border: 1px solid #dbdbdb; border-radius: 4px;">
+                            <div class="column is-3 image is-rounded is-inline-block">
+                                <img src="{{ activation_group.host.game.avatar.small_url }}" alt="" />
+                            </div>
+                            <div class="column is-9" style="position: relative;">
+                                <p class="helptext pb-0 mb-0">Game</p>
+                                <h2 class="title is-3 pb-m">{{ activation_group.host.game.display_name }}</h2>
+                                <p class="helptext pb-0 mb-0">Game Mod</p>
+                                <p>Classic Asset Pack</p>
+                                <span class="sheet is-grey p-s mt-s mr-s is-no-shadow is-absolute-top-right" data-esc-tooltip="This is the default game experience that's configured on your public host url when you have no activations running.">Host URL default</span>
+                                {#{{ form.render_field(activation_group.host.getDynamicFormField('game_mod_id'), "mt-xs")|raw }}#}
+                                {#<a data-esc-fancybox="default" class="forumpost-icon activation-container" href="{{ develop_url }}/teams/{{ active_organization.slug }}/activations/delete-activation/{{ activation_group.getPk() }}/{{ activation.getPk() }}" style="position: absolute; top: 0px; right: 5px;"><img src="{{ www_url }}/static/images/beta/forum_delete.svg" /></a>#}
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+                {% if not cloud_activation %}
+                    <div class="pt-s">
+                        <a href="{{ develop_url }}/teams/{{ active_organization.slug }}/activations/add-activation/{{ activation_group.getPk() }}?type=1" data-esc-fancybox="default" class="button is-white is-inset" data-esc-tracking-service="mixpanel" data-esc-tracking="clicked" data-esc-tracking-content-type="cta-button" data-esc-tracking-context="cloud-activation" data-esc-tracking-element="override-host-default">+ Override Cloud Game</a>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <div class="sheet-content pl-l pr-l is-border-bottom">
+        <div class="flex is-wrapping">
+            <div class="column is-12">
+                <h3 class="title is-3 is-bold pb-m">In-Venue Activations</h3>
+                <div class="pl-s pr-s">
+                    {% if activation_group.activations %}
+                        {% for activation in activation_group.activations if activation.activation_type_id == 2 %}
+                            <div class="flex is-wrapping p-0 mb-m activation" style="border: 1px solid #dbdbdb; border-radius: 4px;">
+                                <div class="column is-3 image is-rounded is-inline-block">
+                                    <img src="{{ activation.game.avatar.small_url }}" alt="" />
+                                </div>
+                                <div class="column is-9" style="position: relative;">
+                                    <p class="helptext pb-0 mb-0">Game</p>
+                                    <h2 class="title is-3 pb-m">{{ activation.game.display_name }}</h2>
+                                    <p class="helptext pb-0 mb-0">Game Mod</p>
+                                    <div>
+                                        {{ form.render_field(activation.getDynamicFormField('game_mod_id'), "mt-xs")|raw }}
+                                        <span class="pt-s mt-xs is-inline-block">or <a href="{{ develop_url }}/teams/{{ active_organization.slug }}/create-mod/{{ activation.game.slug }}?customizeNext=1" data-esc-fancybox="default" class="esc-link" data-esc-tracking-service="mixpanel" data-esc-tracking="clicked" data-esc-tracking-content-type="text-link" data-esc-tracking-context="local-activation" data-esc-tracking-element="create-game-mod">Create a New Mod</a> </span>
+                                    </div>
+                                    <a data-esc-fancybox="default" class="forumpost-icon activation-container" href="{{ develop_url }}/teams/{{ active_organization.slug }}/activations/delete-activation/{{ activation_group.getPk() }}/{{ activation.getPk() }}" style="position: absolute; top: 0px; right: 5px;" data-esc-tracking-service="mixpanel" data-esc-tracking="clicked" data-esc-tracking-content-type="hover-icon" data-esc-tracking-context="local-activation" data-esc-tracking-element="delete"><img src="{{ www_url }}/static/images/beta/forum_delete.svg" /></a>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+                <div class="column is-12 p-0 pt-m">
+                    <a href="{{ develop_url }}/teams/{{ active_organization.slug }}/activations/add-activation/{{ activation_group.getPk() }}?type=2" data-esc-fancybox="default" class="button is-white is-inset" data-esc-tracking-service="mixpanel" data-esc-tracking="clicked" data-esc-tracking-content-type="cta-button" data-esc-tracking-context="local-activation" data-esc-tracking-element="create">+ Add Activation</a>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+    <div class="sheet-content pl-l pr-l align-right">
+        <a data-esc-fancybox="default" href="{{ develop_url }}/teams/{{ active_organization.slug }}/activations/delete-activation-group/{{ activation_group.getPk() }}" class="button is-danger" data-esc-tracking-service="mixpanel" data-esc-tracking="clicked" data-esc-tracking-content-type="cta-button" data-esc-tracking-context="activation-group" data-esc-tracking-element="delete-activation-group">Delete GameDay</a>
+        <button class="button is-primary pr-xl pl-xl" data-esc-tracking-service="mixpanel" data-esc-tracking="clicked" data-esc-tracking-content-type="cta-button" data-esc-tracking-context="activation-group" data-esc-tracking-element="save">Save</button>
+    </div>
+</div>

@@ -1,0 +1,16 @@
+<div class="flex is-wrapping">
+
+    <div class="column is-12">
+        {{ form.email_address()|raw }}
+    </div>
+    <div class="column is-6">
+        {{ form.start_time()|raw }}
+    </div>
+    <div class="column is-6">
+        {{ form.end_time()|raw }}
+    </div>
+    <div class="column is-12">
+        <button type="submit" class="button is-primary" data-esc-tracking-service="mixpanel" data-esc-tracking="clicked" data-esc-tracking-content-type="cta-button" data-esc-tracking-context="modal-add-game-user-license" data-esc-tracking-element="submit">{% t "Add User" %}</button>
+        <a href="javascript:parent.$.fancybox.close();" class="button is-white ml-s mr-s" data-esc-tracking-service="mixpanel" data-esc-tracking="clicked" data-esc-tracking-content-type="cta-button" data-esc-tracking-context="modal-add-game-user-license" data-esc-tracking-element="cancel">{% t "Cancel" %}</a>
+    </div>
+</div>
